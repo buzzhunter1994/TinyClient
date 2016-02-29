@@ -1,1 +1,15 @@
 c:\users\work\documents\visual studio 2015\Projects\TinyClient\TinyClient\bin\Debug\TinyClient.exe.config
+C:\Users\Work\Source\Repos\TinyClient\bin\Debug\TinyClient.exe.config
+C:\Users\Work\Source\Repos\TinyClient\bin\Debug\TinyClient.exe
+C:\Users\Work\Source\Repos\TinyClient\bin\Debug\TinyClient.pdb
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.csprojResolveAssemblyReference.cache
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\MainWindow.g.cs
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\App.g.cs
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient_MarkupCompile.cache
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient_MarkupCompile.lref
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\MainWindow.baml
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.g.resources
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.Properties.Resources.resources
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.csproj.GenerateResource.Cache
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.exe
+C:\Users\Work\Source\Repos\TinyClient\obj\Debug\TinyClient.pdb
