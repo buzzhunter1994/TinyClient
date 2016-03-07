@@ -11,7 +11,11 @@ namespace TinyClient
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App : Application
+    public sealed partial class App : Application
     {
+        private void StartupHandler(object sender, System.Windows.StartupEventArgs e)
+        {
+            //Elysium.Manager.Apply(this, Elysium.Theme.Dark,Elysium.AccentBrushes.Orange,Elysium.AccentBrushes.Mango);
+        }
     }
 }
