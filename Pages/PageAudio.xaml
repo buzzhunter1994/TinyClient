@@ -5,65 +5,66 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
                xmlns:metro="http://schemas.codeplex.com/elysium"
+      xmlns:mui ="http://firstfloorsoftware.com/ModernUI"
       xmlns:params="http://schemas.codeplex.com/elysium/params" x:Class="PageAudio"
       d:DesignHeight="600"
       d:DesignWidth="500"
       mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="170" />
         </Grid.ColumnDefinitions>
-        <ScrollViewer Background="{x:Null}" Grid.Column="2">
+        <ScrollViewer Background="{x:Null}" Grid.Column="2" BorderBrush="{x:Null}" Foreground="Black" BorderThickness="0">
             <StackPanel>
-                <ListBox x:Name="ListBox1" Margin="0,0,0,8" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox x:Name="AudioContent" Margin="0,0,0,8" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="AudioContent_SelectionChanged" Background="{x:Null}" Foreground="{x:Static metro:Manager.DefaultContrastBrush}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="mui:Link">
                             <TextBlock Text="{Binding DisplayName, Mode=OneWay}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    <!--<mui:Link DisplayName="{x:Static loc:Resources.current_playlist}" Source="/Content/ControlAudio.xaml#page=playlist" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.My_record}" Source="/Content/ControlAudio.xaml#page=my" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.recommendations}" Source="/Content/ControlAudio.xaml#page=recommendations" />-->
+                    <mui:Link DisplayName="current_playlist" Source="/Content/ControlAudio.xaml#page=playlist" />
+                    <mui:Link DisplayName="My_record" Source="/Content/ControlAudio.xaml#page=my" />
+                    <mui:Link DisplayName="recommendations" Source="/Content/ControlAudio.xaml#page=recommendations" />
                 </ListBox>
-                <ListBox x:Name="ListBox2" Margin="0,0,0,8" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox x:Name="ListBox2" Margin="0,0,0,8" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" Foreground="{x:Static metro:Manager.DefaultContrastBrush}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="mui:Link">
                             <TextBlock Text="{Binding DisplayName, Mode=OneWay}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    <!-- <mui:Link DisplayName="{x:Static loc:Resources.All_genres}" Source="/Content/ControlAudio.xaml#page=popul,q=0" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Rock}" Source="/Content/ControlAudio.xaml#page=popul,q=1" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Pop}" Source="/Content/ControlAudio.xaml#page=popul,q=2" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Rap_and_hiphop}" Source="/Content/ControlAudio.xaml#page=popul,q=3" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Easy_Listening}" Source="/Content/ControlAudio.xaml#page=popul,q=4" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Dance_and_House}" Source="/Content/ControlAudio.xaml#page=popul,q=5" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Instrumental}" Source="/Content/ControlAudio.xaml#page=popul,q=6" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Metal}" Source="/Content/ControlAudio.xaml#page=popul,q=7" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Alternative}" Source="/Content/ControlAudio.xaml#page=popul,q=21" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Dubstep}" Source="/Content/ControlAudio.xaml#page=popul,q=8" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Jazz_and_Blues}" Source="/Content/ControlAudio.xaml#page=popul,q=9" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Drum_and_Bass}" Source="/Content/ControlAudio.xaml#page=popul,q=10" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Trance}" Source="/Content/ControlAudio.xaml#page=popul,q=11" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Chanson}" Source="/Content/ControlAudio.xaml#page=popul,q=12" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Ethnic}" Source="/Content/ControlAudio.xaml#page=popul,q=13" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Acoustic}" Source="/Content/ControlAudio.xaml#page=popul,q=14" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Reggae}" Source="/Content/ControlAudio.xaml#page=popul,q=15" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Classical}" Source="/Content/ControlAudio.xaml#page=popul,q=16" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Indie_Pop}" Source="/Content/ControlAudio.xaml#page=popul,q=17" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Speech}" Source="/Content/ControlAudio.xaml#page=popul,q=19" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Electropop_and_Disco}" Source="/Content/ControlAudio.xaml#page=popul,q=22" />
-                    <mui:Link DisplayName="{x:Static loc:Resources.Other}" Source="/Content/ControlAudio.xaml#page=popul,q=18" />-->
+                    <mui:Link DisplayName="All_genres" Source="/Content/ControlAudio.xaml#page=popul,q=0" />
+                    <mui:Link DisplayName="Rock" Source="/Content/ControlAudio.xaml#page=popul,q=1" />
+                    <mui:Link DisplayName="Pop" Source="/Content/ControlAudio.xaml#page=popul,q=2" />
+                    <mui:Link DisplayName="Rap_and_hiphop" Source="/Content/ControlAudio.xaml#page=popul,q=3" />
+                    <mui:Link DisplayName="Easy_Listening" Source="/Content/ControlAudio.xaml#page=popul,q=4" />
+                    <mui:Link DisplayName="Dance_and_House" Source="/Content/ControlAudio.xaml#page=popul,q=5" />
+                    <mui:Link DisplayName="Instrumental" Source="/Content/ControlAudio.xaml#page=popul,q=6" />
+                    <mui:Link DisplayName="Metal" Source="/Content/ControlAudio.xaml#page=popul,q=7" />
+                    <mui:Link DisplayName="Alternative" Source="/Content/ControlAudio.xaml#page=popul,q=21" />
+                    <mui:Link DisplayName="Dubstep" Source="/Content/ControlAudio.xaml#page=popul,q=8" />
+                    <mui:Link DisplayName="Jazz_and_Blues" Source="/Content/ControlAudio.xaml#page=popul,q=9" />
+                    <mui:Link DisplayName="Drum_and_Bass" Source="/Content/ControlAudio.xaml#page=popul,q=10" />
+                    <mui:Link DisplayName="Trance" Source="/Content/ControlAudio.xaml#page=popul,q=11" />
+                    <mui:Link DisplayName="Chanson" Source="/Content/ControlAudio.xaml#page=popul,q=12" />
+                    <mui:Link DisplayName="Ethnic" Source="/Content/ControlAudio.xaml#page=popul,q=13" />
+                    <mui:Link DisplayName="Acoustic" Source="/Content/ControlAudio.xaml#page=popul,q=14" />
+                    <mui:Link DisplayName="Reggae" Source="/Content/ControlAudio.xaml#page=popul,q=15" />
+                    <mui:Link DisplayName="Classical" Source="/Content/ControlAudio.xaml#page=popul,q=16" />
+                    <mui:Link DisplayName="Indie_Pop" Source="/Content/ControlAudio.xaml#page=popul,q=17" />
+                    <mui:Link DisplayName="Speech" Source="/Content/ControlAudio.xaml#page=popul,q=19" />
+                    <mui:Link DisplayName="Electropop_and_Disco" Source="/Content/ControlAudio.xaml#page=popul,q=22" />
+                    <mui:Link DisplayName="Other" Source="/Content/ControlAudio.xaml#page=popul,q=18" />-->
                 </ListBox>
-                <CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150"  Foreground="{x:Static metro:Manager.DefaultContrastBrush}"/>
+                <CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150"  Foreground="{x:Static metro:Manager.DefaultContrastBrush}" VerticalAlignment="Top"/>
             </StackPanel>
         </ScrollViewer>
 
         <Rectangle VerticalAlignment="Stretch" Fill="{x:Static metro:Manager.DefaultAccentBrush}" Margin="0,0,2,0" Grid.Column="1" />
 
 
-        <TextBox x:Name="TextBox1" Grid.Column="0" Margin="2" VerticalAlignment="Top" Background="Transparent" BorderBrush="{x:Static metro:Manager.DefaultAccentBrush}" Foreground="{x:Static metro:Manager.DefaultContrastBrush}" Height="22" BorderThickness="1"/>
-        <Frame x:Name="ModernFrame1" Grid.Column="0" Margin="0,30,0,0" />
+        <TextBox x:Name="TextBox1" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top" Background="Transparent" BorderBrush="{x:Static metro:Manager.DefaultAccentBrush}" Foreground="{x:Static metro:Manager.DefaultContrastBrush}" Height="22" BorderThickness="1"/>
+        <mui:ModernFrame x:Name="ModernFrame1" Grid.Column="0" Margin="0,25,10,0" />
     </Grid>
 </UserControl>

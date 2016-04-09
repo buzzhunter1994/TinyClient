@@ -1,7 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TinyClient.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AccessToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">11036d06cf4242ab7e4b20ff237b99be9445bcfdd305d1ba2ff13d8e0b1007070e50c2813151f078f50c3</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
