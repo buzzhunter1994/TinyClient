@@ -6,6 +6,7 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:metro="http://schemas.codeplex.com/elysium"
              xmlns:local="clr-namespace:TinyClient"
+             
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -22,7 +23,8 @@
                     <TextBlock Text="{Binding full_title, Mode=OneWay}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            
         </ListBox>
-        <metro:ProgressBar x:Name="ModernProgressRing1" State="Busy" Visibility="{Binding ElementName=ListBox1, Path=Items.Count, Converter={StaticResource MyVisibilityConverter1}, ConverterParameter=inverse}"/>
+        <metro:ProgressBar x:Name="ModernProgressRing1" State="Busy" Visibility="{Binding Path=Items.Count, Converter={StaticResource VisibilityConverter}, ElementName=ListBox1, Mode=OneWay}"/>
     </Grid>
 </UserControl>

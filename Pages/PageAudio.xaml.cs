@@ -9,12 +9,11 @@ partial class PageAudio : IContent
     private void AudioContent_SelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
         if (AudioContent.SelectedIndex >= 0)
-            ModernFrame1.Source = ((FirstFloor.ModernUI.Presentation.Link)AudioContent.SelectedItem).Source;
+            ModernFrame1.Source = new Uri(((ListBoxItem)AudioContent.SelectedItem).Tag.ToString(), UriKind.RelativeOrAbsolute);
     }
     public void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
-        //ModernFrame1.Source = new Uri("/Content/ControlAudio.xaml#page=recommendations,target_audio=" + e.Fragment, UriKind.RelativeOrAbsolute);
-        //MessageBox.Show(e.Fragment);
+        ModernFrame1.Source = new Uri("/Content/ControlAudio.xaml#"+e.Fragment, UriKind.RelativeOrAbsolute);
     }
     public void OnNavigatedFrom(NavigationEventArgs e){ }
     public void OnNavigatedTo(NavigationEventArgs e){ }

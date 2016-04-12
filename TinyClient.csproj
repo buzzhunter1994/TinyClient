@@ -119,7 +119,7 @@
     </Compile>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="CustomExtensions\StringExtension.cs" />
-    <Compile Include="types\Types.cs" />
+    <Compile Include="Types\Types.cs" />
     <Page Include="Content\ControlAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

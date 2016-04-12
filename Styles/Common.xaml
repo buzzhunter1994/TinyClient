@@ -2,13 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:TinyClient"
                     xmlns:mui="http://firstfloorsoftware.com/ModernUI">
-    <local:MyVisibilityConverter x:Key="MyVisibilityConverter1"/>
+    <local:MyVisibilityConverter x:Key="VisibilityConverter"/>
     <DataTemplate x:Key="ContentView">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Image x:Name="Bg" Source="../Backgrounds/12.jpg" Stretch="UniformToFill" Opacity="0.45"/>
             <mui:ModernFrame Source="{Binding Page}" />
+            <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -22,7 +22,7 @@ namespace TinyClient
                 }
                 else
                 {
-                    if (value is int && (int)value == 0)
+                    if (value is int && (int)value > 0)
                     {
                         result = Visibility.Collapsed;
                     }

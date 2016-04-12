@@ -20,7 +20,7 @@ public partial class ControlAudio : IContent
         string p = e.Fragment.GetParametr("page");
         switch (p)
         {
-            case "my":
+            case "audio":
                 MusicList = await Audio.Get();
                 ListBox1.ItemsSource = MusicList;
                 break;

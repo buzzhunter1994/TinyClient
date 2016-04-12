@@ -6,6 +6,21 @@ namespace TinyClient
 {
     class ContentViewModel : INotifyPropertyChanged
     {
+        string _theme = "Light";
+        public string Theme
+        {
+            get { return _theme; }
+            set
+            {
+                if (value != _theme)
+                {
+                    _theme = value;
+                    OnPropertyChanged("Theme");
+                }
+            }
+
+        }
+
         Uri _page;
         public Uri Page
         {
@@ -20,7 +35,7 @@ namespace TinyClient
             }
 
         }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -35,7 +50,7 @@ namespace TinyClient
         public MainWindow()
         {
             this.DataContext = contentData;
-
+            contentData.Page = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
         }
         public void AudioLoad(object sender, RoutedEventArgs e)
         {
@@ -45,6 +60,15 @@ namespace TinyClient
         private void FriendsLoad(object sender, RoutedEventArgs e)
         {
             contentData.Page = new Uri("Pages/PageFriends.xaml#page=Friends", UriKind.Relative);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (contentData.Theme == "Light")
+                contentData.Theme = "Dark";
+            else
+                contentData.Theme = "Light";
+
         }
     }
 }

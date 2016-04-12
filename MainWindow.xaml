@@ -3,15 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:metro="http://schemas.codeplex.com/elysium"
     xmlns:params="http://schemas.codeplex.com/elysium/params"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"     
     xmlns:mui ="http://firstfloorsoftware.com/ModernUI"
-    params:Manager.Theme="Dark"
+    params:Manager.Theme="{Binding Theme}"
     params:Manager.AccentBrush="#FF1D569B"
     params:Manager.ContrastBrush="#FFEDF5F5"
     x:Class="TinyClient.MainWindow"
-    mc:Ignorable="d" 
-    Background="{DynamicResource BackgroundBrush}" Width="450" MinWidth="450" Height="600" Title="TinyClient">
+    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="450" MinWidth="450" Height="600" Title="TinyClient">
     <metro:Window.TitleBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,23 +19,8 @@
             <StackPanel Orientation="Horizontal">
                 <Button Grid.Column="1" Content="Аудио" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="AudioLoad"/>
                 <Button Grid.Column="1" Content="Друзья" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="FriendsLoad"/>
-                <Button Grid.Column="1" Content="Новости" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"/>
+                <Button Grid.Column="1" Content="Новости" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="Button_Click_1"/>
             </StackPanel>
         </Grid>
     </metro:Window.TitleBar>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="Bg" Source="Backgrounds/14.jpg" Stretch="UniformToFill" Opacity="0.45" d:IsLocked="True"/>
-        <ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>
-    </Grid>
-    <metro:Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/Common.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </metro:Window.Resources> 
-    
 </metro:Window>
