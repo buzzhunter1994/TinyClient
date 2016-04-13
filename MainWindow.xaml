@@ -8,7 +8,7 @@
     params:Manager.AccentBrush="#FF1D569B"
     params:Manager.ContrastBrush="#FFEDF5F5"
     x:Class="TinyClient.MainWindow"
-    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="450" MinWidth="450" Height="600" Title="TinyClient">
+    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="450" MinWidth="450" Height="300" MinHeight="300" Title="TinyClient">
     <metro:Window.TitleBar>
         <Grid>
             <Grid.ColumnDefinitions>
