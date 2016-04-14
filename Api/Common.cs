@@ -157,28 +157,43 @@ namespace TinyClient.Api
             Return a("response")
         End If
     End Function*/
-        public static async Task<T> getResponse<T>(string method, string [][]args = null)
+        public static async Task<T> getResponse<T>(string method, string [,]args)
         {
             string p = "";
             string q = "";
             string path = "";
             if (args != null)
             {
-                for (int i = 0; i < args.Length; i++)
+                for (int i = 0; i < args.GetLength(0); i++)
                 {
-                    if (!String.IsNullOrEmpty(args[i].ToString()))
-                    {
-                        if (!String.IsNullOrEmpty(args[i].ToString()))
+                 /*   if (!String.IsNullOrEmpty(args[i, 0]))
+                    {*/
+                        if (!String.IsNullOrEmpty(args[i, 1]))
                         {
-                            p = String.Format("{0}={1}&", p + args[i][0], args[i][1]);
+                            p = String.Format("{0}={1}&", p + args[i, 0], args[i, 1]);
                         }
                         else
                         {
-                            p = String.Format("{0}&", p + args[i]);
+                            p = String.Format("{0}&", p + args[i, 0]);
                         }
-                    }
+                   // }
                 }
             }
+            Console.WriteLine(p);
+            /*
+            If args IsNot Nothing Then
+               For i = 0 To args.GetLength(0) - 1
+                    If Not args(i, 1).IsNullOrEmpty() Then
+                        If Not String.IsNullOrEmpty(args(i, 0)) Then
+                            p = String.Format("{0}={1}&", p + args(i, 0), args(i, 1))
+                        Else
+                            p = String.Format("{0}&", p + args(i, 1))
+                        End If
+                    End If
+                Next
+            End If
+                
+                */
             if (method.IndexOf('@') > 0)
             {
                 q = method.Split('@')[0];

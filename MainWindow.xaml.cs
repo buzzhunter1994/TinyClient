@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace TinyClient
@@ -50,7 +51,6 @@ namespace TinyClient
         public MainWindow()
         {
             this.DataContext = contentData;
-            contentData.Page = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
         }
         public void AudioLoad(object sender, RoutedEventArgs e)
         {
@@ -69,6 +69,12 @@ namespace TinyClient
             else
                 contentData.Theme = "Light";
 
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(100);
+            contentData.Page = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
         }
     }
 }

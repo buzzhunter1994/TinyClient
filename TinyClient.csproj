@@ -80,6 +80,7 @@
       <HintPath>packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="CustomExtensions\StringExtension.cs" />
+    <Compile Include="PlayerWindow.xaml.cs">
+      <DependentUpon>PlayerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Types\Types.cs" />
     <Page Include="Content\ControlAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -135,6 +139,10 @@
     <Page Include="Pages\PageFriends.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlayerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Common.xaml">
       <SubType>Designer</SubType>

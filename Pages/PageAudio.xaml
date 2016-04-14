@@ -9,7 +9,7 @@
       xmlns:params="http://schemas.codeplex.com/elysium/params" x:Class="PageAudio"
       d:DesignHeight="600"
       d:DesignWidth="500"
-      mc:Ignorable="d">
+      mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -21,37 +21,36 @@
         </Grid.RowDefinitions>
         <TextBox x:Name="TextBox1" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top" Background="{DynamicResource SemitransparentBrush}" Foreground="{DynamicResource ForegroundBrush}" Height="22" BorderThickness="1"/>
 
-        <mui:ModernFrame x:Name="ModernFrame1" Grid.Column="0" Grid.RowSpan="2" Margin="0,30,10,0" Background="{DynamicResource SemitransparentBrush}" />
+        <mui:ModernFrame x:Name="ModernFrame1" Grid.Column="0" Grid.RowSpan="2" Margin="0,30,10,0"  />
 
-        <StackPanel Background="{DynamicResource SemitransparentBrush}" Grid.Column="1" Grid.Row="0">
-            <ListBox x:Name="AudioContent" Margin="0,0,0,8"  SelectionChanged="AudioContent_SelectionChanged" Background="{x:Null}" Focusable="False">
-                <ListBoxItem Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" />
-                <ListBoxItem Content="My record" Tag="/Content/ControlAudio.xaml#page=my" />
-                <ListBoxItem Content="Recommendations" Tag="/Content/ControlAudio.xaml#page=recommendations" />
-                <ListBoxItem Content="All genres" Tag="/Content/ControlAudio.xaml#page=popul,q=0" />
-                <ListBoxItem Content="Rock" Tag="/Content/ControlAudio.xaml#page=popul,q=1" />
-                <ListBoxItem Content="Pop" Tag="/Content/ControlAudio.xaml#page=popul,q=2" />
-                <ListBoxItem Content="Rap and hiphop" Tag="/Content/ControlAudio.xaml#page=popul,q=3" />
-                <ListBoxItem Content="Easy Listening" Tag="/Content/ControlAudio.xaml#page=popul,q=4" />
-                <ListBoxItem Content="Dance and House" Tag="/Content/ControlAudio.xaml#page=popul,q=5" />
-                <ListBoxItem Content="Instrumental" Tag="/Content/ControlAudio.xaml#page=popul,q=6" />
-                <ListBoxItem Content="Metal" Tag="/Content/ControlAudio.xaml#page=popul,q=7" />
-                <ListBoxItem Content="Alternative" Tag="/Content/ControlAudio.xaml#page=popul,q=21" />
-                <ListBoxItem Content="Dubstep" Tag="/Content/ControlAudio.xaml#page=popul,q=8" />
-                <ListBoxItem Content="Jazz and Blues" Tag="/Content/ControlAudio.xaml#page=popul,q=9" />
-                <ListBoxItem Content="Drum and Bass" Tag="/Content/ControlAudio.xaml#page=popul,q=10" />
-                <ListBoxItem Content="Trance" Tag="/Content/ControlAudio.xaml#page=popul,q=11" />
-                <ListBoxItem Content="Chanson" Tag="/Content/ControlAudio.xaml#page=popul,q=12" />
-                <ListBoxItem Content="Ethnic" Tag="/Content/ControlAudio.xaml#page=popul,q=13" />
-                <ListBoxItem Content="Acoustic" Tag="/Content/ControlAudio.xaml#page=popul,q=14" />
-                <ListBoxItem Content="Reggae" Tag="/Content/ControlAudio.xaml#page=popul,q=15" />
-                <ListBoxItem Content="Classical" Tag="/Content/ControlAudio.xaml#page=popul,q=16" />
-                <ListBoxItem Content="Indie_Pop" Tag="/Content/ControlAudio.xaml#page=popul,q=17" />
-                <ListBoxItem Content="Speech" Tag="/Content/ControlAudio.xaml#page=popul,q=19" />
-                <ListBoxItem Content="Electropop and Disco" Tag="/Content/ControlAudio.xaml#page=popul,q=22" />
-                <ListBoxItem Content="Other" Tag="/Content/ControlAudio.xaml#page=popul,q=18" />
-            </ListBox>
-                
-            </StackPanel><CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+        <ListBox x:Name="AudioContent" Margin="0,0,0,10"  SelectionChanged="AudioContent_SelectionChanged" Background="{x:Null}" Grid.Column="1" Grid.Row="0">
+            <ListBoxItem Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" />
+            <ListBoxItem Content="My record" Tag="/Content/ControlAudio.xaml#page=audio" />
+            <ListBoxItem Content="Recommendations" Tag="/Content/ControlAudio.xaml#page=recommendations" />
+            <ListBoxItem Content="All genres" Tag="/Content/ControlAudio.xaml#page=popular,q=0" />
+            <ListBoxItem Content="Rock" Tag="/Content/ControlAudio.xaml#page=popular,q=1" />
+            <ListBoxItem Content="Pop" Tag="/Content/ControlAudio.xaml#page=popular,q=2" />
+            <ListBoxItem Content="Rap and hiphop" Tag="/Content/ControlAudio.xaml#page=popular,q=3" />
+            <ListBoxItem Content="Easy Listening" Tag="/Content/ControlAudio.xaml#page=popular,q=4" />
+            <ListBoxItem Content="Dance and House" Tag="/Content/ControlAudio.xaml#page=popular,q=5" />
+            <ListBoxItem Content="Instrumental" Tag="/Content/ControlAudio.xaml#page=popular,q=6" />
+            <ListBoxItem Content="Metal" Tag="/Content/ControlAudio.xaml#page=popular,q=7" />
+            <ListBoxItem Content="Alternative" Tag="/Content/ControlAudio.xaml#page=popular,q=21" />
+            <ListBoxItem Content="Dubstep" Tag="/Content/ControlAudio.xaml#page=popular,q=8" />
+            <!--<ListBoxItem Content="Jazz and Blues" Tag="/Content/ControlAudio.xaml#page=popular,q=9" />-->
+            <ListBoxItem Content="Drum and Bass" Tag="/Content/ControlAudio.xaml#page=popular,q=10" />
+            <ListBoxItem Content="Trance" Tag="/Content/ControlAudio.xaml#page=popular,q=11" />
+            <ListBoxItem Content="Chanson" Tag="/Content/ControlAudio.xaml#page=popular,q=12" />
+            <ListBoxItem Content="Ethnic" Tag="/Content/ControlAudio.xaml#page=popular,q=13" />
+            <ListBoxItem Content="Acoustic" Tag="/Content/ControlAudio.xaml#page=popular,q=14" />
+            <ListBoxItem Content="Reggae" Tag="/Content/ControlAudio.xaml#page=popular,q=15" />
+            <ListBoxItem Content="Classical" Tag="/Content/ControlAudio.xaml#page=popular,q=16" />
+            <ListBoxItem Content="Indie Pop" Tag="/Content/ControlAudio.xaml#page=popular,q=17" />
+            <ListBoxItem Content="Speech" Tag="/Content/ControlAudio.xaml#page=popular,q=19" />
+            <ListBoxItem Content="Electropop and Disco" Tag="/Content/ControlAudio.xaml#page=popular,q=22" />
+            <ListBoxItem Content="Other" Tag="/Content/ControlAudio.xaml#page=popular,q=18" />
+        </ListBox>
+        <CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
     </Grid>
 </UserControl>

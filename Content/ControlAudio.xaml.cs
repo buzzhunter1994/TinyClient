@@ -8,20 +8,38 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows;
 using TinyClient.Api;
-
+using System.Collections.Specialized;
+using System.Web;
 public partial class ControlAudio : IContent
 {
     private ObservableCollection<Types.audio> MusicList = new ObservableCollection<Types.audio>();
     string MyFragment;
-
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
-        MyFragment = e.Fragment;
-        string p = e.Fragment.GetParametr("page");
+        
+        MyFragment = e.Fragment.Replace(',', '&');
+        NameValueCollection nvc = new NameValueCollection();
+        try
+        {
+            nvc = HttpUtility.ParseQueryString(MyFragment);
+        }
+        catch
+        {
+
+        }
+        string p = nvc["page"];
         switch (p)
         {
             case "audio":
                 MusicList = await Audio.Get();
+                ListBox1.ItemsSource = MusicList;
+                break;
+            case "recommendations":
+                MusicList = await Audio.GetRecommendations();
+                ListBox1.ItemsSource = MusicList;
+                break;
+            case "popular":
+                MusicList = await Audio.GetPopular(nvc["q"], nvc["only_eng"]);
                 ListBox1.ItemsSource = MusicList;
                 break;
         }

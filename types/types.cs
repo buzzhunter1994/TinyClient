@@ -12,7 +12,7 @@
         public int album_id { get; set; }
         public int genre_id { get; set; }
         public string full_title { 
-            get { return artist + " - " + title; }
+            get { return artist.Trim() + " - " + title.Trim(); }
         }
         
     }
