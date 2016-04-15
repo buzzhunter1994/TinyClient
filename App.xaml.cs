@@ -1,12 +1,13 @@
 ﻿using System.Windows;
-
+using TinyClient.Api;
 namespace TinyClient
 {
-    public sealed partial class App : Application
+    public partial class App 
     {
         private void StartupHandler(object sender, System.Windows.StartupEventArgs e)
         {
-
+            Common.TinyMainWindow.InitializeComponent();
+                Common.TinyMainWindow.Show();
         }
     }
 }

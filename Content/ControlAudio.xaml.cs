@@ -17,6 +17,7 @@ public partial class ControlAudio : IContent
     private NameValueCollection MyFragment;
     private bool isPageEnd;
     private bool isLocked;
+    private bool isForeing;
 
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
@@ -35,13 +36,18 @@ public partial class ControlAudio : IContent
         switch (MyFragment["page"])
         {
             case "playlist":
-                if (Common.MusicPlayer != null) 
+                if (Common.MusicPlayer != null)
                 {
                     MusicList = Common.MusicPlayer.Playlist;
                     PlaylistView.ItemsSource = MusicList;
                     PlaylistView.SelectedIndex = Common.MusicPlayer.CurrentIndex;
                     PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
-                }                
+                }
+                else
+                {
+                    MusicList = await Audio.Get();
+                    PlaylistView.ItemsSource = MusicList;
+                }
                 break;
             case "audio":
                 MusicList = await Audio.Get();
@@ -52,7 +58,7 @@ public partial class ControlAudio : IContent
                 PlaylistView.ItemsSource = MusicList;
                 break;
             case "popular":
-                MusicList = await Audio.GetPopular(MyFragment["q"], MyFragment["only_eng"]);
+                MusicList = await Audio.GetPopular(MyFragment["q"], isForeing);
                 PlaylistView.ItemsSource = MusicList;
                 break;
             case "search":
@@ -64,9 +70,9 @@ public partial class ControlAudio : IContent
         Progress.Visibility = Visibility.Collapsed;
     }
 
-    public void OnNavigatedFrom(NavigationEventArgs e){ }
-    public void OnNavigatedTo(NavigationEventArgs e){ }
-    public void OnNavigatingFrom(NavigatingCancelEventArgs e){ }
+    public void OnNavigatedFrom(NavigationEventArgs e) { }
+    public void OnNavigatedTo(NavigationEventArgs e) { }
+    public void OnNavigatingFrom(NavigatingCancelEventArgs e) { }
 
     private void PlaylistView_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
     {
@@ -78,13 +84,14 @@ public partial class ControlAudio : IContent
     }
 
     private async void PlaylistView_ScrollChanged(Object sender, ScrollChangedEventArgs e)
-	{
+    {
         if (isLocked) return;
         isLocked = true;
+        ObservableCollection<Types.audio> audioList = null;
         ScrollViewer p = (ScrollViewer)e.OriginalSource;
         p.ApplyTemplate();
-        System.Windows.Controls.Primitives.ScrollBar b = (System.Windows.Controls.Primitives.ScrollBar)p.Template.FindName("PART_VerticalScrollBar", p);        
-        ObservableCollection<Types.audio> audioList = null;
+        System.Windows.Controls.Primitives.ScrollBar b = (System.Windows.Controls.Primitives.ScrollBar)p.Template.FindName("PART_VerticalScrollBar", p);
+
         if (!isPageEnd && MusicList != null)
         {
             if (Math.Abs(b.Value - b.Maximum) < 10 && MusicList.Count > 0)
@@ -104,7 +111,7 @@ public partial class ControlAudio : IContent
                         audioList = await Audio.Search(MyFragment["q"], MusicList.Count.ToString());
                         break;
                     case "popular":
-                        audioList = await Audio.GetPopular(MyFragment["q"], MyFragment["only_eng"], MusicList.Count.ToString());
+                        audioList = await Audio.GetPopular(MyFragment["q"], isForeing, MusicList.Count.ToString());
                         break;
                 }
                 if (audioList != null && audioList.Count > 0)
@@ -118,44 +125,9 @@ public partial class ControlAudio : IContent
                     isPageEnd = true;
                 }
                 await Task.Delay(1000);
-                Progress.Visibility = Visibility.Collapsed;                
+                Progress.Visibility = Visibility.Collapsed;
             }
         }
         isLocked = false;
-      /*  Dim p = CType(e.OriginalSource, ScrollViewer)
-        p.ApplyTemplate()
-        Dim a = p.Template.FindName("PART_VerticalScrollBar", p)
-        Dim b As Primitives.ScrollBar = CType(a, Primitives.ScrollBar)
-        Dim audioList As ObservableCollection(Of types.audio) = Nothing
-        If Not isPageEnd AndAlso Not IsNothing(MusicList1) Then
-            If Math.Abs(b.Value - b.Maximum) < OtherApi.TOLERANCE And MusicList1.Count > 0 Then
-                Select Case MyFragment.GetParametr("page")
-                    Case "my"
-                        audioList = Await audio.Get(MusicList1.Count.ToString)
-                    Case "recommendations"
-                        audioList =
-                            Await _
-                                audio.GetRecommendations(MusicList1.Count.ToString,
-                                                         MyFragment.GetParametr("target_audio"))
-                    Case "playlist"
-
-                    Case "search"
-                        audioList = Await audio.Search(MyFragment.GetParametr("q"), MusicList1.Count.ToString)
-                    Case "popul"
-                        audioList =
-                            Await _
-                                audio.GetPopular(MyFragment.GetParametr("q"),
-                                                 MyFragment.GetParametr("only_eng"),
-                                                 MusicList1.Count.ToString)
-                End Select
-                If Not IsNothing(audioList) AndAlso audioList.Count > 0 Then
-                    For Each i In audioList
-                        MusicList1.Add(i)
-                    Next
-                Else
-                    isPageEnd = True
-                End If
-            End If
-        End If*/
-	}
+    }
 }

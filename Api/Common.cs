@@ -1,10 +1,6 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +11,8 @@ namespace TinyClient.Api
     class Common
     {
         public static PlayerWindow MusicPlayer = new PlayerWindow();
-        public static async Task<JToken> SendVkRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang ="")
+        public static MainWindow TinyMainWindow = new MainWindow();
+        public static async Task<JToken> SendRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang ="")
         {
             string temp;
             string AccessToken = Properties.Settings.Default.AccessToken;
@@ -206,7 +203,7 @@ namespace TinyClient.Api
             {
                 q = method;
             }
-            JToken response = await SendVkRequest(q, p);
+            JToken response = await SendRequest(q, p);
             if (response!= null && response.ToString() != "")
             {
                 if (path == "")

@@ -10,9 +10,9 @@ namespace TinyClient.Api
         {
             return await Common.getResponse<ObservableCollection<Types.audio>>("audio.get@items", new string[,] { { "offset", offset }, { "count", "100" } });
         }
-        public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", string only_eng = "", string offset = "")
+        public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")
         {
-            return await Common.getResponse<ObservableCollection<Types.audio>>("audio.getPopular", new string[,] { { "genre_id", genre_id }, { "only_eng", only_eng }, { "offset", offset } });
+            return await Common.getResponse<ObservableCollection<Types.audio>>("audio.getPopular", new string[,] { { "genre_id", genre_id }, { "only_eng", foreing ? "1":"0" }, { "offset", offset } });
         }
         public static async Task<ObservableCollection<Types.audio>> GetRecommendations(string target_audio = "", string shuffle = "",string offset = "")
         {
