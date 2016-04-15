@@ -8,6 +8,7 @@
     params:Manager.AccentBrush="#FF1D569B"
     params:Manager.ContrastBrush="#FFEDF5F5"
     x:Class="TinyClient.MainWindow"
+    Closing="Window_Closing"
     Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="800" MinWidth="450" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
     <metro:Window.TitleBar>
         <Grid>

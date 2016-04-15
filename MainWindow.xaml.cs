@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using TinyClient.Api;
 
 namespace TinyClient
 {
@@ -75,6 +76,11 @@ namespace TinyClient
         {
             await Task.Delay(100);
             contentData.Page = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Common.MusicPlayer.Close();
         }
     }
 }

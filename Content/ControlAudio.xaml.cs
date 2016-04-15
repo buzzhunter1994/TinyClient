@@ -1,114 +1,127 @@
 ﻿using FirstFloor.ModernUI.Windows;
-using System.Collections.ObjectModel;
 using FirstFloor.ModernUI.Windows.Navigation;
-using TinyClient.CustomExtensions;
 using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Controls;
-using System.Windows;
-using TinyClient.Api;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using TinyClient;
+using TinyClient.Api;
+
 public partial class ControlAudio : IContent
 {
     private ObservableCollection<Types.audio> MusicList = new ObservableCollection<Types.audio>();
-    string MyFragment;
+    private NameValueCollection MyFragment;
+    private bool isPageEnd;
+    private bool isLocked;
+
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
-        
-        MyFragment = e.Fragment.Replace(',', '&');
-        NameValueCollection nvc = new NameValueCollection();
+        if (isLocked) return;
+        isLocked = true;
         try
         {
-            nvc = HttpUtility.ParseQueryString(MyFragment);
+            MyFragment = HttpUtility.ParseQueryString(e.Fragment.Replace(',', '&'));
         }
         catch
         {
 
         }
-        string p = nvc["page"];
-        switch (p)
+        isPageEnd = false;
+        Progress.Visibility = Visibility.Visible;
+        switch (MyFragment["page"])
         {
+            case "playlist":
+                if (Common.MusicPlayer != null) 
+                {
+                    MusicList = Common.MusicPlayer.Playlist;
+                    PlaylistView.ItemsSource = MusicList;
+                    PlaylistView.SelectedIndex = Common.MusicPlayer.CurrentIndex;
+                    PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
+                }                
+                break;
             case "audio":
                 MusicList = await Audio.Get();
-                ListBox1.ItemsSource = MusicList;
+                PlaylistView.ItemsSource = MusicList;
                 break;
             case "recommendations":
                 MusicList = await Audio.GetRecommendations();
-                ListBox1.ItemsSource = MusicList;
+                PlaylistView.ItemsSource = MusicList;
                 break;
             case "popular":
-                MusicList = await Audio.GetPopular(nvc["q"], nvc["only_eng"]);
-                ListBox1.ItemsSource = MusicList;
+                MusicList = await Audio.GetPopular(MyFragment["q"], MyFragment["only_eng"]);
+                PlaylistView.ItemsSource = MusicList;
+                break;
+            case "search":
+                MusicList = await Audio.Search(MyFragment["q"]);
+                PlaylistView.ItemsSource = MusicList;
                 break;
         }
-        /*
-        isPageEnd = False
-        Select Case p
-            Case "my"
-                MusicList1 = Await audio.Get
-                ListBox1.ItemsSource = MusicList1
-            Case "recommendations"
-                MusicList1 = Await audio.GetRecommendations("", e.Fragment.GetParametr("target_audio"))
-                ListBox1.ItemsSource = MusicList1
-            Case "playlist"
-                If Not IsNothing(OtherApi.BassPlayer1) Then
-                    MusicList1 = OtherApi.BassPlayer1.Playlist1
-                    ListBox1.ItemsSource = MusicList1
-                    ListBox1.SelectedIndex = OtherApi.BassPlayer1.PlaylistTecIndex1
-                    ListBox1.ScrollIntoView(ListBox1.SelectedItem)
-                End If
-            Case "search"
-                MusicList1 = Await audio.Search(e.Fragment.GetParametr("q"))
-                ListBox1.ItemsSource = MusicList1
-            Case "popul"
-                MusicList1 = Await audio.GetPopular(e.Fragment.GetParametr("q"), e.Fragment.GetParametr("only_eng"))
-                ListBox1.ItemsSource = MusicList1
-            Case "radio"
-                if radio_list Is nothing
-                    Dim s = File.ReadAllText("radio/stations.json")
-                    Dim alist = JsonConvert.DeserializeObject (Of types.radio())(s)
-                    radio_list = New ObservableCollection(Of types.audio)
-                    For Each r In alist
-                        radio_list.Add(r)
-                        r.is_radio = true
-                    Next
-                End If
-                dim mode = e.Fragment.GetParametr("mode")
-                if mode = "last"
-                    MusicList1 = New ObservableCollection(Of types.audio)
-                    For Each aud In SettingSystem.LastRadio
-                        MusicList1.Add(aud)
-                    Next
-                else If mode <> "all"
-                    MusicList1 = New ObservableCollection(Of types.audio)
-                    Dim rl = radio_list.Where(function(audio) audio.teg = mode)
-                    For Each aud In rl
-                        MusicList1.Add(aud)
-                    Next
-                else
-                    MusicList1 = radio_list
-                End If
-                ListBox1.ItemsSource = MusicList1
-        End Select*/
+        isLocked = false;
+        Progress.Visibility = Visibility.Collapsed;
     }
 
     public void OnNavigatedFrom(NavigationEventArgs e){ }
     public void OnNavigatedTo(NavigationEventArgs e){ }
     public void OnNavigatingFrom(NavigatingCancelEventArgs e){ }
 
-    private void ListBox1_MouseDoubleClick(Object sender, MouseButtonEventArgs e){
-        /*If IsNothing(OtherApi.BassPlayer1) Then OtherApi.BassPlayer1 = New WindowPlayer
-        OtherApi.BassPlayer1.Play(CType(ListBox1.SelectedItem, types.audio))
-        OtherApi.BassPlayer1.Playlist1 = MusicList1
-        OtherApi.BassPlayer1.PlaylistTecIndex1 = ListBox1.SelectedIndex*/
+    private void PlaylistView_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
+    {
+        if (Common.MusicPlayer == null)
+            Common.MusicPlayer = new PlayerWindow();
+        Common.MusicPlayer.Play((Types.audio)PlaylistView.SelectedItem);
+        Common.MusicPlayer.Playlist = MusicList;
+        Common.MusicPlayer.CurrentIndex = PlaylistView.SelectedIndex;
     }
 
-    private bool isPageEnd;
-
-    private async void ListBox1_ScrollChanged(Object sender, ScrollChangedEventArgs e)
+    private async void PlaylistView_ScrollChanged(Object sender, ScrollChangedEventArgs e)
 	{
+        if (isLocked) return;
+        isLocked = true;
+        ScrollViewer p = (ScrollViewer)e.OriginalSource;
+        p.ApplyTemplate();
+        System.Windows.Controls.Primitives.ScrollBar b = (System.Windows.Controls.Primitives.ScrollBar)p.Template.FindName("PART_VerticalScrollBar", p);        
+        ObservableCollection<Types.audio> audioList = null;
+        if (!isPageEnd && MusicList != null)
+        {
+            if (Math.Abs(b.Value - b.Maximum) < 10 && MusicList.Count > 0)
+            {
+                Progress.Visibility = Visibility.Visible;
+                switch (MyFragment["page"])
+                {
+                    case "audio":
+                        audioList = await Audio.Get(MusicList.Count.ToString());
+                        break;
+                    case "recommendations":
+                        audioList = await Audio.GetRecommendations(MyFragment["target_audio"], "", MusicList.Count.ToString());
+                        break;
+                    case "playlist":
+                        break;
+                    case "search":
+                        audioList = await Audio.Search(MyFragment["q"], MusicList.Count.ToString());
+                        break;
+                    case "popular":
+                        audioList = await Audio.GetPopular(MyFragment["q"], MyFragment["only_eng"], MusicList.Count.ToString());
+                        break;
+                }
+                if (audioList != null && audioList.Count > 0)
+                {
+                    foreach (Types.audio item in audioList)
+                        if (!MusicList.Contains(item))
+                            MusicList.Add(item);
+                }
+                else
+                {
+                    isPageEnd = true;
+                }
+                await Task.Delay(1000);
+                Progress.Visibility = Visibility.Collapsed;                
+            }
+        }
+        isLocked = false;
       /*  Dim p = CType(e.OriginalSource, ScrollViewer)
         p.ApplyTemplate()
         Dim a = p.Template.FindName("PART_VerticalScrollBar", p)

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FirstFloor.ModernUI.Windows.Controls;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TinyClient.Api
 {
     class Common
     {
+        public static PlayerWindow MusicPlayer = new PlayerWindow();
         public static async Task<JToken> SendVkRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang ="")
         {
             string temp;
@@ -22,7 +25,6 @@ namespace TinyClient.Api
             webClient1.Headers.Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded");
             /*if (AccessToken.Length == 0)
                 AccessToken = Properties.Settings.Default.AccessToken;*/
-            Debug.Print(method + "_" + parameters);
             string urls = "https://api.vk.com/method/" + method;
             try
             {
@@ -38,6 +40,7 @@ namespace TinyClient.Api
                 return a;
             if (a["error"] != null)
             {
+                ModernDialog.ShowMessage(a["error"].ToString(), "TinyClient - VKAPI", MessageBoxButton.OK);
                 //goto Request;
                 //TODO: Implement errors 
                 return null;

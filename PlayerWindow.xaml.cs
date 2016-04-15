@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +12,57 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Un4seen.Bass;
 
 namespace TinyClient
 {
-    /// <summary>
-    /// Interaction logic for PlayerWindow.xaml
-    /// </summary>
     public partial class PlayerWindow : Window, IDisposable
     {
-        public int Stream;
+        public int Channel;
+        public int CurrentIndex;
+        public ObservableCollection<Types.audio> Playlist = new ObservableCollection<Types.audio>();
+        private static int _endSync = 0;
+        private static SYNCPROC _endSyncCallback;
+        
         public PlayerWindow()
         {
             InitializeComponent();
+            BassNet.Registration("mc-shura@yandex.ua", "2X2223183433");
+            Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
         }
+
+        public void Play(Types.audio audio)
+        {
+            if (Channel != 0) Bass.BASS_ChannelStop(Channel);
+            Channel = Bass.BASS_StreamCreateURL(audio.url, 0, BASSFlag.BASS_STREAM_AUTOFREE, null, IntPtr.Zero);
+            _endSyncCallback = new SYNCPROC(EndSync);
+            _endSync = Bass.BASS_ChannelSetSync(Channel, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _endSyncCallback, IntPtr.Zero);
+            Bass.BASS_ChannelPlay(Channel, true);
+        }
+        public void PlayPause()
+        {
+            if (Channel != 0)
+            {
+                if (Bass.BASS_ChannelIsActive(Channel) == BASSActive.BASS_ACTIVE_PAUSED)
+                    Bass.BASS_ChannelPlay(Channel, false);
+                else if (Bass.BASS_ChannelIsActive(Channel) == BASSActive.BASS_ACTIVE_PLAYING)
+                    Bass.BASS_ChannelPause(Channel);
+            }
+        }
+        public void PlayNext()
+        {
+            if (++CurrentIndex >= Playlist.Count) CurrentIndex = 0;
+            Play(Playlist[CurrentIndex]);
+        }
+        public void PlayPrev()
+        {
+            if (--CurrentIndex <= 0) CurrentIndex = Playlist.Count - 1;
+            Play(Playlist[CurrentIndex]);
+        }
+        private void EndSync(int syncHandle, int Channel, int data, IntPtr user)
+        {
+            PlayNext();
+        }     
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

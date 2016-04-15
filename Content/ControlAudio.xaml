@@ -12,19 +12,20 @@
              mc:Ignorable="d">
 
     <Grid><!--ItemContainerStyle="{StaticResource FlatListBoxItemStretch}"ItemTemplate="{StaticResource AudioDataTemplate}"-->
-        <ListBox x:Name="ListBox1"
-                 
-                 MouseDoubleClick="ListBox1_MouseDoubleClick"
+        <ListBox x:Name="PlaylistView"                 
+                 MouseDoubleClick="PlaylistView_MouseDoubleClick"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ScrollViewer.ScrollChanged="ListBox1_ScrollChanged"
-                 SelectionMode="Extended" Background="{x:Null}"  >
+                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged"
+                 SelectionMode="Extended" Background="{x:Null}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding full_title, Mode=OneWay}" />
+                    <StackPanel Orientation="Horizontal" Width="Auto">
+                        <TextBlock Text="{Binding full_title, Mode=OneWay}" />
+                        <TextBlock Text="{Binding duration, Mode=OneWay}" HorizontalAlignment="Right"/>
+                    </StackPanel>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-            
+            </ListBox.ItemTemplate>            
         </ListBox>
-        <metro:ProgressBar x:Name="ModernProgressRing1" State="Busy" Visibility="{Binding Path=Items.Count, Converter={StaticResource VisibilityConverter}, ElementName=ListBox1, Mode=OneWay}"/>
+        <metro:ProgressBar x:Name="Progress" State="Busy"/>
     </Grid>
 </UserControl>
