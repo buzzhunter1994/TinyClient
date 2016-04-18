@@ -1,16 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace TinyClient.Api
 {
-    class Audio
+    class Bookmark
     {
-        public static async Task<ObservableCollection<Types.audio>> Get(string offset = "")
+        public static async Task<ObservableCollection<Types.profile>> Get(string offset = "", string count = "50")
         {
-            return await Common.getResponse<ObservableCollection<Types.audio>>("audio.get@items", new string[,] { { "offset", offset }, { "count", "100" } });
+            List<Types.user> uList = await Common.getResponse<List<Types.user>>("fave.getUsers@items", new string[,] { { "offset", offset }, { "count", count } });
+            string user_ids = "";
+            foreach (Types.user user in uList) {
+                user_ids += user.id + ",";
+            }
+            return await Common.getResponse<ObservableCollection<Types.profile>>("users.get", new string[,] { { "user_ids", user_ids }, { "fields", "photo_100,online" } });
         }
-        public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")
+     /*   public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")
         {
             return await Common.getResponse<ObservableCollection<Types.audio>>("audio.getPopular", new string[,] { { "genre_id", genre_id }, { "only_eng", foreing ? "1":"0" }, { "offset", offset } });
         }
@@ -25,22 +31,6 @@ namespace TinyClient.Api
         public static async Task<ObservableCollection<Types.audio>> SetBroadcast(string audio)
         {
             return await Common.getResponse<ObservableCollection<Types.audio>>("audio.setBroadcast", new string[,] { { "audio", audio } });
-        }
-        public static async Task<ObservableCollection<Types.audio>> Search(string q, string offset = "")
-        {
-            return await Common.getResponse<ObservableCollection<Types.audio>>("audio.search@items", new string[,] { { "q", q }, { "auto_complete", "1" }, { "offset", offset }, { "search_own", "1" } });
-        }
-        public static async Task<string> getLyrics(string lyrics_id)
-        {
-            JToken a = await Common.getResponse<JToken>("audio.getLyrics", new string[,] { { "lyrics_id", lyrics_id } });
-            if (a == null)
-            {
-                return "";
-            }
-            else
-            {
-                return a["text"].ToString();
-            }
-        }
+        }*/
     }
 }

@@ -7,7 +7,7 @@ namespace TinyClient
         private void StartupHandler(object sender, System.Windows.StartupEventArgs e)
         {
             Common.TinyMainWindow.InitializeComponent();
-                Common.TinyMainWindow.Show();
+            Common.TinyMainWindow.Show();
         }
     }
 }

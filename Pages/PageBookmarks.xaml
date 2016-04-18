@@ -1,0 +1,29 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+               xmlns:metro="http://schemas.codeplex.com/elysium"
+      xmlns:mui ="http://firstfloorsoftware.com/ModernUI"
+      xmlns:params="http://schemas.codeplex.com/elysium/params" x:Class="PageBookmarks"
+      d:DesignHeight="600"
+      d:DesignWidth="500"
+      mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="170"/>
+        </Grid.ColumnDefinitions>
+        <mui:ModernFrame x:Name="ModernFrame" Grid.Column="0" Margin="0,0,10,0"  />
+
+        <StackPanel Grid.Column="1">
+            <Button Content="Photos" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPhotos.xaml"/>
+            <Button Content="Videos" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkVideos.xaml"/>
+            <Button Content="Posts" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPosts.xaml"/>
+            <Button Content="People" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPeople.xaml#page=people"/>
+            <Button Content="Products" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkProducts.xaml"/>
+            <Button Content="Links" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkLinks.xaml"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

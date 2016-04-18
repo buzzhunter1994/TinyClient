@@ -9,7 +9,7 @@
     params:Manager.ContrastBrush="#FFEDF5F5"
     x:Class="TinyClient.MainWindow"
     Closing="Window_Closing"
-    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="800" MinWidth="450" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
+    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="810" MinWidth="650" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
     <metro:Window.TitleBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -19,7 +19,9 @@
 
             <StackPanel Orientation="Horizontal">
                 <Button Grid.Column="1" Content="Audio" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="AudioLoad"/>
+
                 <Button Grid.Column="1" Content="Friends" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="FriendsLoad"/>
+                <Button Grid.Column="1" Content="Bookmarks" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="BookmarksLoad"/>
                 <Button Grid.Column="1" Content="Theme" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="Button_Click_1"/>
             </StackPanel>
         </Grid>

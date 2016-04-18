@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ControlAudio"
+﻿<UserControl x:Class="ControlBookmarkPeople"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,11 +12,8 @@
              mc:Ignorable="d">
 
     <Grid>
-        <ListBox x:Name="PlaylistView"                 
-                 MouseDoubleClick="PlaylistView_MouseDoubleClick"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
-                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged" HorizontalContentAlignment="Stretch"
-                 SelectionMode="Extended" Background="{x:Null}" ItemTemplate="{StaticResource AudioDataTemplate}">
-        </ListBox>
+        <ScrollViewer Background="{x:Null}">
+            <ItemsControl x:Name="PeopleView" ItemsPanel="{DynamicResource UsersItemsPanel}" ItemTemplate="{StaticResource BookmarkPeopleDataTemplate}"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>

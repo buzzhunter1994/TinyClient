@@ -1,16 +1,196 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:TinyClient"
-                    xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+                    xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                    xmlns:metro="http://schemas.codeplex.com/elysium"
+                    xmlns:command="clr-namespace:TinyClient.Command"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
     <local:MyVisibilityConverter x:Key="VisibilityConverter"/>
+    <local:DurationToTime x:Key="DurationToTime" />
+    <command:ShowProfile x:Key="ShowProfile"/>
     <DataTemplate x:Key="ContentView">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image x:Name="Bg" Source="../Backgrounds/8.jpg" Stretch="UniformToFill" Opacity="0.45"/>
+
             <mui:ModernFrame Source="{Binding Page}" />
-            <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
+            <!--<Image x:Name="Bg" Source="../Backgrounds/8.jpg" Stretch="UniformToFill" Opacity="0.45"/> <ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
     </DataTemplate>
+
+    <Style x:Key="FlatListBoxItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource ItemText}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border
+						x:Name="Bd"
+						Padding="{TemplateBinding Padding}"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						SnapsToDevicePixels="true">
+                        <ContentPresenter
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ItemBackgroundHover}" />
+                            <Setter Property="Foreground" Value="{DynamicResource ItemTextHover}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ItemBackgroundSelected}" />
+                            <Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FlatListBoxItemStretch" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border
+						x:Name="Bd"
+						Padding="{TemplateBinding Padding}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						SnapsToDevicePixels="true">
+                        <ContentPresenter
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <DataTemplate x:Key="AudioDataTemplate" DataType="types:audio">
+        <ContentControl>
+            <ContentControl.Template>
+                <ControlTemplate>
+                    <Grid x:Name="Grid1" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+							x:Name="TextBlock1"
+							MaxHeight="25"
+							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text=" "/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
+                        <TextBlock
+							x:Name="DurationTextBlock"
+							Grid.Column="1"
+							Margin="5,0,5,0"
+							HorizontalAlignment="Right"
+							Text="{Binding duration, Converter={StaticResource DurationToTime}}"
+                            />
+
+                        <StackPanel
+							x:Name="AudioButtonStackPanel"
+							Grid.Column="1"
+							Margin="5,0,5,0"
+							HorizontalAlignment="Right"
+							Orientation="Horizontal"
+							Visibility="Collapsed">
+                            <!-- <Button
+                                x:Name="AddToMyAudiodButton"
+                                Margin="0,0,3,0"
+                                Style="{StaticResource MySystemButton}"
+                                Command="{StaticResource AddAudioToMyReccordCommand}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <Path
+                                    Height="12"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
+                                    Data="{StaticResource addStyle0}"
+                                    Stretch="Uniform" />
+                            </Button>
+                            <Button
+                                x:Name="ShowLyricsButton"
+                                Margin="0,0,3,0"
+                                Style="{StaticResource MySystemButton}"
+                                Command="{StaticResource ShowLyricsCommand}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <Path
+                                    Height="12"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
+                                    Data="{StaticResource note_text}"
+                                    Stretch="Uniform" />
+                            </Button>
+                            <Button
+                                x:Name="ShowRecommendationsButton"
+                                Style="{StaticResource MySystemButton}"
+                                Command="{StaticResource ShowAudioRecomendationsCommand}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <Path
+                                    Height="12"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
+                                    Data="{StaticResource headphones}"
+                                    Stretch="Uniform" />
+                            </Button>-->
+                        </StackPanel>
+                    </Grid>
+                    <!-- <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=Grid1, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding is_radio}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="AudioButtonStackPanel" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="DurationTextBlock" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </ContentControl.Template>
+        </ContentControl>
+    </DataTemplate>
+    <DataTemplate x:Key="BookmarkPeopleDataTemplate" DataType="Types:user">
+        <StackPanel Width="100" Margin="10" Orientation="Vertical" Cursor="Hand" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Grid Width="100" Height="100" Margin="0,0,0,10">
+                <Image Source="{Binding photo_100}" Width="100" Height="100">
+                    <Image.OpacityMask>
+                        <RadialGradientBrush>
+                            <GradientStop Color="Black" Offset="1"/>
+                            <GradientStop Offset="1"/>
+                        </RadialGradientBrush>
+                    </Image.OpacityMask>
+                </Image>
+                <Rectangle Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" d:LayoutOverrides="Width" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8"/>
+            </Grid>
+            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding first_name}" HorizontalAlignment="Center"/>
+            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding last_name}" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </DataTemplate>
+    <ItemsPanelTemplate x:Key="UsersItemsPanel">
+        <WrapPanel IsItemsHost="True" />
+    </ItemsPanelTemplate>
+
+
 </ResourceDictionary>

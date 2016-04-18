@@ -22,4 +22,10 @@ partial class PageAudio : IContent
     public void OnNavigatedFrom(NavigationEventArgs e) { }
     public void OnNavigatedTo(NavigationEventArgs e) { }
     public void OnNavigatingFrom(NavigatingCancelEventArgs e) { }
+
+    private void Genres_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (AudioContent.SelectedIndex >= 0)
+            ModernFrame1.Source = new Uri(((ComboBoxItem)Genres.SelectedItem).Tag.ToString(), UriKind.Relative);
+    }
 }

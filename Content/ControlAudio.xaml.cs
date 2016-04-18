@@ -32,7 +32,7 @@ public partial class ControlAudio : IContent
 
         }
         isPageEnd = false;
-        Progress.Visibility = Visibility.Visible;
+        Common.TinyMainWindow.IsBusy = true;
         switch (MyFragment["page"])
         {
             case "playlist":
@@ -67,7 +67,7 @@ public partial class ControlAudio : IContent
                 break;
         }
         isLocked = false;
-        Progress.Visibility = Visibility.Collapsed;
+        Common.TinyMainWindow.IsBusy = false;
     }
 
     public void OnNavigatedFrom(NavigationEventArgs e) { }
@@ -96,7 +96,7 @@ public partial class ControlAudio : IContent
         {
             if (Math.Abs(b.Value - b.Maximum) < 10 && MusicList.Count > 0)
             {
-                Progress.Visibility = Visibility.Visible;
+                Common.TinyMainWindow.IsBusy = true;
                 switch (MyFragment["page"])
                 {
                     case "audio":
@@ -125,7 +125,7 @@ public partial class ControlAudio : IContent
                     isPageEnd = true;
                 }
                 await Task.Delay(1000);
-                Progress.Visibility = Visibility.Collapsed;
+                Common.TinyMainWindow.IsBusy = false;
             }
         }
         isLocked = false;

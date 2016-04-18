@@ -35,5 +35,17 @@ namespace TinyClient.Properties {
                 this["AccessToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int photoSize {
+            get {
+                return ((int)(this["photoSize"]));
+            }
+            set {
+                this["photoSize"] = value;
+            }
+        }
     }
 }

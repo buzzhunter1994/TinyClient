@@ -5,5 +5,8 @@
     <Setting Name="AccessToken" Type="System.String" Scope="User">
       <Value Profile="(Default)">11036d06cf4242ab7e4b20ff237b99be9445bcfdd305d1ba2ff13d8e0b1007070e50c2813151f078f50c3</Value>
     </Setting>
+    <Setting Name="photoSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -12,8 +12,23 @@
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-        </Grid.ColumnDefinitions>        
-
+        </Grid.ColumnDefinitions>
+        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="130" Height="97"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="130" Height="97"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="130" Height="97"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+            <Image Source="/TinyClient;component/Backgrounds/1.jpg" Width="84" Height="130"/>
+        </ListBox>
         <TextBox x:Name="TextBox1" Grid.Column="0" VerticalAlignment="Top" Background="{DynamicResource SemitransparentBrush}" Height="22" BorderThickness="1" Text="Friends"/>
     </Grid>
 </UserControl>

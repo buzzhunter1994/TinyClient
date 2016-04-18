@@ -61,6 +61,7 @@
       <HintPath>packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -114,19 +115,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\User.cs" />
+    <Compile Include="Api\Bookmark.cs" />
     <Compile Include="Api\Audio.cs" />
+    <Compile Include="Api\Command.cs" />
     <Compile Include="Api\Common.cs" />
     <Compile Include="Api\JsonConvert.cs" />
+    <Compile Include="Api\MyTabItem.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Content\ControlBookmarkPeople.xaml.cs">
+      <DependentUpon>ControlBookmarkPeople.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="CustomExtensions\StringExtension.cs" />
+    <Compile Include="Pages\PageBookmarks.xaml.cs">
+      <DependentUpon>PageBookmarks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlayerWindow.xaml.cs">
       <DependentUpon>PlayerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Types\LongPollServerParser.cs" />
     <Compile Include="Types\Types.cs" />
+    <Page Include="Content\ControlBookmarkPeople.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Content\ControlAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -136,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PageAudio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageBookmarks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
