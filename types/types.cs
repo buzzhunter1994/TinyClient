@@ -175,7 +175,7 @@ namespace Types
             set
             {
                 _isSend1 = value;
-                OnPropertyChanged(nameof(IsSend));
+                OnPropertyChanged("IsSend");
             }
         }
 
@@ -192,7 +192,7 @@ namespace Types
             set
             {
                 _isSuccessfulSending1 = value;
-                OnPropertyChanged(nameof(IsSuccessfulSending));
+                OnPropertyChanged("IsSuccessfulSending");
             }
         }
 
@@ -202,7 +202,7 @@ namespace Types
             set
             {
                 _isError1 = value;
-                OnPropertyChanged(nameof(IsError));
+                OnPropertyChanged("IsError");
             }
         }
 
@@ -217,7 +217,7 @@ namespace Types
             set
             {
                 _important1 = value;
-                OnPropertyChanged(nameof(important));
+                OnPropertyChanged("important");
             }
         }
 
@@ -288,7 +288,7 @@ namespace Types
 		internal void SetFromName(string fname)
 		{
 			from_name = fname;
-			OnPropertyChanged(nameof(from_name));
+			OnPropertyChanged("from_name");
 		}
 	
 		public int id { get; set; }
@@ -783,8 +783,8 @@ namespace Types
 			get { return _unread; }
 			set {
 				_unread = value;
-				OnPropertyChanged(nameof(unread));
-				OnPropertyChanged(nameof(unread_string));
+				OnPropertyChanged("unread");
+				OnPropertyChanged("unread_string");
 			}
 		}
 	
@@ -798,7 +798,7 @@ namespace Types
 			get { return _user1; }
 			set {
 				_user1 = value;
-				OnPropertyChanged(nameof(user));
+				OnPropertyChanged("user");
 			}
 		}
 	}
