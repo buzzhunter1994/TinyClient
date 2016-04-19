@@ -13,7 +13,7 @@
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <mui:ModernFrame x:Name="ModernFrame" Grid.Column="0" Margin="0,0,10,0"  />
 

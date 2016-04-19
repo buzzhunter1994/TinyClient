@@ -9,7 +9,6 @@ partial class PageBookmarks : IContent
 {
     public void SelectType(object sender, RoutedEventArgs e)
     {
-        Debug.WriteLine(((Button)sender).Tag.ToString());
         ModernFrame.Source = new Uri(((Button)sender).Tag.ToString(), UriKind.Relative);
     }
     public void OnFragmentNavigation(FragmentNavigationEventArgs e)

@@ -50,6 +50,8 @@ namespace Types
 		public string photo { get; set; }
 		public string photo_50 { get; set; }
 		public string photo_100 { get; set; }
+        public string university_name { get; set; }
+        public string can_write_private_message { get; set; }
 		public string deactivated { get; set; }
 		public int sex { get; set; }
 		public bool online_mobile { get; set; }

@@ -167,30 +167,53 @@
         </ContentControl>
     </DataTemplate>
     <DataTemplate x:Key="BookmarkPeopleDataTemplate" DataType="Types:user">
-        <StackPanel Width="100" Margin="10" Orientation="Vertical" Cursor="Hand" >
+        <StackPanel Width="100" Margin="13,0,20,13" Orientation="Vertical" Cursor="Hand" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonUp">
                     <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Grid Width="100" Height="100" Margin="0,0,0,10">
-                <Image Source="{Binding photo_100}" Width="100" Height="100">
-                    <Image.OpacityMask>
-                        <RadialGradientBrush>
-                            <GradientStop Color="Black" Offset="1"/>
-                            <GradientStop Offset="1"/>
-                        </RadialGradientBrush>
-                    </Image.OpacityMask>
-                </Image>
-                <Rectangle Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" d:LayoutOverrides="Width" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8"/>
+                <Image Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}"/>
+                <Rectangle Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8"/>
             </Grid>
-            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding first_name}" HorizontalAlignment="Center"/>
-            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding last_name}" HorizontalAlignment="Center"/>
+            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding first_name}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
+            <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding last_name}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
         </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="FriendDataTemplate" DataType="Types:user">
+        <Grid Width="300" HorizontalAlignment="Stretch" Margin="5,0,5,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="112"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}" HorizontalAlignment="Left" Cursor="Hand">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+            <Rectangle Grid.Column="0" Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,5"/>
+            <TextBlock Grid.Column="1" Text="{Binding full_name}" Margin="0,15,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" FontWeight="Bold" Cursor="Hand">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding university_name}" Visibility="{Binding university_name, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneTime}" Margin="0,35,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="{DynamicResource MiddleLightBrush}"/>
+            <Button Grid.Column="1" Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" Content="Send message" Margin="0,56,40,10" Width="Auto" Height="Auto" />
+        </Grid>
     </DataTemplate>
     <ItemsPanelTemplate x:Key="UsersItemsPanel">
         <WrapPanel IsItemsHost="True" />
     </ItemsPanelTemplate>
-
-
+    <ItemsPanelTemplate x:Key="FriendsItemsPanel">
+        <WrapPanel IsItemsHost="True" />
+    </ItemsPanelTemplate>
+    <RadialGradientBrush x:Key="RoundOpacity">
+        <GradientStop Color="Black" Offset="1"/>
+        <GradientStop Offset="1"/>
+    </RadialGradientBrush>
 </ResourceDictionary>
