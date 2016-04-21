@@ -9,7 +9,7 @@
     params:Manager.ContrastBrush="#FFEDF5F5"
     x:Class="TinyClient.MainWindow"
     Closing="Window_Closing"
-    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="810" MinWidth="650" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
+    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="810" MinWidth="750" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
     <metro:Window.TitleBar>
         <Grid>
             <Grid.ColumnDefinitions>

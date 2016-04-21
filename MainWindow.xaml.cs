@@ -60,7 +60,8 @@ namespace TinyClient
 
         private void FriendsLoad(object sender, RoutedEventArgs e)
         {
-            contentData.Page = new Uri("Pages/PageFriends.xaml#page=Friends", UriKind.Relative);
+            contentData.Page = new Uri("Pages/PageFriends.xaml#page=friends", UriKind.Relative);
+
         }
         private void BookmarksLoad(object sender, RoutedEventArgs e)
         {

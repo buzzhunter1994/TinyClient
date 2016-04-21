@@ -14,8 +14,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Image x:Name="Bg" Source="/TinyClient;component/Backgrounds/15.jpg" Stretch="UniformToFill" Opacity="0.45"/>
             <mui:ModernFrame Source="{Binding Page}" />
-            <!--<Image x:Name="Bg" Source="../Backgrounds/8.jpg" Stretch="UniformToFill" Opacity="0.45"/> <ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
+            <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
     </DataTemplate>
 
@@ -202,7 +203,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBlock>
-            <TextBlock Grid.Column="1" Text="{Binding university_name}" Visibility="{Binding university_name, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneTime}" Margin="0,35,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" Foreground="{DynamicResource MiddleLightBrush}"/>
+            <TextBlock Grid.Column="1" Text="{Binding university_name}" Margin="0,35,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
             <Button Grid.Column="1" Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" Content="Send message" Margin="0,56,40,10" Width="Auto" Height="Auto" />
         </Grid>
     </DataTemplate>
@@ -210,7 +211,7 @@
         <WrapPanel IsItemsHost="True" />
     </ItemsPanelTemplate>
     <ItemsPanelTemplate x:Key="FriendsItemsPanel">
-        <WrapPanel IsItemsHost="True" />
+        <WrapPanel IsItemsHost="True" MaxWidth="620" HorizontalAlignment="Center"/>
     </ItemsPanelTemplate>
     <RadialGradientBrush x:Key="RoundOpacity">
         <GradientStop Color="Black" Offset="1"/>

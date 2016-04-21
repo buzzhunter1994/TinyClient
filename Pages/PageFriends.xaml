@@ -8,8 +8,8 @@
       xmlns:params="http://schemas.codeplex.com/elysium/params"
       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="PageFriends"
       d:DesignHeight="600"
-      d:DesignWidth="500" Loaded="UserControl_Loaded"
-      mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}">
+      d:DesignWidth="500"
+      mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}" >
 
     <Grid Margin="10">
         <ScrollViewer Background="{x:Null}">
