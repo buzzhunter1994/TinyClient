@@ -4,9 +4,7 @@
     xmlns:metro="http://schemas.codeplex.com/elysium"
     xmlns:params="http://schemas.codeplex.com/elysium/params"
     xmlns:mui ="http://firstfloorsoftware.com/ModernUI"
-    params:Manager.Theme="{Binding Theme}"
-    params:Manager.AccentBrush="#FF1D569B"
-    params:Manager.ContrastBrush="#FFEDF5F5"
+
     x:Class="TinyClient.MainWindow"
     Closing="Window_Closing"
     Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="810" MinWidth="750" Height="600" MinHeight="300" Title="TinyClient" HasDropShadow="True" Loaded="Window_Loaded">
@@ -22,7 +20,7 @@
 
                 <Button Grid.Column="1" Content="Friends" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="FriendsLoad"/>
                 <Button Grid.Column="1" Content="Bookmarks" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="BookmarksLoad"/>
-                <Button Grid.Column="1" Content="Theme" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="Button_Click_1"/>
+                <Button Grid.Column="1" Content="Settings" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Click="SettingsLoad"/>
             </StackPanel>
         </Grid>
     </metro:Window.TitleBar>

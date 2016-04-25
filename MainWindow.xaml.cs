@@ -61,19 +61,16 @@ namespace TinyClient
         private void FriendsLoad(object sender, RoutedEventArgs e)
         {
             contentData.Page = new Uri("Pages/PageFriends.xaml#page=friends", UriKind.Relative);
-
         }
+
         private void BookmarksLoad(object sender, RoutedEventArgs e)
         {
             contentData.Page = new Uri("Pages/PageBookmarks.xaml#page=photos", UriKind.Relative);
         }
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (contentData.Theme == "Light")
-                contentData.Theme = "Dark";
-            else
-                contentData.Theme = "Light";
 
+        private void SettingsLoad(object sender, RoutedEventArgs e)
+        {
+            contentData.Page = new Uri("Pages/PageSettings.xaml", UriKind.Relative);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)

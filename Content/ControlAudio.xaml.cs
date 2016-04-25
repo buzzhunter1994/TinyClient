@@ -33,7 +33,7 @@ public partial class ControlAudio : IContent
         }
         isPageEnd = false;
         Common.TinyMainWindow.IsBusy = true;
-        await Task.Delay(100);
+        
         switch (MyFragment["page"])
         {
             case "playlist":

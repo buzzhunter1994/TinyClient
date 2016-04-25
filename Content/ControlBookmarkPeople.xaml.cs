@@ -1,15 +1,6 @@
 ﻿using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Navigation;
-using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using TinyClient;
 using TinyClient.Api;
 
 public partial class ControlBookmarkPeople : IContent

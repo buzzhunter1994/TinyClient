@@ -47,5 +47,41 @@ namespace TinyClient.Properties {
                 this["photoSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
+        public global::Elysium.Theme theme {
+            get {
+                return ((global::Elysium.Theme)(this["theme"]));
+            }
+            set {
+                this["theme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF017BCD")]
+        public global::System.Windows.Media.SolidColorBrush accentColor {
+            get {
+                return ((global::System.Windows.Media.SolidColorBrush)(this["accentColor"]));
+            }
+            set {
+                this["accentColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFFFF")]
+        public global::System.Windows.Media.SolidColorBrush contrastColor {
+            get {
+                return ((global::System.Windows.Media.SolidColorBrush)(this["contrastColor"]));
+            }
+            set {
+                this["contrastColor"] = value;
+            }
+        }
     }
 }
