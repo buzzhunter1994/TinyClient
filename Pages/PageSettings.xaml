@@ -6,7 +6,10 @@
       xmlns:mui="http://firstfloorsoftware.com/ModernUI"
       xmlns:metro="http://schemas.codeplex.com/elysium"
       xmlns:params="http://schemas.codeplex.com/elysium/params"
-      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="PageSettings"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:properties="clr-namespace:TinyClient.Properties"
+    
+    x:Class="PageSettings"
       d:DesignHeight="600"
       d:DesignWidth="500"
       mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}" >
@@ -17,10 +20,19 @@
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <ScrollViewer Background="{x:Null}">
-            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="ComboBox_SelectionChanged" x:Name="ThemeName">
-                <ComboBoxItem>Dark</ComboBoxItem>
-                <ComboBoxItem>Light</ComboBoxItem>
-            </ComboBox>
+            <Grid>
+                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=theme, Mode=TwoWay}" SelectionChanged="ThemeNameChanged" x:Name="ThemeName" Width="100" Margin="0,35,0,0">
+                    <metro:Theme >Dark</metro:Theme>
+                    <metro:Theme >Light</metro:Theme >
+                </ComboBox>
+                <ListBox x:Name="accentColors" Background="{x:Null}" Height="30" ItemTemplate="{StaticResource ColorTemplate}" SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=TwoWay}" SelectionChanged="AccentColorSelected" Margin="0" VerticalAlignment="Top" ItemContainerStyle="{DynamicResource ColorItemTemplate}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
             <!-- <ItemsControl x:Name="FriendsView" ItemsPanel="{DynamicResource FriendsItemsPanel}" ItemTemplate="{StaticResource FriendDataTemplate}"/>-->
         </ScrollViewer>
         <ListBox Grid.Column="1" Background="{x:Null}">

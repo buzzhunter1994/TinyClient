@@ -8,16 +8,16 @@ namespace TinyClient
 {
     class ContentViewModel : INotifyPropertyChanged
     {
-        string _theme = "Light";
-        public string Theme
+        string _background = "/TinyClient;component/Backgrounds/1.jpg";
+        public string Background
         {
-            get { return _theme; }
+            get { return _background; }
             set
             {
-                if (value != _theme)
+                if (value != _background)
                 {
-                    _theme = value;
-                    OnPropertyChanged("Theme");
+                    _background = value;
+                    OnPropertyChanged("Background");
                 }
             }
 

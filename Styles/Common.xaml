@@ -4,17 +4,25 @@
                     xmlns:mui="http://firstfloorsoftware.com/ModernUI"
                     xmlns:metro="http://schemas.codeplex.com/elysium"
                     xmlns:command="clr-namespace:TinyClient.Command"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:properties="clr-namespace:TinyClient.Properties"
+                    mc:Ignorable="d">
     <local:MyVisibilityConverter x:Key="VisibilityConverter"/>
     <local:DurationToTime x:Key="DurationToTime" />
     <command:ShowProfile x:Key="ShowProfile"/>
+    <DataTemplate x:Key="ColorTemplate">
+        <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}">
+        </Border>
+    </DataTemplate>
     <DataTemplate x:Key="ContentView">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Image x:Name="Bg" Source="/TinyClient;component/Backgrounds/15.jpg" Stretch="UniformToFill" Opacity="0.45"/>
+            <Image x:Name="Bg" Source="{Binding Background}" Stretch="UniformToFill" Opacity="0.45"/>
             <mui:ModernFrame Source="{Binding Page}" />
             <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
@@ -92,18 +100,18 @@
         <ContentControl>
             <ContentControl.Template>
                 <ControlTemplate>
-                    <Grid x:Name="Grid1" Background="Transparent">
+                    <Grid x:Name="Grid1" Background="Transparent" Height="35">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock
 							x:Name="TextBlock1"
-							MaxHeight="25"
-							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text=" "/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
+							MaxHeight="35" VerticalAlignment="Center"
+							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text="&#x0a;"/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
                         <TextBlock
 							x:Name="DurationTextBlock"
-							Grid.Column="1"
+							Grid.Column="1" VerticalAlignment="Top"
 							Margin="5,0,5,0"
 							HorizontalAlignment="Right"
 							Text="{Binding duration, Converter={StaticResource DurationToTime}}"
@@ -116,53 +124,20 @@
 							HorizontalAlignment="Right"
 							Orientation="Horizontal"
 							Visibility="Collapsed">
-                            <!-- <Button
-                                x:Name="AddToMyAudiodButton"
-                                Margin="0,0,3,0"
-                                Style="{StaticResource MySystemButton}"
-                                Command="{StaticResource AddAudioToMyReccordCommand}"
-                                CommandParameter="{Binding Mode=OneWay}">
-                                <Path
-                                    Height="12"
-                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
-                                    Data="{StaticResource addStyle0}"
-                                    Stretch="Uniform" />
-                            </Button>
-                            <Button
-                                x:Name="ShowLyricsButton"
-                                Margin="0,0,3,0"
-                                Style="{StaticResource MySystemButton}"
-                                Command="{StaticResource ShowLyricsCommand}"
-                                CommandParameter="{Binding Mode=OneWay}">
-                                <Path
-                                    Height="12"
-                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
-                                    Data="{StaticResource note_text}"
-                                    Stretch="Uniform" />
-                            </Button>
-                            <Button
-                                x:Name="ShowRecommendationsButton"
-                                Style="{StaticResource MySystemButton}"
-                                Command="{StaticResource ShowAudioRecomendationsCommand}"
-                                CommandParameter="{Binding Mode=OneWay}">
-                                <Path
-                                    Height="12"
-                                    Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}"
-                                    Data="{StaticResource headphones}"
-                                    Stretch="Uniform" />
-                            </Button>-->
+                            <Button x:Name="AddToMyAudiodButton" Margin="0,0,3,0" Content="Add"/>
+                            <Button x:Name="ShowLyricsButton" Margin="0,0,3,0" Content="Lyr"/>
+                            <Button x:Name="ShowRecommendationsButton" Content="Rec"/>
                         </StackPanel>
                     </Grid>
-                    <!-- <ControlTemplate.Triggers>
+                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding ElementName=Grid1, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding is_radio}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="AudioButtonStackPanel" Property="Visibility" Value="Visible" />
                             <Setter TargetName="DurationTextBlock" Property="Visibility" Value="Collapsed" />
                         </MultiDataTrigger>
-                    </ControlTemplate.Triggers>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </ContentControl.Template>
         </ContentControl>
@@ -217,4 +192,31 @@
         <GradientStop Color="Black" Offset="1"/>
         <GradientStop Offset="1"/>
     </RadialGradientBrush>
+    <Style x:Key="ColorItemTemplate" TargetType="{x:Type ListBoxItem}">
+        
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="Padding" Value="5,5,0,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" TargetName="Bd" Value="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="Bd" Value="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor}"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
