@@ -6,9 +6,11 @@ using System.Windows.Controls;
 
 partial class PageAudio : IContent
 {
-    private void AudioContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void AudioContent_Switch(object sender, RoutedEventArgs e)
     {
-        ModernFrame1.Source = new Uri(((ListBoxItem)AudioContent.SelectedItem).Tag.ToString(), UriKind.Relative);
+        Genres.SelectedIndex = 0;
+        ModernFrame1.Source = new Uri(((Button)sender).Tag.ToString(), UriKind.Relative);
+        
     }
     private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -24,7 +26,6 @@ partial class PageAudio : IContent
 
     private void Genres_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (AudioContent.SelectedIndex > 0)
-            ModernFrame1.Source = new Uri(((ComboBoxItem)Genres.SelectedItem).Tag.ToString(), UriKind.Relative);
+        ModernFrame1.Source = new Uri(((ComboBoxItem)Genres.SelectedItem).Tag.ToString(), UriKind.Relative);
     }
 }

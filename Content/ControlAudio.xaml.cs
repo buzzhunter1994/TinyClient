@@ -37,7 +37,7 @@ public partial class ControlAudio : IContent
         switch (MyFragment["page"])
         {
             case "playlist":
-                if (Common.MusicPlayer != null)
+                if (Common.MusicPlayer.Playlist.Count != 0)
                 {
                     MusicList = Common.MusicPlayer.Playlist;
                     PlaylistView.ItemsSource = MusicList;

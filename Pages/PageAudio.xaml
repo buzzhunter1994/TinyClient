@@ -19,17 +19,15 @@
             <RowDefinition/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="SearchBox" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top" Background="{DynamicResource SemitransparentBrush}" Foreground="{DynamicResource ForegroundBrush}" Height="22" BorderThickness="1" TextChanged="SearchBox_TextChanged" />
+        <TextBox x:Name="SearchBox" Style="{StaticResource placeHolder}" Tag="Search by audio" Grid.Column="0" Margin="0,0,5,0" VerticalAlignment="Top" Background="{DynamicResource SemitransparentBrush}" Foreground="{DynamicResource ForegroundBrush}" Height="31" BorderThickness="1" TextChanged="SearchBox_TextChanged" />
 
-        <mui:ModernFrame x:Name="ModernFrame1" Grid.Column="0" Grid.RowSpan="2" Margin="0,30,10,0"  />
+        <mui:ModernFrame x:Name="ModernFrame1" Grid.Column="0" Grid.RowSpan="2" Margin="0,36,5,0"  />
 
         <StackPanel Grid.Column="1">
-        <ListBox x:Name="AudioContent"  SelectionChanged="AudioContent_SelectionChanged" Background="{x:Null}">
-            <ListBoxItem Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" />
-            <ListBoxItem Content="My record" Tag="/Content/ControlAudio.xaml#page=audio" />
-            <ListBoxItem Content="Recommendations" Tag="/Content/ControlAudio.xaml#page=recommendations" />           
-        </ListBox>
-            <ComboBox x:Name="Genres" SelectionChanged="Genres_SelectionChanged" SelectedIndex="0">
+            <Button Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
+            <Button Content="My audio" Tag="/Content/ControlAudio.xaml#page=audio" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
+            <Button Content="Suggested music" Tag="/Content/ControlAudio.xaml#page=recommendations" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>           
+            <ComboBox x:Name="Genres" SelectionChanged="Genres_SelectionChanged" SelectedIndex="0" Margin="0,5">
                 <ComboBoxItem Content="Genre" Tag="/Content/ControlAudio.xaml#page=audio" />
                 <ComboBoxItem Content="All genres" Tag="/Content/ControlAudio.xaml#page=popular,q=0" />
                 <ComboBoxItem Content="Rock" Tag="/Content/ControlAudio.xaml#page=popular,q=1" />

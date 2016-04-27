@@ -8,20 +8,6 @@ namespace TinyClient
 {
     class ContentViewModel : INotifyPropertyChanged
     {
-        string _background = "/TinyClient;component/Backgrounds/1.jpg";
-        public string Background
-        {
-            get { return _background; }
-            set
-            {
-                if (value != _background)
-                {
-                    _background = value;
-                    OnPropertyChanged("Background");
-                }
-            }
-
-        }
 
         Uri _page;
         public Uri Page
