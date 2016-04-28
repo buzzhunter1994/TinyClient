@@ -50,7 +50,7 @@ public partial class ControlAudio : IContent
                     PlaylistView.ItemsSource = MusicList;
                 }
                 break;
-            case "audio":
+            case "audio":                
                 MusicList = await Audio.Get();
                 PlaylistView.ItemsSource = MusicList;
                 break;
@@ -118,7 +118,7 @@ public partial class ControlAudio : IContent
                 if (audioList != null && audioList.Count > 0)
                 {
                     foreach (Types.audio item in audioList)
-                        if (!MusicList.Contains(item))
+                        //if (MusicList.Contains(item))
                             MusicList.Add(item);
                 }
                 else

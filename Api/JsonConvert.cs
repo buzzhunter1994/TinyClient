@@ -9,25 +9,25 @@ namespace TinyClient.Api
 {
     class MyJsonConvert
     {
-        public static Task<T> DeserializeObjectAsync<T>(string value, JsonSerializerSettings settings)
+        public static async Task<T> DeserializeObjectAsync<T>(string value, JsonSerializerSettings settings)
         {
-            return Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(value, settings));
+            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(value, settings));
         }
-        public static Task<T> DeserializeObjectAsync<T>(string value)
+        public static async Task<T> DeserializeObjectAsync<T>(string value)
         {
-            return JsonConvert.DeserializeObjectAsync<T>(value, null);
+            return await JsonConvert.DeserializeObjectAsync<T>(value, null);
         }
-        public static Task<Object> DeserializeObjectAsync(string value, JsonSerializerSettings settings)
+        public static async Task<Object> DeserializeObjectAsync(string value, JsonSerializerSettings settings)
         {
-            return DeserializeObjectAsync(value, null, null);
+            return await DeserializeObjectAsync(value, null, null);
         }
-        public static Task<Object> DeserializeObjectAsync(string value, Type type, JsonSerializerSettings settings)
+        public static async Task<Object> DeserializeObjectAsync(string value, Type type, JsonSerializerSettings settings)
         {
-            return Task.Factory.StartNew(() => JsonConvert.DeserializeObject(value, type, settings));
+            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject(value, type, settings));
         }
-        public static Task<String> SerializeObjectAsync(Object value)
+        public static async Task<String> SerializeObjectAsync(Object value)
         {
-            return Task.Factory.StartNew(() => JsonConvert.SerializeObject(value, Formatting.None));
+            return await Task.Factory.StartNew(() => JsonConvert.SerializeObject(value, Formatting.None));
         }
     }
 }

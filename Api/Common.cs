@@ -13,10 +13,12 @@ namespace TinyClient.Api
         public static PlayerWindow MusicPlayer = new PlayerWindow();
         public static MainWindow TinyMainWindow = new MainWindow();
         public static int[] PhotoSizes = { 0, 75, 130, 604, 807, 1280, 2560 };
+
         public static async Task<JToken> SendRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang ="")
         {
             string temp;
             string AccessToken = Properties.Settings.Default.AccessToken;
+
             Request:
             WebClient webClient1 = new WebClient();
             webClient1.Encoding = Encoding.UTF8;
@@ -26,14 +28,15 @@ namespace TinyClient.Api
             string urls = "https://api.vk.com/method/" + method;
             try
             {
-                temp = await webClient1.UploadStringTaskAsync(urls, String.Format("{0}&lang={1}&v={2}&access_token={3}", parameters, Lang, ApiVersion, customToken != "" ? customToken : AccessToken));
+                temp = await webClient1.UploadStringTaskAsync(urls, String.Format("{0}&lang={1}&v={2}&access_token={3}", parameters, Lang, ApiVersion, customToken != "" ? customToken : AccessToken)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 return null;
             }
             //TODO: Report method
-            var a = JObject.Parse(temp);
+            JObject a = await Task.Run(() => JObject.Parse(temp));
+            //JObject a = await Task.Factory.StartNew(() => JObject.Parse(temp));
             if (getRaw)
                 return a;
             if (a["error"] != null)

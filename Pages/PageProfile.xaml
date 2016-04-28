@@ -13,17 +13,21 @@
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" Padding="10" VerticalAlignment="Top">
-            <Image Source="{Binding photo_200}" Width="200" Height="200" VerticalAlignment="Top"/>
+            <Image Source="{Binding photo_200}" Width="200" Height="200" VerticalAlignment="Top" OpacityMask="{DynamicResource RoundOpacity}"/>
         </Border>
         <Border Grid.Column="2" Padding="10" VerticalAlignment="Top">
             <Grid>
                 <TextBlock Text="{Binding full_name}" FontSize="18" HorizontalAlignment="Left"/>
-                <TextBlock Text="{Binding online}" FontSize="18" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding last_seen}" FontSize="18" HorizontalAlignment="Right"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="Online" Visibility="{Binding online, Converter={StaticResource VisibilityConverter}}" FontSize="18"/>
+                    <Border Background="White" Width="12" Height="18" CornerRadius="2" Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" HorizontalAlignment="Right" Margin="6,0,0,0">
+                        <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock Text="{Binding last_seen.time}"  Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse}" FontSize="18" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
     </Grid>

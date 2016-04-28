@@ -9,7 +9,7 @@ namespace TinyClient.Api
     {
         public static async Task<List<Types.profile>> Get(string id = "")
         {
-            return await Common.getResponse<List<Types.profile>>("users.get", new string[,] { { "user_ids", id } ,{ "fields", "photo_200,can_write_private_message,education,online" } });
+            return await Common.getResponse<List<Types.profile>>("users.get", new string[,] { { "user_ids", id } ,{ "fields", "photo_200,can_write_private_message,education,online,last_seen" } });
         }
      /*   public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")
         {

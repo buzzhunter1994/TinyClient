@@ -25,7 +25,7 @@
 
         <StackPanel Grid.Column="1">
             <Button Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
-            <Button Content="My audio" Tag="/Content/ControlAudio.xaml#page=audio" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
+            <Button Content="My music" Tag="/Content/ControlAudio.xaml#page=audio" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
             <Button Content="Suggested music" Tag="/Content/ControlAudio.xaml#page=recommendations" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
             <ComboBox x:Name="Genres" SelectionChanged="Genres_SelectionChanged" SelectedIndex="0" Margin="0,5">
                 <ComboBoxItem Content="Genre" Tag="/Content/ControlAudio.xaml#page=audio" />

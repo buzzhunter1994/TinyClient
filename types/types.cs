@@ -11,58 +11,63 @@ using TinyClient.Api;
 
 namespace Types
 {
-	public class audio
-	{
-		public int id { get; set; }
-		public int owner_id { get; set; }
-		public string artist { get; set; }
-		public string title { get; set; }
-		public int duration { get; set; }
-		public string url { get; set; }
-		public int lyrics_id { get; set; }
-		public int album_id { get; set; }
-		public int genre_id { get; set; }
-		public string full_title { 
-		    get { return artist.Trim() + " - " + title.Trim(); }
-		}	
-	}
+    public class audio
+    {
+        public int id { get; set; }
+        public int owner_id { get; set; }
+        public string artist { get; set; }
+        public string title { get; set; }
+        public int duration { get; set; }
+        public string url { get; set; }
+        public int lyrics_id { get; set; }
+        public int album_id { get; set; }
+        public int genre_id { get; set; }
+        public string full_title {
+            get { return artist.Trim() + " - " + title.Trim(); }
+        }
+    }
 
-	public class user
-	{
-		public int id { get; set; }
-		public string deactivated { get; set; }
-		public string first_name { get; set; }
-		public string last_name { get; set; }
-		public string photo { get; set; }
-		public string photo_100 { get; set; }
-		public int sex { get; set; }
-	
-		public string full_name {
-			get { return first_name + " " + last_name; }
-		}
-	}
+    public class user
+    {
+        public int id { get; set; }
+        public string deactivated { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string photo { get; set; }
+        public string photo_100 { get; set; }
+        public int sex { get; set; }
 
-	public class profile
-	{
-		public int id { get; set; }
-		public string first_name { get; set; }
-		public string last_name { get; set; }
-		public string photo { get; set; }
-		public string photo_50 { get; set; }
+        public string full_name {
+            get { return first_name + " " + last_name; }
+        }
+    }
+
+    public class profile
+    {
+        public int id { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string photo { get; set; }
+        public string photo_50 { get; set; }
         public string photo_100 { get; set; }
         public string photo_200 { get; set; }
         public string university_name { get; set; }
         public string can_write_private_message { get; set; }
-		public string deactivated { get; set; }
-		public int sex { get; set; }
-		public bool online_mobile { get; set; }
-		public string online_app { get; set; }
-		public bool online { get; set; }
-        //public int last_seen { get; set; }
+        public string deactivated { get; set; }
+        public int sex { get; set; }
+        public bool online_mobile { get; set; }
+        public string online_app { get; set; }
+        public bool online { get; set; }
+        public last_seen last_seen { get; set; }
         public string full_name {
-			get { return first_name + " " + last_name; }
-		}
-	}
+            get { return first_name + " " + last_name; }
+        }
+    }
+    public class last_seen
+    {
+        public int time { get; set; }
+        public int platform { get; set; }
+    }
 	class @group
 	{
 		public int id { get; set; }

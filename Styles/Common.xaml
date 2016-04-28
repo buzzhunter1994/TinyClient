@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
 
             <Image x:Name="Bg" Source="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundImage, Mode=TwoWay}" Stretch="UniformToFill" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundTransparency, Mode=TwoWay}" Visibility="{Binding backgroundEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
-            <mui:ModernFrame Source="{Binding Page}" />
+            <mui:ModernFrame Source="{Binding Page}" x:Name="MainFrame"/>
             <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
     </DataTemplate>
