@@ -14,13 +14,17 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="480"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-	<Border Grid.Column="0" Padding="10">
-		<Image Source="{Binding photo_200}" Width="200" Height="200" VerticalAlignment="Top"/>
-	</Border>
-	<Border Grid.Column="2">
-        
-	</Border>
+        <Border Grid.Column="0" Padding="10" VerticalAlignment="Top">
+            <Image Source="{Binding photo_200}" Width="200" Height="200" VerticalAlignment="Top"/>
+        </Border>
+        <Border Grid.Column="2" Padding="10" VerticalAlignment="Top">
+            <Grid>
+                <TextBlock Text="{Binding full_name}" FontSize="18" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding online}" FontSize="18" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding last_seen}" FontSize="18" HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

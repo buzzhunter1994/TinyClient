@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using TinyClient.Api;
+using System.Threading.Tasks;
 
 partial class PageFriends : IContent
 {
@@ -11,6 +12,7 @@ partial class PageFriends : IContent
 
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
+        await Task.Delay(100);
         FriendsList = await Friends.Get();
         FriendsView.ItemsSource = FriendsList;
     }

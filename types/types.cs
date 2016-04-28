@@ -49,7 +49,8 @@ namespace Types
 		public string last_name { get; set; }
 		public string photo { get; set; }
 		public string photo_50 { get; set; }
-		public string photo_100 { get; set; }
+        public string photo_100 { get; set; }
+        public string photo_200 { get; set; }
         public string university_name { get; set; }
         public string can_write_private_message { get; set; }
 		public string deactivated { get; set; }
@@ -57,8 +58,8 @@ namespace Types
 		public bool online_mobile { get; set; }
 		public string online_app { get; set; }
 		public bool online { get; set; }
-	
-		public string full_name {
+        //public int last_seen { get; set; }
+        public string full_name {
 			get { return first_name + " " + last_name; }
 		}
 	}

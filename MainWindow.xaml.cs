@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstFloor.ModernUI.Presentation;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -6,7 +7,7 @@ using TinyClient.Api;
 
 namespace TinyClient
 {
-    class ContentViewModel : INotifyPropertyChanged
+    class ContentViewModel : NotifyPropertyChanged
     {
 
         Uri _page;
@@ -22,14 +23,6 @@ namespace TinyClient
                 }
             }
 
-        }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
     public partial class MainWindow

@@ -12,6 +12,8 @@
     <local:MyVisibilityConverter x:Key="VisibilityConverter"/>
     <local:DurationToTime x:Key="DurationToTime" />
     <local:StringIsNullConverter x:Key="StringIsNullConvetrer" />
+    <local:MultiVisibilityConverter x:Key="MultiVisibilityConverter"/>
+    <local:StringIsNullVisibilityConverter x:Key="StringIsNullVisibilityConverter"/>
     <command:ShowProfile x:Key="ShowProfile"/>
     <DataTemplate x:Key="ColorTemplate">
         <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}">
@@ -107,9 +109,9 @@
                                                 Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
                                  x:Name="textSource" 
-                                 Background="Transparent" 
-                                 Panel.ZIndex="2" BorderThickness="1" Padding="5,1" />
-                        <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1" VerticalContentAlignment="Center" Margin="0" Padding="8,1,5,1">
+                                 Background="{DynamicResource SemitransparentBrush}" 
+                                 Panel.ZIndex="2" BorderThickness="1" Padding="5,0" Margin="0" />
+                        <TextBox Text="{TemplateBinding Tag}" Panel.ZIndex="1" VerticalContentAlignment="Center" Padding="9,-2,5,0" BorderBrush="{x:Null}" Background="{x:Null}" Margin="-1,-1,-1,-2" >
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="Foreground" Value="Transparent"/>
@@ -178,7 +180,7 @@
         <StackPanel Width="100" Margin="13,0,20,13" Orientation="Vertical" Cursor="Hand" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Grid Width="100" Height="100" Margin="0,0,0,10">
@@ -198,20 +200,27 @@
             <Image Grid.Column="0" Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}" HorizontalAlignment="Left" Cursor="Hand">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
-            <Rectangle Grid.Column="0" Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,5"/>
-            <TextBlock Grid.Column="1" Text="{Binding full_name}" Margin="0,15,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" FontWeight="Bold" Cursor="Hand">
+            <Grid Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,21,3" Background="{x:Null}" Width="18" Height="18" Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                <Border Background="White" Width="12" Height="18" CornerRadius="2" Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                    <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
+                </Border>
+                <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneWay}"/>
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="0,15,0,0" Orientation="Vertical">
+                <TextBlock Text="{Binding full_name}" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" FontWeight="Bold" Cursor="Hand">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" />
+                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </TextBlock>
-            <TextBlock Grid.Column="1" Text="{Binding university_name}" Margin="0,35,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
-            <Button Grid.Column="1" Command="{StaticResource ShowProfile}" CommandParameter="{Binding full_name}" Content="Send message" Margin="0,56,40,10" Width="Auto" Height="Auto" />
+                </TextBlock>
+                <TextBlock Text="{Binding university_name}" Visibility="{Binding university_name, Converter={StaticResource StringIsNullVisibilityConverter}}" Margin="0,5,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
+                <Button Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" Content="Send message" Margin="0,5,50,0" Width="Auto" Height="Auto" />
+            </StackPanel>
         </Grid>
     </DataTemplate>
     <ItemsPanelTemplate x:Key="UsersItemsPanel">
@@ -225,7 +234,7 @@
         <GradientStop Offset="1"/>
     </RadialGradientBrush>
     <Style x:Key="ColorItemTemplate" TargetType="{x:Type ListBoxItem}">
-        
+
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Padding" Value="5,5,0,5"/>

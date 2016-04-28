@@ -107,6 +107,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Api\Friends.cs" />
+    <Compile Include="Api\Profile.cs" />
     <Compile Include="Api\User.cs" />
     <Compile Include="Api\Bookmark.cs" />
     <Compile Include="Api\Audio.cs" />
@@ -125,6 +126,9 @@
     <Compile Include="CustomExtensions\StringExtension.cs" />
     <Compile Include="Pages\PageBookmarks.xaml.cs">
       <DependentUpon>PageBookmarks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageProfile.xaml.cs">
+      <DependentUpon>PageProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageSettings.xaml.cs">
       <DependentUpon>PageSettings.xaml</DependentUpon>
@@ -152,6 +156,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\PageBookmarks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\PageProfile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

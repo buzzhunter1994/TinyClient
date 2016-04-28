@@ -26,7 +26,7 @@
         <StackPanel Grid.Column="1">
             <Button Content="Current playlist" Tag="/Content/ControlAudio.xaml#page=playlist" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
             <Button Content="My audio" Tag="/Content/ControlAudio.xaml#page=audio" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
-            <Button Content="Suggested music" Tag="/Content/ControlAudio.xaml#page=recommendations" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>           
+            <Button Content="Suggested music" Tag="/Content/ControlAudio.xaml#page=recommendations" Click="AudioContent_Switch" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" HorizontalContentAlignment="Left"/>
             <ComboBox x:Name="Genres" SelectionChanged="Genres_SelectionChanged" SelectedIndex="0" Margin="0,5">
                 <ComboBoxItem Content="Genre" Tag="/Content/ControlAudio.xaml#page=audio" />
                 <ComboBoxItem Content="All genres" Tag="/Content/ControlAudio.xaml#page=popular,q=0" />
@@ -52,7 +52,7 @@
                 <ComboBoxItem Content="Electropop and Disco" Tag="/Content/ControlAudio.xaml#page=popular,q=22" />
                 <ComboBoxItem Content="Other" Tag="/Content/ControlAudio.xaml#page=popular,q=18" />
             </ComboBox>
+            <CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </StackPanel>
-        <CheckBox x:Name="CheckBox1" Content="Only foreign" IsChecked="True" Width="150" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
     </Grid>
 </UserControl>

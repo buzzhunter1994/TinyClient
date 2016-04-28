@@ -50,6 +50,17 @@ namespace TinyClient
             throw new NotImplementedException();
         }
     }
+    public class StringIsNullVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return String.IsNullOrEmpty((string)value)?Visibility.Collapsed:Visibility.Visible;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public class MyVisibilityConverter : IValueConverter
     {       
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -141,6 +152,65 @@ namespace TinyClient
             return result;*/
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class MultiVisibilityConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            Visibility res = (bool)values[0] && (bool)values[1]? Visibility.Visible : Visibility.Collapsed;
+            if (parameter != null && parameter.ToString() == "inverse")
+            {
+                res = (bool)values[0] && !(bool)values[1] ? Visibility.Visible : Visibility.Collapsed;
+            }
+                /* if (parameter != null && parameter.ToString() == "inverse")
+                 {
+                     if (res == Visibility.Visible)
+                     {
+                         res = Visibility.Collapsed;
+                     }
+                     else {
+                         res = Visibility.Visible;
+                     }
+                 }*/
+                /*Visibility result = default(Visibility);
+                bool[] value = new bool[] { false, false };
+                if ((values[0] == null))
+                {
+                    result = Visibility.Collapsed;
+                }
+                else if (values[0].ToString().Length == 0)
+                {
+                    result = Visibility.Collapsed;
+                }
+                else if (values[0] is int && (int)(values[0]) == 0)
+                {
+                    result = Visibility.Collapsed;
+                }
+                else if (values[0] is bool && !(bool)(values[0]))
+                {
+                    result = Visibility.Collapsed;
+                }
+                else {
+                    result = Visibility.Visible;
+                }
+
+
+                if (parameter != null && parameter.ToString() == "inverse")
+                {
+                    if (result == Visibility.Visible)
+                    {
+                        result = Visibility.Collapsed;
+                    }
+                    else {
+                        result = Visibility.Visible;
+                    }
+                }*/
+                return res;
+        }
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

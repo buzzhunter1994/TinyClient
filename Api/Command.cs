@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using TinyClient.Api;
 
 namespace TinyClient.Command
 {
@@ -156,7 +157,7 @@ namespace TinyClient.Command
 
         public void Execute(object parameter)
         {
-            MessageBox.Show(parameter.ToString());
+            ((ContentViewModel)Common.TinyMainWindow.DataContext).Page = new Uri("Pages/PageProfile.xaml#user_id=" + parameter.ToString(), UriKind.Relative);
         }
     }
 }
