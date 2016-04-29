@@ -74,20 +74,14 @@ namespace TinyClient.Command
 
         #endregion
     }
-
-    /// <summary>
-    /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
-    /// </summary>
     public class RelayCommand : ICommand
     {
-
         #region Declarations
 
         readonly Func<Boolean> _canExecute;
         readonly Action _execute;
 
         #endregion
-
         #region Constructors
 
         /// <summary>
@@ -114,7 +108,6 @@ namespace TinyClient.Command
         }
 
         #endregion
-
         #region ICommand Members
 
         public event EventHandler CanExecuteChanged
@@ -157,7 +150,8 @@ namespace TinyClient.Command
 
         public void Execute(object parameter)
         {
-            ((ContentViewModel)Common.TinyMainWindow.DataContext).Page = new Uri("Pages/PageProfile.xaml#user_id=" + parameter.ToString(), UriKind.Relative);
+            Common.TinyMainWindow.MainFrame.Source = new Uri("Pages/PageProfile.xaml#user_id=" + ((Types.profile)parameter).id, UriKind.Relative);
         }
     }
+
 }

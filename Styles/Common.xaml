@@ -180,18 +180,23 @@
         <StackPanel Width="100" Margin="13,0,20,13" Orientation="Vertical" Cursor="Hand" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
+                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Grid Width="100" Height="100" Margin="0,0,0,10">
                 <Image Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}"/>
-                <Rectangle Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneTime}" Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8"/>
+                <Grid Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,6,5" Background="{x:Null}" Width="18" Height="18" Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                    <Border Background="White" Width="12" Height="18" CornerRadius="2" Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                        <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
+                    </Border>
+                    <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneWay}"/>
+                </Grid>
             </Grid>
             <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding first_name}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
             <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding last_name}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
         </StackPanel>
     </DataTemplate>
-    <DataTemplate x:Key="FriendDataTemplate" DataType="Types:user">
+    <DataTemplate x:Key="FriendDataTemplate">
         <Grid Width="300" HorizontalAlignment="Stretch" Margin="5,0,5,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="112"/>
@@ -200,7 +205,7 @@
             <Image Grid.Column="0" Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}" HorizontalAlignment="Left" Cursor="Hand">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
+                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>

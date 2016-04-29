@@ -4,10 +4,20 @@
     xmlns:metro="http://schemas.codeplex.com/elysium"
     xmlns:params="http://schemas.codeplex.com/elysium/params"
     xmlns:mui ="http://firstfloorsoftware.com/ModernUI"
-
+    xmlns:properties="clr-namespace:TinyClient.Properties"
     x:Class="TinyClient.MainWindow"
     Closing="Window_Closing"
-    Background="{DynamicResource BackgroundBrush}" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}" Width="810" MinWidth="750" Height="600" MinHeight="300" Title="TinyClient" Loaded="Window_Loaded" HasDropShadow="False">
+    Background="{DynamicResource BackgroundBrush}" Width="810" MinWidth="750" Height="600" MinHeight="300" Title="TinyClient" Loaded="Window_Loaded" HasDropShadow="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image x:Name="Bg" Source="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundImage, Mode=TwoWay}" Stretch="UniformToFill" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundTransparency, Mode=TwoWay}" Visibility="{Binding backgroundEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
+        <mui:ModernFrame Source="Pages/PageStart.xaml" x:Name="MainFrame"/>
+        <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
+    </Grid>
+
     <metro:Window.TitleBar>
         <Grid>
             <Grid.ColumnDefinitions>
