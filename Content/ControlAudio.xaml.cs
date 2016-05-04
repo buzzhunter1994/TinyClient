@@ -71,7 +71,9 @@ public partial class ControlAudio : IContent
         Common.TinyMainWindow.IsBusy = false;
     }
 
-    public void OnNavigatedFrom(NavigationEventArgs e) { }
+    public void OnNavigatedFrom(NavigationEventArgs e) {
+        PlaylistView.ItemsSource = MusicList;
+    }
     public void OnNavigatedTo(NavigationEventArgs e) { }
     public void OnNavigatingFrom(NavigatingCancelEventArgs e) { }
 
