@@ -27,7 +27,7 @@
                         <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
                     </Border>
                 </StackPanel>
-                <TextBlock Text="{Binding last_seen.time}"  Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse}" FontSize="18" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding last_seen.time, Converter={StaticResource FriendlyTimeDescription}}"  Visibility="{Binding online, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse}" FontSize="18" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
     </Grid>

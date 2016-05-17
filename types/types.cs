@@ -65,10 +65,11 @@ namespace Types
     }
     public class last_seen
     {
+
         public int time { get; set; }
         public int platform { get; set; }
     }
-	class @group
+	class group
 	{
 		public int id { get; set; }
 		public string name { get; set; }

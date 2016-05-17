@@ -14,6 +14,7 @@
     <local:StringIsNullConverter x:Key="StringIsNullConvetrer" />
     <local:MultiVisibilityConverter x:Key="MultiVisibilityConverter"/>
     <local:StringIsNullVisibilityConverter x:Key="StringIsNullVisibilityConverter"/>
+    <local:FriendlyTimeDescription x:Key="FriendlyTimeDescription"/>
     <command:ShowProfile x:Key="ShowProfile"/>
     <DataTemplate x:Key="ColorTemplate">
         <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}">

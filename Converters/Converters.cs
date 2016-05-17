@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-
+using System.Linq;
 namespace TinyClient
 {
     public class IdToPhotoUrl : IValueConverter
@@ -22,7 +22,42 @@ namespace TinyClient
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            return Binding.DoNothing;
+        }
+    }
+    [ValueConversion(typeof(int), typeof(string))]
+    public class FriendlyTimeDescription : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(System.Convert.ToDouble(value));
+            TimeSpan span = DateTime.UtcNow - time;
+            /*if (span.Hours > 0)
+                return ">1";
+            else */
+                return Describe(span);
+        }
+        static readonly string suffix = " назад";
+        public static string Describe(TimeSpan span)
+        {
+            //TimeSpan span = DateTime.Now - dt;
+            if (span.Hours > 0)
+                return String.Format("{0} {1} {2}",
+                span.Hours, span.Hours == 1 ? "час" : "часов", suffix);
+            if (span.Minutes > 0)
+                return String.Format("{0} {1} {2}",
+                span.Minutes, span.Minutes == 1 ? "минута" : "минут", suffix);
+            if (span.Seconds > 5)
+                return String.Format("{0} секунд {1}", span.Seconds, suffix);
+            if (span.Seconds <= 5)
+                return "только что";
+            return string.Empty;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Binding.DoNothing;
         }
     }
     public class DurationToTime : IValueConverter
@@ -36,7 +71,7 @@ namespace TinyClient
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            return Binding.DoNothing;
         }
     }
     public class StringIsNullConverter : IValueConverter
@@ -47,7 +82,7 @@ namespace TinyClient
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return Binding.DoNothing;
         }
     }
     public class StringIsNullVisibilityConverter : IValueConverter
@@ -58,7 +93,7 @@ namespace TinyClient
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return Binding.DoNothing;
         }
     }
     public class MyVisibilityConverter : IValueConverter
@@ -153,7 +188,7 @@ namespace TinyClient
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return Binding.DoNothing;
         }
     }
     public class MultiVisibilityConverter : IMultiValueConverter
