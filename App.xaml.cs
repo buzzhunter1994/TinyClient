@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Media;
 using TinyClient.Api;
+using Un4seen.Bass;
 namespace TinyClient
 {
     public sealed partial class App : Application

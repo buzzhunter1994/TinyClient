@@ -8,6 +8,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:properties="clr-namespace:TinyClient.Properties"
+                    xmlns:params="http://schemas.codeplex.com/elysium/params"
                     mc:Ignorable="d">
     <local:MyVisibilityConverter x:Key="VisibilityConverter"/>
     <local:DurationToTime x:Key="DurationToTime" />
@@ -16,18 +17,24 @@
     <local:StringIsNullVisibilityConverter x:Key="StringIsNullVisibilityConverter"/>
     <local:FriendlyTimeDescription x:Key="FriendlyTimeDescription"/>
     <command:ShowProfile x:Key="ShowProfile"/>
+    <command:PlayPause x:Key="PlayPause"/>
+    <command:PlayNext x:Key="PlayNext"/>
+    <command:PlayPrev x:Key="PlayPrev"/>
     <DataTemplate x:Key="ColorTemplate">
-        <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}">
-        </Border>
+        <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}"/>
     </DataTemplate>
     <DataTemplate x:Key="ContentView">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
 
-            <Image x:Name="Bg" Source="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundImage, Mode=TwoWay}" Stretch="UniformToFill" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundTransparency, Mode=TwoWay}" Visibility="{Binding backgroundEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
-            <mui:ModernFrame Source="{Binding Page}" x:Name="MainFrame"/>
+            <Image x:Name="Bg" Grid.RowSpan="2" Source="{Binding backgroundImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Stretch="UniformToFill" Opacity="{Binding backgroundTransparency, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Visibility="{Binding backgroundEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
+            <mui:ModernFrame Grid.Row="0" x:Name="MainFrame" Source="{Binding Page}"/>
+            <Grid Grid.Row="1">
+                <Button />
+            </Grid>
             <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
         </Grid>
     </DataTemplate>
@@ -105,10 +112,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid>
-                        <TextBox Text="{Binding Path=Text,
-                                                RelativeSource={RelativeSource TemplatedParent}, 
-                                                Mode=TwoWay,
-                                                UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                  x:Name="textSource" 
                                  Background="{DynamicResource SemitransparentBrush}" 
                                  Panel.ZIndex="2" BorderThickness="1" Padding="5,0" Margin="0" />
@@ -117,7 +121,7 @@
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="Foreground" Value="Transparent"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                        <DataTrigger Binding="{Binding Text, Source={x:Reference textSource}}" Value="">
                                             <Setter Property="Foreground" Value="{DynamicResource DisabledBrush}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -133,19 +137,19 @@
         <ContentControl>
             <ContentControl.Template>
                 <ControlTemplate>
-                    <Grid x:Name="Grid1" Background="Transparent" Height="35">
+                    <Grid x:Name="Grid1" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock
 							x:Name="TextBlock1"
-							MaxHeight="35" VerticalAlignment="Center"
-							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text="&#x0a;"/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
+							MaxHeight="25" VerticalAlignment="Center"
+							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text=" - "/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
                         <TextBlock
 							x:Name="DurationTextBlock"
 							Grid.Column="1" VerticalAlignment="Top"
-							Margin="5,0,5,0"
+							Margin="0"
 							HorizontalAlignment="Right"
 							Text="{Binding duration, Converter={StaticResource DurationToTime}}"
                             />
@@ -181,7 +185,7 @@
         <StackPanel Width="100" Margin="13,0,20,13" Orientation="Vertical" Cursor="Hand" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding}" />
+                    <i:InvokeCommandAction CommandParameter="{Binding}" Command="{StaticResource ShowProfile}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Grid Width="100" Height="100" Margin="0,0,0,10">
@@ -190,7 +194,7 @@
                     <Border Background="White" Width="12" Height="18" CornerRadius="2" Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                         <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
                     </Border>
-                    <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneWay}"/>
+                    <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, ConverterParameter=inverse, Converter={StaticResource VisibilityConverter}, Mode=OneWay}"/>
                 </Grid>
             </Grid>
             <TextBlock MaxHeight="25" TextTrimming="CharacterEllipsis" Text="{Binding first_name}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"/>
@@ -206,7 +210,7 @@
             <Image Grid.Column="0" Source="{Binding photo_100}" Width="100" Height="100" OpacityMask="{DynamicResource RoundOpacity}" HorizontalAlignment="Left" Cursor="Hand">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding}" />
+                        <i:InvokeCommandAction CommandParameter="{Binding}" Command="{StaticResource ShowProfile}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
@@ -214,15 +218,15 @@
                 <Border Background="White" Width="12" Height="18" CornerRadius="2" Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                     <Path Fill="#FF8AC176" Stroke="White" StrokeThickness="0"  Data="M297,243.498245 C297,242.670787 297.676463,242 298.506398,242 L304.493602,242 C305.325563,242 306,242.675249 306,243.498245 L306,254.501755 C306,255.329213 305.323537,256 304.493602,256 L298.506398,256 C297.674437,256 297,255.324751 297,254.501755 L297,243.498245 Z M298,244.509666 C298,244.228185 298.232903,244 298.503423,244 L304.496577,244 C304.77461,244 305,244.222473 305,244.509666 L305,252.490334 C305,252.771815 304.767097,253 304.496577,253 L298.503423,253 C298.22539,253 298,252.777527 298,252.490334 L298,244.509666 Z M301,254 L302,254 L302,255 L301,255 L301,254 Z" Stretch="Fill" Margin="2"/>
                 </Border>
-                <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, Converter={StaticResource VisibilityConverter}, ConverterParameter=inverse, Mode=OneWay}"/>
+                <Rectangle Width="14" Height="14" Fill="#FF8AC176" RadiusX="14" RadiusY="14" Stroke="White" StrokeThickness="2"  Visibility="{Binding online_mobile, ConverterParameter=inverse, Converter={StaticResource VisibilityConverter}, Mode=OneWay}"/>
             </Grid>
             <StackPanel Grid.Column="1" Margin="0,15,0,0" Orientation="Vertical">
                 <TextBlock Text="{Binding full_name}" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12" FontWeight="Bold" Cursor="Hand">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="MouseLeftButtonUp">
+                			<i:InvokeCommandAction CommandParameter="{Binding id}" Command="{StaticResource ShowProfile}"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
                 </TextBlock>
                 <TextBlock Text="{Binding university_name}" Visibility="{Binding university_name, Converter={StaticResource StringIsNullVisibilityConverter}}" Margin="0,5,0,0" MaxHeight="25" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
                 <Button Command="{StaticResource ShowProfile}" CommandParameter="{Binding id}" Content="Send message" Margin="0,5,50,0" Width="Auto" Height="Auto" />
@@ -252,18 +256,291 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" TargetName="Bd" Value="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor}"/>
+                            <Setter Property="Background" TargetName="Bd" Value="{Binding accentColor, Source={x:Static properties:Settings.Default}}"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="true"/>
                                 <Condition Property="Selector.IsSelectionActive" Value="false"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor}"/>
+                            <Setter Property="Background" TargetName="Bd" Value="{Binding accentColor, Source={x:Static properties:Settings.Default}}"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="PlayerButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="t" Background="{TemplateBinding Background}">
+                        <Path x:Name="ContentPresenter" Fill="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Fill" Margin="3"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="t" Value="{DynamicResource DisabledBrush}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsPressed" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" TargetName="t" Value=".9"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsPressed" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" TargetName="t" Value=".7"/>
+                        </MultiTrigger>
+                        
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+        <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="#FF777777"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="{Binding (params:General.ContentFontSize), Mode=OneWay, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="FontStretch" Value="Normal"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="#FFB8B5B2"/>
+            </Trigger>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Slider}">
+                            <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TickBar Fill="{TemplateBinding BorderBrush}" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
+
+                                <Rectangle x:Name="PART_SelectionRange" Fill="Black" Grid.Row="1" StrokeThickness="0" Visibility="Hidden"/>
+                                <Track x:Name="PART_Track" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="Slider.DecreaseLarge" IsEnabled="{TemplateBinding IsEnabled}">
+                                            <RepeatButton.Style>
+                                                <Style TargetType="{x:Type RepeatButton}">
+                                                    <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}"/>
+                                                    <Style.BasedOn>
+                                                        <Style TargetType="{x:Type RepeatButton}">
+                                                            <Setter Property="Background" Value="#FF777777"/>
+                                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                            <Setter Property="Focusable" Value="False"/>
+                                                            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                                                            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+                                                            <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                        <Rectangle Fill="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" StrokeThickness="0" Width="{TemplateBinding Width}"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsEnabled" Value="False">
+                                                                    <Setter Property="Background" Value="#FFDEDEDE"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Style.BasedOn>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="#FFB8B5B2"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </RepeatButton.Style>
+                                        </RepeatButton>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="Slider.IncreaseLarge" IsEnabled="{TemplateBinding IsEnabled}">
+                                            <RepeatButton.Style>
+                                                <Style TargetType="{x:Type RepeatButton}">
+                                                    <Setter Property="Background" Value="#19777777"/>
+                                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                    <Setter Property="Focusable" Value="False"/>
+                                                    <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                                                    <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+                                                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" StrokeThickness="0" Width="{TemplateBinding Width}"/>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="#FFDEDEDE"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </RepeatButton.Style>
+                                        </RepeatButton>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{TemplateBinding IsEnabled}" Width="{TemplateBinding params:Slider.ThumbThickness}">
+                                            <Thumb.BorderThickness>
+                                                <Binding ConverterParameter="Right" Mode="OneWay" Path="(params:General.DefaultPaddingValue)" RelativeSource="{RelativeSource Self}">
+                                                    <Binding.Converter>
+                                                        <metro:DoubleToThicknessConverter/>
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Thumb.BorderThickness>
+                                            <Thumb.Style>
+                                                <Style TargetType="{x:Type Thumb}">
+                                                    <Setter Property="Background" Value="{DynamicResource DisabledBrush}"/>
+                                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                    <Setter Property="Focusable" Value="False"/>
+                                                    <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                                                    <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+                                                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Width="{TemplateBinding Width}"/>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                       <!-- <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#FF4D4D4D"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsDragging" Value="True">
+                                                            <Setter Property="Background" Value="#FF4D4D4D"/>
+                                                        </Trigger>-->
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="#FFB8B5B2"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Thumb.Style>
+                                        </Thumb>
+                                    </Track.Thumb>
+                                </Track>
+                                <TickBar Fill="{TemplateBinding BorderBrush}" Height="{TemplateBinding params:Slider.TrackSize}" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="customSlider" TargetType="{x:Type Slider}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Slider}">
+                    <Border Background="{TemplateBinding Background}" Margin="0,0,10,10" BorderThickness="0">
+                        <Grid x:Name="grd">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border x:Name="TrackBackground" BorderThickness="0"
+                                CornerRadius="2" VerticalAlignment="Center"
+                                Height="4" Grid.Row="1" Background="#D8DEE4" Margin="0" HorizontalAlignment="Stretch" />
+                            <Border x:Name="PART_SelectionRange" Grid.Row="1"
+                                CornerRadius="2" Height="4" Background="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}"
+                                HorizontalAlignment="Left" BorderThickness="0" Opacity="0.5" Padding="0" Margin="12,0,0,0"/>
+                            <Track x:Name="PART_Track" Grid.Row="1">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                              BorderThickness="0" Margin="0,0,-2,0">
+                                        <RepeatButton.Style>
+                                            <Style TargetType="{x:Type RepeatButton}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                            <Border Height="4" CornerRadius="2" Background="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </RepeatButton.Style>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="Black">
+                                        <Thumb.Style>
+                                            <Style TargetType="{x:Type Thumb}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                            <Ellipse Fill="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" Height="12" Width="12" Margin="0"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="t" Background="{TemplateBinding Background}">
+                        <Path x:Name="ContentPresenter" Fill="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Fill" Margin="5"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="t" Value="{DynamicResource DisabledBrush}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsPressed" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" TargetName="t" Value=".9"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="True" />
+                                <Condition Property="IsPressed" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity" TargetName="t" Value=".7"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
 </ResourceDictionary>

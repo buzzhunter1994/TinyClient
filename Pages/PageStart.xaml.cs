@@ -13,7 +13,7 @@ partial class PageStart : IContent
     {
         //WBrowser.Navigated += WBrowser_LoadCompleted;
 
-        WBrowser.Navigate("https://oauth.vk.com/authorize?client_id=3895061&scope=2080255&display=mobile&revoke=1&redirect_uri=https://oauth.vk.com/blank.html&response_type=token");
+      //  WBrowser.Navigate("https://oauth.vk.com/authorize?client_id=3895061&scope=2080255&display=mobile&revoke=1&redirect_uri=https://oauth.vk.com/blank.html&response_type=token");
     }
 
     void WBrowser_LoadCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)

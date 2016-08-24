@@ -9,14 +9,14 @@ namespace TinyClient.Api
 {
     class MyJsonConvert
     {
-        public static async Task<T> DeserializeObjectAsync<T>(string value, JsonSerializerSettings settings)
+      /*  public static async Task<T> DeserializeObjectAsync<T>(string value, JsonSerializerSettings settings)
         {
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(value, settings));
+            return await Task<T>.Factory.StartNew(() => JsonConvert.DeserializeObjectAsync<T>(value, settings));
         }
         public static async Task<T> DeserializeObjectAsync<T>(string value)
         {
-            return await JsonConvert.DeserializeObjectAsync<T>(value, null);
-        }
+            return await DeserializeObjectAsync<T>(value, null);
+        }*/
         public static async Task<Object> DeserializeObjectAsync(string value, JsonSerializerSettings settings)
         {
             return await DeserializeObjectAsync(value, null, null);

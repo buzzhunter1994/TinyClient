@@ -8,10 +8,14 @@ namespace TinyClient
 {
     public partial class MainWindow
     {
-        public MainWindow(){ }
+        public MainWindow(){
 
-        private void AudioLoad(object sender, RoutedEventArgs e)
+        }
+
+        private async void AudioLoad(object sender, RoutedEventArgs e)
         {
+
+            await Task.Delay(100);
             MainFrame.Source = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
         }
 
@@ -38,7 +42,17 @@ namespace TinyClient
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            Common.MusicPlayer.Close();
+            Common.MusicPlayer.Dispose();
         }
+
+        private void Timeline_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Common.MusicPlayer.TimelineChange(Timeline.Value);
+        }
+
+        private void Volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Properties.Settings.Default.Save();
+        }                
     }
 }

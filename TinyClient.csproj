@@ -136,9 +136,7 @@
       <DependentUpon>PageSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageStart.xaml.cs" />
-    <Compile Include="PlayerWindow.xaml.cs">
-      <DependentUpon>PlayerWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="PlayerWindow.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Types\LongPollServerParser.cs" />
     <Compile Include="Types\Types.cs" />
@@ -177,10 +175,6 @@
     <Page Include="Pages\PageStart.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PlayerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Common.xaml">
       <SubType>Designer</SubType>

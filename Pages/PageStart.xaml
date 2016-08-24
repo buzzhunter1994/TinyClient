@@ -11,10 +11,10 @@
       mc:Ignorable="d" Background="{DynamicResource SemitransparentBrush}" Loaded="Control_Loaded">
 
     <Grid Margin="10">
-        <WindowsFormsHost>
+     <!--   <WindowsFormsHost>
             <wf:WebBrowser x:Name="WBrowser"
                            ScriptErrorsSuppressed="True"
                            WebBrowserShortcutsEnabled="False" DocumentCompleted="WBrowser_LoadCompleted" />
-        </WindowsFormsHost>
+        </WindowsFormsHost>-->
     </Grid>
 </UserControl>

@@ -15,7 +15,7 @@
         <ListBox x:Name="PlaylistView"                 
                  MouseDoubleClick="PlaylistView_MouseDoubleClick"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"  VirtualizingStackPanel.IsVirtualizing="True"  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged" HorizontalContentAlignment="Stretch"
+                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged" HorizontalContentAlignment="Stretch" SelectedIndex="{Binding Path=selectedSong, Mode=OneWay}"
                  SelectionMode="Extended" Background="{x:Null}" ItemTemplate="{StaticResource AudioDataTemplate}" ItemsSource="{Binding Path=MusicList}">
         </ListBox>
     </Grid>

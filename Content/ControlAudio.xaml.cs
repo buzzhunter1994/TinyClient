@@ -3,6 +3,7 @@ using FirstFloor.ModernUI.Windows.Navigation;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -14,6 +15,7 @@ using TinyClient.Api;
 public partial class ControlAudio : IContent
 {
     private ObservableCollection<Types.audio> MusicList = new ObservableCollection<Types.audio>();
+    private int selectedSong;
     private NameValueCollection MyFragment;
     private bool isPageEnd;
     private bool isLocked;
@@ -33,47 +35,42 @@ public partial class ControlAudio : IContent
         }
         isPageEnd = false;
         Common.TinyMainWindow.IsBusy = true;
-        
+
+        await Task.Delay(1000);
         switch (MyFragment["page"])
         {
             case "playlist":
                 if (Common.MusicPlayer.Playlist.Count != 0)
                 {
                     MusicList = Common.MusicPlayer.Playlist;
-                    PlaylistView.ItemsSource = MusicList;
                     PlaylistView.SelectedIndex = Common.MusicPlayer.CurrentIndex;
                     PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
                 }
                 else
                 {
                     MusicList = await Audio.Get();
-                    PlaylistView.ItemsSource = MusicList;
                 }
                 break;
-            case "audio":                
+            case "audio":
                 MusicList = await Audio.Get();
-                PlaylistView.ItemsSource = MusicList;
                 break;
             case "recommendations":
                 MusicList = await Audio.GetRecommendations();
-                PlaylistView.ItemsSource = MusicList;
                 break;
             case "popular":
                 MusicList = await Audio.GetPopular(MyFragment["q"], isForeing);
-                PlaylistView.ItemsSource = MusicList;
                 break;
             case "search":
                 MusicList = await Audio.Search(MyFragment["q"]);
-                PlaylistView.ItemsSource = MusicList;
                 break;
         }
+
+        PlaylistView.ItemsSource = await Task.Factory.StartNew(() => { return MusicList; });
         isLocked = false;
         Common.TinyMainWindow.IsBusy = false;
     }
 
-    public void OnNavigatedFrom(NavigationEventArgs e) {
-        PlaylistView.ItemsSource = MusicList;
-    }
+    public void OnNavigatedFrom(NavigationEventArgs e) { }
     public void OnNavigatedTo(NavigationEventArgs e) { }
     public void OnNavigatingFrom(NavigatingCancelEventArgs e) { }
 
@@ -81,9 +78,9 @@ public partial class ControlAudio : IContent
     {
         if (Common.MusicPlayer == null)
             Common.MusicPlayer = new PlayerWindow();
-        Common.MusicPlayer.Play((Types.audio)PlaylistView.SelectedItem);
         Common.MusicPlayer.Playlist = MusicList;
         Common.MusicPlayer.CurrentIndex = PlaylistView.SelectedIndex;
+        Common.MusicPlayer.Play((Types.audio)PlaylistView.SelectedItem);
     }
 
     private async void PlaylistView_ScrollChanged(Object sender, ScrollChangedEventArgs e)
@@ -119,15 +116,15 @@ public partial class ControlAudio : IContent
                 }
                 if (audioList != null && audioList.Count > 0)
                 {
+                    await Task.Delay(500);
                     foreach (Types.audio item in audioList)
-                        //if (MusicList.Contains(item))
+                        if (!MusicList.Contains(item))
                             MusicList.Add(item);
                 }
                 else
                 {
                     isPageEnd = true;
                 }
-                await Task.Delay(1000);
                 Common.TinyMainWindow.IsBusy = false;
             }
         }

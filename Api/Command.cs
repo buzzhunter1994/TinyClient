@@ -139,6 +139,7 @@ namespace TinyClient.Command
 
         #endregion
     }
+
     public class ShowProfile : ICommand
     {
         public event EventHandler CanExecuteChanged;
@@ -151,6 +152,54 @@ namespace TinyClient.Command
         public void Execute(object parameter)
         {
             Common.TinyMainWindow.MainFrame.Source = new Uri("Pages/PageProfile.xaml#user_id=" + ((Types.profile)parameter).id, UriKind.Relative);
+        }
+    }
+
+    public class PlayPause : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+            //return Common.MusicPlayer.Playlist.Count != 0;
+        }
+
+        public void Execute(object parameter)
+        {
+            Common.MusicPlayer.PlayPause();
+        }
+    }
+
+    public class PlayNext : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+            //return Common.MusicPlayer.Playlist.Count != 0;
+        }
+
+        public void Execute(object parameter)
+        {
+            Common.MusicPlayer.PlayNext();
+        }
+    }
+
+    public class PlayPrev : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+            //return Common.MusicPlayer.Playlist.Count != 0;
+        }
+
+        public void Execute(object parameter)
+        {
+            Common.MusicPlayer.PlayPrev();
         }
     }
 

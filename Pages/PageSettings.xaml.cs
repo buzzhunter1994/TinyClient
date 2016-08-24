@@ -1,11 +1,9 @@
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Navigation;
-using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Forms;
-using TinyClient.Api;
 partial class PageSettings : IContent
 {
 

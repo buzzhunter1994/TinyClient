@@ -1,6 +1,8 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +21,12 @@ namespace TinyClient.Api
             string temp;
             string AccessToken = Properties.Settings.Default.AccessToken;
 
+            await Task.Delay(100);
             Request:
             WebClient webClient1 = new WebClient();
             webClient1.Encoding = Encoding.UTF8;
             webClient1.Headers.Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded");
-            /*if (AccessToken.Length == 0)
-                AccessToken = Properties.Settings.Default.AccessToken;*/
+
             string urls = "https://api.vk.com/method/" + method;
             try
             {
@@ -34,16 +36,16 @@ namespace TinyClient.Api
             {
                 return null;
             }
-            //TODO: Report method
-            JObject a = await Task.Run(() => JObject.Parse(temp));
-            //JObject a = await Task.Factory.StartNew(() => JObject.Parse(temp));
+
+            //JObject a = JObject.Parse(temp);
+
+            JObject a = await Task.Factory.StartNew(() => JObject.Parse(temp));
+
             if (getRaw)
                 return a;
             if (a["error"] != null)
             {
                 ModernDialog.ShowMessage(a["error"].ToString(), "TinyClient - VKAPI", MessageBoxButton.OK);
-                //goto Request;
-                //TODO: Implement errors 
                 return null;
             }
             else
@@ -166,12 +168,11 @@ namespace TinyClient.Api
             string p = "";
             string q = "";
             string path = "";
+
             if (args != null)
             {
                 for (int i = 0; i < args.GetLength(0); i++)
                 {
-                 /*   if (!String.IsNullOrEmpty(args[i, 0]))
-                    {*/
                         if (!String.IsNullOrEmpty(args[i, 1]))
                         {
                             p = String.Format("{0}={1}&", p + args[i, 0], args[i, 1]);
@@ -180,24 +181,10 @@ namespace TinyClient.Api
                         {
                             p = String.Format("{0}&", p + args[i, 0]);
                         }
-                   // }
                 }
             }
-            Console.WriteLine(p);
-            /*
-            If args IsNot Nothing Then
-               For i = 0 To args.GetLength(0) - 1
-                    If Not args(i, 1).IsNullOrEmpty() Then
-                        If Not String.IsNullOrEmpty(args(i, 0)) Then
-                            p = String.Format("{0}={1}&", p + args(i, 0), args(i, 1))
-                        Else
-                            p = String.Format("{0}&", p + args(i, 1))
-                        End If
-                    End If
-                Next
-            End If
-                
-                */
+            Debug.WriteLine(p);
+
             if (method.IndexOf('@') > 0)
             {
                 q = method.Split('@')[0];
@@ -207,16 +194,18 @@ namespace TinyClient.Api
             {
                 q = method;
             }
+
             JToken response = await SendRequest(q, p);
+
             if (response!= null && response.ToString() != "")
             {
                 if (path == "")
                 {
-                    return await MyJsonConvert.DeserializeObjectAsync<T>(response.ToString());
+                    return await Task.Factory.StartNew(()=> JsonConvert.DeserializeObject<T>(response.ToString()));
                 }
                 else
                 {
-                    return await MyJsonConvert.DeserializeObjectAsync<T>(response[path].ToString());
+                    return await Task.Factory.StartNew(()=> JsonConvert.DeserializeObject<T>(response[path].ToString()));
                 }
             }
             else
