@@ -18,6 +18,7 @@ partial class PageSettings : IContent
     private async void ThemeNameChanged(object sender, SelectionChangedEventArgs e)
     {
         await Elysium.Manager.ApplyAsync(System.Windows.Application.Current, TinyClient.Properties.Settings.Default.theme);
+        TinyClient.Properties.Settings.Default.contrastColor = Elysium.Manager.GetContrastBrush(System.Windows.Application.Current);
         TinyClient.Properties.Settings.Default.Save();
     }
     private async void AccentColorSelected(object sender, SelectionChangedEventArgs e)

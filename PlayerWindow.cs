@@ -15,6 +15,7 @@ namespace TinyClient
         public int Channel;
         public int CurrentIndex;
         public bool repeat;
+
         public ObservableCollection<Types.audio> Playlist = new ObservableCollection<Types.audio>();
         public DispatcherTimer timer = new DispatcherTimer();
         public String CurrentTitle
@@ -134,6 +135,8 @@ namespace TinyClient
         public async void Play(Types.audio audio)
         {
             timer.Stop();
+
+            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52, GridUnitType.Pixel);
             Common.TinyMainWindow.Timeline.Value = 0;
             Common.TinyMainWindow.Timeline.SelectionEnd = 0;
             Common.TinyMainWindow.Timeline.Value = 0;
