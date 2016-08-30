@@ -16,7 +16,6 @@
     <local:MultiVisibilityConverter x:Key="MultiVisibilityConverter"/>
     <local:StringIsNullVisibilityConverter x:Key="StringIsNullVisibilityConverter"/>
     <local:FriendlyTimeDescription x:Key="FriendlyTimeDescription"/>
-    <command:OpenDialogCommand x:Key="OpenDialogCommand"/>
     <command:ShowProfile x:Key="ShowProfile"/>
     <command:PlayPause x:Key="PlayPause"/>
     <command:PlayNext x:Key="PlayNext"/>

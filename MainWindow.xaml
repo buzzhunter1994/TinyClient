@@ -13,25 +13,27 @@
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="0" />
+            <RowDefinition Height="52" />
         </Grid.RowDefinitions>
 
         <Image Grid.RowSpan="2" x:Name="Bg" Source="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundImage, Mode=TwoWay}" Stretch="UniformToFill" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=backgroundTransparency, Mode=TwoWay}" Visibility="{Binding backgroundEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"/>
         <mui:ModernFrame Grid.Row="0" Source="Pages/PageStart.xaml" x:Name="MainFrame"/>
-        <Grid Grid.Row="1" Background="{DynamicResource SemitransparentBrush}">
+        <Grid Grid.Row="1" Background="{DynamicResource SemitransparentBrush}" x:Name="PlayerWrap">
             <Border VerticalAlignment="Top" Height="1" Background="{DynamicResource SemitransparentBrush}" />
             <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,8" Command="{StaticResource PlayPause}" Style="{DynamicResource ButtonStyle1}" Width="36" Height="36" Content="M415.934,212.799L36.788,2.097C32.411-0.377,28.65-0.661,25.51,1.242c-3.14,1.902-4.708,5.328-4.708,10.276V431.78   c0,4.952,1.569,8.381,4.708,10.284c3.14,1.902,6.901,1.622,11.278-0.855l379.146-210.703c4.381-2.478,6.571-5.434,6.571-8.856   C422.505,218.224,420.314,215.274,415.934,212.799z" Padding="10,8,8,8" BorderBrush="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" BorderThickness="2"/>
             <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="52,0,0,14" Command="{StaticResource PlayPrev}" Style="{DynamicResource PlayerButton}" Width="24" Height="24" Content="M436.538,0.861c-2.471-1.143-5.513,0.094-9.134,3.709L224.692,207.273c-1.521,1.524-2.762,3.333-3.711,5.424V9.989   c0-4.948-1.237-7.994-3.711-9.137c-2.474-1.141-5.52,0.096-9.136,3.711L5.424,207.273C1.809,210.891,0,215.172,0,220.12   s1.809,9.233,5.424,12.847l202.71,202.709c3.616,3.62,6.662,4.862,9.136,3.72c2.474-1.144,3.711-4.189,3.711-9.138V227.546   c0.953,1.903,2.19,3.717,3.711,5.425l202.712,202.711c3.621,3.617,6.663,4.86,9.134,3.717c2.478-1.143,3.713-4.188,3.713-9.137   V9.996C440.248,5.048,439.015,2.002,436.538,0.861z" Padding="7" BorderThickness="0"/>
             <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="76,0,0,14" Command="{StaticResource PlayNext}" Style="{DynamicResource PlayerButton}" Width="24" Height="24" Content="M434.823,207.279L232.111,4.571c-3.609-3.617-6.655-4.856-9.133-3.713c-2.475,1.143-3.712,4.189-3.712,9.137v202.708   c-0.949-2.091-2.187-3.901-3.711-5.424L12.847,4.571C9.229,0.954,6.186-0.285,3.711,0.858C1.237,2.001,0,5.047,0,9.995v420.262   c0,4.948,1.237,7.994,3.711,9.138c2.474,1.14,5.518-0.1,9.135-3.721l202.708-202.701c1.521-1.711,2.762-3.524,3.711-5.428v202.712   c0,4.948,1.237,7.991,3.712,9.131c2.478,1.143,5.523-0.093,9.133-3.714l202.712-202.708c3.61-3.617,5.428-7.901,5.428-12.847   C440.248,215.178,438.433,210.896,434.823,207.279z" Padding="7" BorderThickness="0"/>
             <Slider x:Name="Volume" Margin="0,0,10,-2"
                 IsMoveToPointEnabled="True"
-                IsSelectionRangeEnabled="True"
-                Maximum="8192" Value="{Binding Source={x:Static properties:Settings.Default}, Path=volume, Mode=TwoWay}" SmallChange="1" Height="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="70" ValueChanged="Volume_ValueChanged" Style="{DynamicResource customSlider}" SelectionEnd="3"/>
+                Maximum="100" Value="{Binding Source={x:Static properties:Settings.Default}, Path=volume, Mode=TwoWay}" SmallChange="1" Height="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="70" ValueChanged="Volume_ValueChanged" Style="{DynamicResource customSlider}"/>
             <Slider x:Name="Timeline"  Margin="110,0,85,-2"
                 IsMoveToPointEnabled="True"
-                IsSelectionRangeEnabled="True" PreviewMouseUp="Timeline_PreviewMouseUp" Height="22" VerticalAlignment="Bottom" Style="{DynamicResource customSlider}" Maximum="100" Value="10" SelectionEnd="100"/>
-      
-            <!--<TextBlock HorizontalAlignment="Left" Margin="121,0,0,23" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="19" Text="{Binding Source={x:Static api:Common.MusicPlayer}, Path=CurrentTitle, Mode=OneWay}"/>-->
+                IsSelectionRangeEnabled="True" PreviewMouseUp="Timeline_PreviewMouseUp" Height="22" VerticalAlignment="Bottom" Style="{DynamicResource customSlider}" Maximum="100"/>
+            <TextBlock Margin="110,0,95,25" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="19" TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding audio.artist}" FontWeight="Bold"></Run>
+                <Run Text=" - "></Run>
+                <Run Text="{Binding audio.title}"></Run>
+            </TextBlock>
         </Grid>
         <!--<ContentControl x:Name="Content" Content="{Binding}" ContentTemplate="{DynamicResource ContentView}"/>-->
     </Grid>

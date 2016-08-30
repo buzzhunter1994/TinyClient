@@ -43,7 +43,7 @@ public partial class ControlAudio : IContent
                 if (Common.MusicPlayer.Playlist.Count != 0)
                 {
                     MusicList = Common.MusicPlayer.Playlist;
-                    PlaylistView.SelectedIndex = Common.MusicPlayer.CurrentIndex;
+                    PlaylistView.SelectedIndex = Common.MusicPlayer.Player.CurrentIndex;
                     PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
                 }
                 else
@@ -79,7 +79,7 @@ public partial class ControlAudio : IContent
         if (Common.MusicPlayer == null)
             Common.MusicPlayer = new PlayerWindow();
         Common.MusicPlayer.Playlist = MusicList;
-        Common.MusicPlayer.CurrentIndex = PlaylistView.SelectedIndex;
+        Common.MusicPlayer.Player.CurrentIndex = PlaylistView.SelectedIndex;
         Common.MusicPlayer.Play((Types.audio)PlaylistView.SelectedItem);
     }
 

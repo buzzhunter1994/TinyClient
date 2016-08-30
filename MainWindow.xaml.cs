@@ -37,7 +37,7 @@ namespace TinyClient
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await Task.Delay(100);
-            //MainFrame.Source = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
+            MainFrame.Source = new Uri("Pages/PageAudio.xaml#page=audio", UriKind.Relative);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -56,6 +56,6 @@ namespace TinyClient
         private void Volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Properties.Settings.Default.Save();
-        }                
+        }       
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FirstFloor.ModernUI.Presentation;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -12,26 +13,50 @@ using Un4seen.Bass;
 
 namespace TinyClient
 {
+    public class PlayerClass : NotifyPropertyChanged {
+        private string _currnentTitle;
+        public string CurrnentTitle
+        {
+            get { return _currnentTitle; }
+            set { _currnentTitle = value; }
+        }
+
+        private Types.audio _audio;
+        public Types.audio Audio
+        {
+            get { return _audio; }
+            set { _audio = value; }
+        }
+
+
+        private int _currentIndex;
+        public int CurrentIndex
+        {
+            get { return _currentIndex; }
+            set { _currentIndex = value; }
+        }
+
+        private bool _repeat;
+        public bool Repeat
+        {
+            get { return _repeat; }
+            set { _repeat = value; }
+        }
+    }
     public class PlayerWindow : IDisposable
     {
         public int Channel;
-        public int CurrentIndex;
-        public bool repeat;
 
         public ObservableCollection<Types.audio> Playlist = new ObservableCollection<Types.audio>();
         public DispatcherTimer timer = new DispatcherTimer();
-        public String CurrentTitle
-        {
-            get { return Playlist.Count!=0?Playlist[CurrentIndex].full_title:"Text"; }
-            set { }
-        }
-
+        public PlayerClass Player;
         public PlayerWindow()
         {
             BassNet.Registration("mc-shura@yandex.ua", "2X2223183433");
             Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
+            Player = new PlayerClass();
         }
 
         BASSActive isActiveChannel;
@@ -63,18 +88,21 @@ namespace TinyClient
                 long len = Bass.BASS_StreamGetFilePosition(Channel, BASSStreamFilePosition.BASS_FILEPOS_END);
                 long down = Bass.BASS_StreamGetFilePosition(Channel, BASSStreamFilePosition.BASS_FILEPOS_DOWNLOAD);
                 BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(Channel);
-                if ((info.flags & BASSFlag.BASS_STREAM_BLOCK) != BASSFlag.BASS_DEFAULT)
+                if (info != null)
                 {
-                    long dec = Bass.BASS_StreamGetFilePosition(Channel, BASSStreamFilePosition.BASS_FILEPOS_CURRENT);
-                    progress = (down - dec) * 100f / len;
-                    if (progress > 100)
-                        progress = 100;
+                    if ((info.flags & BASSFlag.BASS_STREAM_BLOCK) != BASSFlag.BASS_DEFAULT)
+                    {
+                        long dec = Bass.BASS_StreamGetFilePosition(Channel, BASSStreamFilePosition.BASS_FILEPOS_CURRENT);
+                        progress = (down - dec) * 100f / len;
+                        if (progress > 100)
+                            progress = 100;
+                    }
+                    else
+                    {
+                        progress = down * 100f / len;
+                    }
+                    Common.TinyMainWindow.Timeline.SelectionEnd = ((double)progress * Common.TinyMainWindow.Timeline.Maximum) / 100;
                 }
-                else
-                {
-                    progress = down * 100f / len;
-                }
-                Common.TinyMainWindow.Timeline.SelectionEnd = ((double)progress * Common.TinyMainWindow.Timeline.Maximum) / 100;
             }
 
             /*if ((Bass.BASS_ChannelIsActive(Channel) != BASSActive.BASS_ACTIVE_PLAYING))
@@ -91,23 +119,23 @@ namespace TinyClient
                 {
                     if (!(Playlist == null) && (Playlist.Count > 0))
                     {
-                        if (!repeat)
+                        if (!Player.Repeat)
                         {
                           /*  if (RandomCheckBox.isChecked)
                             {
                                 //Playlist1.Count;
                             }
                             else */
-                            if ((CurrentIndex == (Playlist.Count - 1)))
+                            if ((Player.CurrentIndex == (Playlist.Count - 1)))
                             {
-                                CurrentIndex = 0;
+                                Player.CurrentIndex = 0;
                             }
                             else
                             {
-                                CurrentIndex++;
+                                Player.CurrentIndex++;
                             }
 
-                            Play(Playlist[CurrentIndex]);
+                            Play(Playlist[Player.CurrentIndex]);
                         }
                         else
                         {
@@ -122,12 +150,12 @@ namespace TinyClient
                     }
                 }
             }
-            Common.TinyMainWindow.Volume.SelectionEnd = Math.Abs((Un4seen.Bass.Utils.HighWord(Bass.BASS_ChannelGetLevel(Channel)) / 4));
         }
 
         public async void Play(Types.audio audio)
         {
             timer.Stop();
+            Common.TinyMainWindow.PlayerWrap.DataContext = Player;
             Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52);
             Common.TinyMainWindow.Timeline.Value = 0;
             Common.TinyMainWindow.Timeline.SelectionEnd = 0;
@@ -141,8 +169,10 @@ namespace TinyClient
                     return Bass.BASS_StreamCreateURL(audio.url, 0, BASSFlag.BASS_DEFAULT, null, IntPtr.Zero); 
                 });
             Bass.BASS_StreamFree(Channel);
-            Channel = Channel1;
+            Player.audio = audio;
 
+            Channel = Channel1;
+            //Player.CurrnentTitle = audio.full_title;
             Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
             Bass.BASS_ChannelPlay(Channel, true);
             timer.Start();
@@ -163,42 +193,35 @@ namespace TinyClient
         }
         public void PlayNext()
         {
+            this.Dispose();
             if (!(Playlist == null) && (Playlist.Count > 0))
             {
-                if (++CurrentIndex >= Playlist.Count) CurrentIndex = 0;
-                Play(Playlist[CurrentIndex]);
+                if (++Player.CurrentIndex >= Playlist.Count) Player.CurrentIndex = 0;
+                Play(Playlist[Player.CurrentIndex]);
             }
         }
         public void PlayPrev()
         {
             if (!(Playlist == null) && (Playlist.Count > 0))
             {
-                if (--CurrentIndex <= 0) CurrentIndex = Playlist.Count - 1;
-                Play(Playlist[CurrentIndex]);
+                if (--Player.CurrentIndex <= 0) Player.CurrentIndex = Playlist.Count - 1;
+                Play(Playlist[Player.CurrentIndex]);
             }
         }
-        private void EndSync(int syncHandle, int Channel, int data, IntPtr user)
-        {
-            PlayNext();
-        }     
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (disposing)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                // TODO: dispose managed state (managed objects).
             }
+            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(0);
+            Playlist = null;
+            Bass.BASS_StreamFree(Channel);
+            GC.Collect();
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
@@ -213,18 +236,13 @@ namespace TinyClient
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
         #endregion
 
         public void TimelineChange(double value)
         {
             Bass.BASS_ChannelSetPosition(Channel, (long)value);
-        }
-
-        private void Volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            //Bass.BASS_ChannelSlideAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(e.NewValue / Volume.Maximum),1000);
         }
     }
 }
