@@ -155,6 +155,24 @@ namespace TinyClient.Command
         }
     }
 
+    public class OpenDialogCommand : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+        public void Execute(object parameter)
+        {
+            Common.TinyMainWindow.MainFrame.Source = new Uri("Pages/PageMessage.xaml#" + "user_id=" + parameter.ToString() + "&rnd=", UriKind.RelativeOrAbsolute);
+            if (Common.TinyMainWindow.WindowState == WindowState.Minimized)
+                Common.TinyMainWindow.WindowState = WindowState.Normal;
+            Common.TinyMainWindow.Show();
+            Common.TinyMainWindow.Visibility = Visibility.Visible;
+            Common.TinyMainWindow.Activate();
+        }
+    }
+
     public class PlayPause : ICommand
     {
         public event EventHandler CanExecuteChanged;

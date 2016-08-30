@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TinyClient.Api;
 using Un4seen.Bass;
@@ -36,14 +38,6 @@ namespace TinyClient
 
         void timer_Tick(object sender, EventArgs e)
         {
-           /* object er = Bass.BASS_ErrorGetCode;
-            if ((er != BASSError.BASS_OK))
-            {
-                OtherApi.ShowMicroVkNot("Bass.dll error", er.ToString());
-                TimerPlayer1.Stop();
-                return;
-            }
-            */
             BASSActive bassActive = Bass.BASS_ChannelIsActive(Channel);
             if ((bassActive != isActiveChannel))
             {
@@ -56,7 +50,6 @@ namespace TinyClient
                 {
                     OtherApi.MyWindow1.SetButtonData(false);
                 }*/
-
             }
             
             if ((bassActive != BASSActive.BASS_ACTIVE_PLAYING))
@@ -135,8 +128,7 @@ namespace TinyClient
         public async void Play(Types.audio audio)
         {
             timer.Stop();
-
-            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52, GridUnitType.Pixel);
+            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52);
             Common.TinyMainWindow.Timeline.Value = 0;
             Common.TinyMainWindow.Timeline.SelectionEnd = 0;
             Common.TinyMainWindow.Timeline.Value = 0;

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="TinyClient.UserControls.NotificationMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:types="clr-namespace:Types"
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="300" d:DataContext="{d:DesignInstance types:Notifycation}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="55" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Width="50" Height="50" Source="{Binding user_id, IsAsync=True, Mode=OneWay}" Stretch="UniformToFill" />
+        <StackPanel Grid.Column="1">
+            <TextBlock Margin="3,1,35,1"
+                       Foreground="White"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="Wrap">
+                <Run x:Name="UserNameRun1" FontWeight="Bold" Text="{Binding user_id, Mode=OneWay}" />
+            </TextBlock>
+            <Grid MaxHeight="160">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ScrollViewer x:Name="ScrollViewer1"
+                              Grid.Column="1"
+                              Visibility="Hidden">
+                    <TextBlock x:Name="TextBlock1" Foreground="White"
+                               Tag="True"
+                               TextWrapping="Wrap" Text="{Binding Message}"
+                               />
+                </ScrollViewer>
+                <TextBlock x:Name="PreviewTextBlock1"
+                           Grid.Column="1"
+                           MaxHeight="100"
+                           Margin="4,5,28,3"
+                           Text="{Binding Message}"
+                           Background="Transparent"
+                           Foreground="Black"
+                           Opacity="0.75"
+                           Tag="True"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="Wrap" />
+
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

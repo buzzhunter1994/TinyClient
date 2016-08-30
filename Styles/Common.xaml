@@ -16,10 +16,53 @@
     <local:MultiVisibilityConverter x:Key="MultiVisibilityConverter"/>
     <local:StringIsNullVisibilityConverter x:Key="StringIsNullVisibilityConverter"/>
     <local:FriendlyTimeDescription x:Key="FriendlyTimeDescription"/>
+    <command:OpenDialogCommand x:Key="OpenDialogCommand"/>
     <command:ShowProfile x:Key="ShowProfile"/>
     <command:PlayPause x:Key="PlayPause"/>
     <command:PlayNext x:Key="PlayNext"/>
     <command:PlayPrev x:Key="PlayPrev"/>
+    <Style x:Key="SystemButtonBase" TargetType="ButtonBase">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border Name="Chrome"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MySystemButton"
+           BasedOn="{StaticResource SystemButtonBase}"
+           TargetType="ButtonBase">
+        <Setter Property="Foreground" Value="{DynamicResource LinkButtonText}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource LinkButtonTextHover}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource LinkButtonTextPressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource LinkButtonTextDisabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate x:Key="ColorTemplate">
         <Border Width="20" Height="20" Margin="0,0,5,0" ToolTip="{Binding}" Background="{Binding}"/>
     </DataTemplate>

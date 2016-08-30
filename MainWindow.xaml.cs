@@ -42,8 +42,10 @@ namespace TinyClient
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (Common.MusicPlayer!=null)
+            if (Common.MusicPlayer != null)
                 Common.MusicPlayer.Dispose();
+            if (Common.GrowlNotifiactions1 != null)
+                Common.GrowlNotifiactions1.Close();
         }
 
         private void Timeline_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

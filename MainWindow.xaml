@@ -12,7 +12,7 @@
     Background="{DynamicResource BackgroundBrush}" Width="810" MinWidth="750" Height="600" MinHeight="300" Title="TinyClient" Loaded="Window_Loaded" HasDropShadow="False">
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="0" />
         </Grid.RowDefinitions>
 
