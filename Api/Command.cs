@@ -76,68 +76,31 @@ namespace TinyClient.Command
     }
     public class RelayCommand : ICommand
     {
-        #region Declarations
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
 
-        readonly Func<Boolean> _canExecute;
-        readonly Action _execute;
-
-        #endregion
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand&lt;T&gt;"/> class and the command can always be executed.
-        /// </summary>
-        /// <param name="execute">The execution logic.</param>
-        public RelayCommand(Action execute)
-            : this(execute, null)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand&lt;T&gt;"/> class.
-        /// </summary>
-        /// <param name="execute">The execution logic.</param>
-        /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action execute, Func<Boolean> canExecute)
-        {
-
-            if (execute == null)
-                throw new ArgumentNullException("execute");
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        #endregion
-        #region ICommand Members
-
         public event EventHandler CanExecuteChanged
         {
-            add
-            {
-
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested -= value;
-            }
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
-        [DebuggerStepThrough]
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            bool result = _canExecute == null ? true : _canExecute(parameter);
+            return result;
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
-            _execute();
+            _execute(parameter);
         }
-
-        #endregion
     }
 
     public class ShowProfile : ICommand

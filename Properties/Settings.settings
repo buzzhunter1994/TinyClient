@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TinyClient.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="AccessToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)">11036d06cf4242ab7e4b20ff237b99be9445bcfdd305d1ba2ff13d8e0b1007070e50c2813151f078f50c3</Value>
-    </Setting>
     <Setting Name="photoSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -31,6 +28,9 @@
     </Setting>
     <Setting Name="volume" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.5</Value>
+    </Setting>
+    <Setting Name="AccessToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">81ab8e63940022a7929a5e56e60ee0278942d322abb494908f5fbeb529481003ff9ab996390257c881e1e</Value>
     </Setting>
   </Settings>
 </SettingsFile>

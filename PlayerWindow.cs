@@ -1,7 +1,9 @@
 ﻿using FirstFloor.ModernUI.Presentation;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,50 +15,116 @@ using Un4seen.Bass;
 
 namespace TinyClient
 {
-    public class PlayerClass : NotifyPropertyChanged {
-        private string _currnentTitle;
-        public string CurrnentTitle
+    public class PlayerWindow : IDisposable, INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public int Channel;
+
+        protected void OnPropertyChanged(string name)
         {
-            get { return _currnentTitle; }
-            set { _currnentTitle = value; }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+
         }
 
-        private Types.audio _audio;
-        public Types.audio Audio
+        private Types.audio _song;
+        public Types.audio Song
         {
-            get { return _audio; }
-            set { _audio = value; }
+            get { return _song; }
+            set
+            {
+                if (_song != value)
+                {
+                    _song = value;
+                    OnPropertyChanged("Song");
+                }
+            }
         }
-
 
         private int _currentIndex;
         public int CurrentIndex
         {
             get { return _currentIndex; }
-            set { _currentIndex = value; }
+            set
+            {
+                if (_currentIndex != value)
+                {
+                    _currentIndex = value;
+                    OnPropertyChanged("CurrentIndex");
+                }
+            }
         }
 
         private bool _repeat;
         public bool Repeat
         {
             get { return _repeat; }
-            set { _repeat = value; }
+            set
+            {
+                if (_repeat != value)
+                {
+                    _repeat = value;
+                    OnPropertyChanged("Repeat");
+                }
+            }
+        }        
+        public float Volume
+        {
+            get
+            {
+                float vol = 0f;
+                if (Bass.BASS_ChannelGetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, ref vol))
+                    return vol;
+                return 0f;
+            }
+            set
+            {
+                Bass.BASS_ChannelSlideAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(value / Common.TinyMainWindow.Volume.Maximum), 1000);
+            }
         }
-    }
-    public class PlayerWindow : IDisposable
-    {
-        public int Channel;
 
-        public ObservableCollection<Types.audio> Playlist = new ObservableCollection<Types.audio>();
+        public long Position
+        {
+            get
+            {
+                long pos = 0;
+                if (Channel != 0)
+                    pos = Bass.BASS_ChannelGetPosition(Channel);
+                return pos != 0 ? pos : 0;
+            }
+            set
+            {
+                Bass.BASS_ChannelSetPosition(Channel, value); Bass.BASS_ChannelSlideAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(value / Common.TinyMainWindow.Volume.Maximum), 1000);
+            }
+        }
+
+
+        private ObservableCollection<Types.audio> _playlist;
+        public ObservableCollection<Types.audio> Playlist
+        {
+            get { return _playlist; }
+            set
+            {
+                if (_playlist != value)
+                {
+                    _playlist = value;
+                    OnPropertyChanged("Playlist");
+                }
+            }
+        }        
+
+
         public DispatcherTimer timer = new DispatcherTimer();
-        public PlayerClass Player;
+
         public PlayerWindow()
         {
             BassNet.Registration("mc-shura@yandex.ua", "2X2223183433");
             Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
-            Player = new PlayerClass();
+
         }
 
         BASSActive isActiveChannel;
@@ -67,16 +135,16 @@ namespace TinyClient
             if ((bassActive != isActiveChannel))
             {
                 isActiveChannel = bassActive;
-               /* if ((bassActive != BASSActive.BASS_ACTIVE_PLAYING))
-                {
-                    OtherApi.MyWindow1.SetButtonData(true);
-                }
-                else
-                {
-                    OtherApi.MyWindow1.SetButtonData(false);
-                }*/
+                /* if ((bassActive != BASSActive.BASS_ACTIVE_PLAYING))
+                 {
+                     OtherApi.MyWindow1.SetButtonData(true);
+                 }
+                 else
+                 {
+                     OtherApi.MyWindow1.SetButtonData(false);
+                 }*/
             }
-            
+
             if ((bassActive != BASSActive.BASS_ACTIVE_PLAYING))
             {
                 timer.Stop();
@@ -110,73 +178,80 @@ namespace TinyClient
                 OtherApi.MyWindow1.SetButtonData(true);
             }
             */
-            Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
+            //Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
             if ((Mouse.LeftButton == MouseButtonState.Released))
             {
                 Common.TinyMainWindow.Timeline.Maximum = Bass.BASS_ChannelGetLength(Channel);
-                Common.TinyMainWindow.Timeline.Value = Bass.BASS_ChannelGetPosition(Channel);
+                Common.TinyMainWindow.Timeline.Value = Position;
                 if ((Bass.BASS_ChannelIsActive(Channel) == BASSActive.BASS_ACTIVE_STOPPED))
                 {
                     if (!(Playlist == null) && (Playlist.Count > 0))
                     {
-                        if (!Player.Repeat)
+                        if (!Repeat)
                         {
-                          /*  if (RandomCheckBox.isChecked)
+                            /*  if (RandomCheckBox.isChecked)
+                              {
+                                  //Playlist1.Count;
+                              }
+                              else */
+                            if ((CurrentIndex == (Playlist.Count - 1)))
                             {
-                                //Playlist1.Count;
-                            }
-                            else */
-                            if ((Player.CurrentIndex == (Playlist.Count - 1)))
-                            {
-                                Player.CurrentIndex = 0;
+                                CurrentIndex = 0;
                             }
                             else
                             {
-                                Player.CurrentIndex++;
+                                CurrentIndex++;
                             }
 
-                            Play(Playlist[Player.CurrentIndex]);
+                            Play(CurrentIndex);
                         }
                         else
                         {
                             Bass.BASS_ChannelPlay(Channel, true);
                             timer.Start();
-                         /*   if (CheckBox2.IsChecked)
-                            {
-                                object a1 = ((Types.audio)(DataContext));
-                                Audio.SetBroadcast((a1.owner_id + ("_" + a1.id)));
-                            }*/
+                            /*   if (CheckBox2.IsChecked)
+                               {
+                                   object a1 = ((Types.audio)(DataContext));
+                                   Audio.SetBroadcast((a1.owner_id + ("_" + a1.id)));
+                               }*/
                         }
                     }
                 }
             }
         }
-
-        public async void Play(Types.audio audio)
+        bool locked = false;
+        public async void Play(int CurrentIndexView)
         {
+            if (locked) return;
+            locked = true;
+            ((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = false;
+            CurrentIndex = CurrentIndexView;
+            ((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = true;
+            if (CurrentIndex > 0 && CurrentIndex < Playlist.Count)
+                Song = Playlist[CurrentIndex];
             timer.Stop();
-            Common.TinyMainWindow.PlayerWrap.DataContext = Player;
-            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52);
-            Common.TinyMainWindow.Timeline.Value = 0;
-            Common.TinyMainWindow.Timeline.SelectionEnd = 0;
-            Common.TinyMainWindow.Timeline.Value = 0;
             Common.TinyMainWindow.IsBusy = true;
             Bass.BASS_ChannelSlideAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, 0, 500);
             int Channel1 = 0;
-            if (audio != null)
-                if (audio.url != null)
-                Channel1 = await Task.Factory.StartNew(() => { 
-                    return Bass.BASS_StreamCreateURL(audio.url, 0, BASSFlag.BASS_DEFAULT, null, IntPtr.Zero); 
-                });
+            if (Song != null)
+                if (Song.url != null)
+                    Channel1 = await Task.Factory.StartNew(() =>
+                    {
+                        return Bass.BASS_StreamCreateURL(Song.url, 0, BASSFlag.BASS_DEFAULT, null, IntPtr.Zero);
+                    });
             Bass.BASS_StreamFree(Channel);
-            Player.audio = audio;
 
+            Common.TinyMainWindow.Timeline.Value = 0;
+            Common.TinyMainWindow.Timeline.SelectionEnd = 0;
+            Common.TinyMainWindow.PlayerGrid.DataContext = this;
+            Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(52);
             Channel = Channel1;
-            //Player.CurrnentTitle = audio.full_title;
             Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
             Bass.BASS_ChannelPlay(Channel, true);
             timer.Start();
             Common.TinyMainWindow.IsBusy = false;
+
+            locked = false;
         }
         public void PlayPause()
         {
@@ -193,19 +268,20 @@ namespace TinyClient
         }
         public void PlayNext()
         {
-            this.Dispose();
+            int newIndex = CurrentIndex;
             if (!(Playlist == null) && (Playlist.Count > 0))
             {
-                if (++Player.CurrentIndex >= Playlist.Count) Player.CurrentIndex = 0;
-                Play(Playlist[Player.CurrentIndex]);
+                if (++newIndex >= Playlist.Count) newIndex = 0;
+                Play(newIndex);
             }
         }
         public void PlayPrev()
         {
+            int newIndex = CurrentIndex;
             if (!(Playlist == null) && (Playlist.Count > 0))
             {
-                if (--Player.CurrentIndex <= 0) Player.CurrentIndex = Playlist.Count - 1;
-                Play(Playlist[Player.CurrentIndex]);
+                if (--newIndex <= 0) newIndex = Playlist.Count - 1;
+                Play(newIndex);
             }
         }
 
@@ -242,7 +318,8 @@ namespace TinyClient
 
         public void TimelineChange(double value)
         {
-            Bass.BASS_ChannelSetPosition(Channel, (long)value);
+            Position = (long)value;
         }
     }
+
 }

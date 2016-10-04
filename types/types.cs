@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -11,8 +12,17 @@ using TinyClient.Api;
 
 namespace Types
 {
-    public class audio
+    public class audio : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+
+        }
         public int id { get; set; }
         public int owner_id { get; set; }
         public string artist { get; set; }
@@ -22,9 +32,14 @@ namespace Types
         public int lyrics_id { get; set; }
         public int album_id { get; set; }
         public int genre_id { get; set; }
-        public string full_title {
-            get { return artist.Trim() + " - " + title.Trim(); }
-        }
+
+        private bool state;
+
+        public bool State
+        {
+            get { return state; }
+            set { if (state == value) return; state = value; OnPropertyChanged("State"); }
+        }   
     }
 
     public class user

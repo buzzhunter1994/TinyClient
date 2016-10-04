@@ -1,6 +1,8 @@
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Navigation;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using TinyClient.Api;
 
 partial class PageFriends : IContent
@@ -10,7 +12,13 @@ partial class PageFriends : IContent
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
         FriendsList = await Friends.Get();
-        FriendsView.ItemsSource = FriendsList;
+        await Task.Factory.StartNew(() =>
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                FriendsView.ItemsSource = FriendsList;
+            }));
+        });
     }
     public void OnNavigatedFrom(NavigationEventArgs e) { }
     public void OnNavigatedTo(NavigationEventArgs e) { }

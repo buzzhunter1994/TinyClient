@@ -20,7 +20,7 @@ public partial class ControlAudio : IContent
     private bool isPageEnd;
     private bool isLocked;
     private bool isForeing;
-
+    private int tracks = 0;
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
         if (isLocked) return;
@@ -34,16 +34,18 @@ public partial class ControlAudio : IContent
 
         }
         isPageEnd = false;
+        tracks = 0;
         Common.TinyMainWindow.IsBusy = true;
 
         await Task.Delay(1000);
+
         switch (MyFragment["page"])
         {
             case "playlist":
                 if (Common.MusicPlayer.Playlist.Count != 0)
                 {
                     MusicList = Common.MusicPlayer.Playlist;
-                    PlaylistView.SelectedIndex = Common.MusicPlayer.Player.CurrentIndex;
+                    PlaylistView.SelectedIndex = Common.MusicPlayer.CurrentIndex;
                     PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
                 }
                 else
@@ -65,7 +67,13 @@ public partial class ControlAudio : IContent
                 break;
         }
 
-        PlaylistView.ItemsSource = await Task.Factory.StartNew(() => { return MusicList; });
+        PlaylistView.ItemsSource = MusicList;
+        /*   await Task.Factory.StartNew(() => {
+               Dispatcher.BeginInvoke(new Action(() =>
+               {
+
+               }));
+           });*/
         isLocked = false;
         Common.TinyMainWindow.IsBusy = false;
     }
@@ -79,8 +87,7 @@ public partial class ControlAudio : IContent
         if (Common.MusicPlayer == null)
             Common.MusicPlayer = new PlayerWindow();
         Common.MusicPlayer.Playlist = MusicList;
-        Common.MusicPlayer.Player.CurrentIndex = PlaylistView.SelectedIndex;
-        Common.MusicPlayer.Play((Types.audio)PlaylistView.SelectedItem);
+        Common.MusicPlayer.Play(PlaylistView.SelectedIndex);
     }
 
     private async void PlaylistView_ScrollChanged(Object sender, ScrollChangedEventArgs e)
@@ -94,29 +101,33 @@ public partial class ControlAudio : IContent
 
         if (!isPageEnd && MusicList != null)
         {
-            if (Math.Abs(b.Value - b.Maximum) < 10 && MusicList.Count > 0)
+            if (Math.Abs(b.Value - b.Maximum) < 30 && MusicList.Count > 0)
             {
                 Common.TinyMainWindow.IsBusy = true;
+                
                 switch (MyFragment["page"])
                 {
                     case "audio":
-                        audioList = await Audio.Get(MusicList.Count.ToString());
+                        tracks += 500;
+                        audioList = await Audio.Get(tracks.ToString());
                         break;
                     case "recommendations":
-                        audioList = await Audio.GetRecommendations(MyFragment["target_audio"], "", MusicList.Count.ToString());
+                        tracks = MusicList.Count;
+                        audioList = await Audio.GetRecommendations(MyFragment["target_audio"], "", tracks.ToString());
                         break;
                     case "playlist":
                         break;
                     case "search":
-                        audioList = await Audio.Search(MyFragment["q"], MusicList.Count.ToString());
+                        tracks = MusicList.Count;
+                        audioList = await Audio.Search(MyFragment["q"], tracks.ToString());
                         break;
                     case "popular":
-                        audioList = await Audio.GetPopular(MyFragment["q"], isForeing, MusicList.Count.ToString());
+                        tracks = MusicList.Count;
+                        audioList = await Audio.GetPopular(MyFragment["q"], isForeing, tracks.ToString());
                         break;
                 }
                 if (audioList != null && audioList.Count > 0)
                 {
-                    await Task.Delay(500);
                     foreach (Types.audio item in audioList)
                         if (!MusicList.Contains(item))
                             MusicList.Add(item);
@@ -124,10 +135,18 @@ public partial class ControlAudio : IContent
                 else
                 {
                     isPageEnd = true;
+                    Debug.WriteLine(MusicList.Count);
                 }
                 Common.TinyMainWindow.IsBusy = false;
             }
         }
         isLocked = false;
+    }
+    private void SetPlaylistView(ref ListBox View) {
+        Common.PlayListV = View;
+    }
+    private void UserControl_Loaded_1(object sender, RoutedEventArgs e)
+    {
+        SetPlaylistView(ref PlaylistView);
     }
 }

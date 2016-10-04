@@ -13,7 +13,7 @@ namespace TinyClient.Api
                 "audio.get@items", 
                 new string[,] { 
                     { "offset", offset }, 
-                    { "count", "100" } 
+                    { "count", "500" } 
                 });
         }
         public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")

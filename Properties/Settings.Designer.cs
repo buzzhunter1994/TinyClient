@@ -25,19 +25,6 @@ namespace TinyClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("11036d06cf4242ab7e4b20ff237b99be9445bcfdd305d1ba2ff13d8e0b1007070e50c2813151f078f" +
-            "50c3")]
-        public string AccessToken {
-            get {
-                return ((string)(this["AccessToken"]));
-            }
-            set {
-                this["AccessToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int photoSize {
             get {
@@ -141,6 +128,19 @@ namespace TinyClient.Properties {
             }
             set {
                 this["volume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("81ab8e63940022a7929a5e56e60ee0278942d322abb494908f5fbeb529481003ff9ab996390257c88" +
+            "1e1e")]
+        public string AccessToken {
+            get {
+                return ((string)(this["AccessToken"]));
+            }
+            set {
+                this["AccessToken"] = value;
             }
         }
     }

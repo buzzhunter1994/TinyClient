@@ -157,8 +157,8 @@
                         <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                  x:Name="textSource" 
                                  Background="{DynamicResource SemitransparentBrush}" 
-                                 Panel.ZIndex="2" BorderThickness="1" Padding="5,0" Margin="0" />
-                        <TextBox Text="{TemplateBinding Tag}" Panel.ZIndex="1" VerticalContentAlignment="Center" Padding="9,-2,5,0" BorderBrush="{x:Null}" Background="{x:Null}" Margin="-1,-1,-1,-2" >
+                                 Panel.ZIndex="2" BorderThickness="1" Padding="4,0" Margin="0" />
+                        <TextBox Text="{TemplateBinding Tag}" Panel.ZIndex="1" VerticalContentAlignment="Center" Padding="9,-1,5,0" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0" BorderThickness="0" >
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="Foreground" Value="Transparent"/>
@@ -181,16 +181,19 @@
                 <ControlTemplate>
                     <Grid x:Name="Grid1" Background="Transparent">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock
-							x:Name="TextBlock1"
+                        <Path Margin="2,0,0,0" Width="10" Height="10" Stretch="Fill" StrokeLineJoin="Round" Fill="White" SnapsToDevicePixels="True" StrokeThickness="0" Data="M0,0L1,1 0,2z" Name="playState" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Path Margin="2,0,0,0" Width="10" Height="10" Stretch="Fill" StrokeLineJoin="Round" Fill="White" SnapsToDevicePixels="True" StrokeThickness="0" Data="M 0,0 h 1 v 1 h -1 Z M 2,0 h 1 v 1 h -1 Z" Name="pauseState" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
+                        <TextBlock Grid.Column="1" 
+							x:Name="TextBlock1" Margin="3,0,0,0"
 							MaxHeight="25" VerticalAlignment="Center"
 							TextTrimming="CharacterEllipsis"><Run Text="{Binding artist, Mode=OneWay}" FontWeight="Bold" /><Run Text=" - "/><Run Text="{Binding title, Mode=OneWay}" /></TextBlock>
                         <TextBlock
 							x:Name="DurationTextBlock"
-							Grid.Column="1" VerticalAlignment="Top"
+							Grid.Column="2" VerticalAlignment="Top"
 							Margin="0"
 							HorizontalAlignment="Right"
 							Text="{Binding duration, Converter={StaticResource DurationToTime}}"
@@ -198,7 +201,7 @@
 
                         <StackPanel
 							x:Name="AudioButtonStackPanel"
-							Grid.Column="1"
+							Grid.Column="2"
 							Margin="5,0,5,0"
 							HorizontalAlignment="Right"
 							Orientation="Horizontal"
@@ -208,6 +211,12 @@
                             <Button x:Name="ShowRecommendationsButton" Content="Rec"/>
                         </StackPanel>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding State}" Value="True">
+                            <Setter Property="Visibility" TargetName="playState" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="pauseState" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                     <!--
                      <ControlTemplate.Triggers>
                         <MultiDataTrigger>
@@ -217,8 +226,7 @@
                             <Setter TargetName="AudioButtonStackPanel" Property="Visibility" Value="Visible" />
                             <Setter TargetName="DurationTextBlock" Property="Visibility" Value="Collapsed" />
                         </MultiDataTrigger>
-                    </ControlTemplate.Triggers>
-                    -->
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </ContentControl.Template>
         </ContentControl>
@@ -555,8 +563,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="t" Background="{TemplateBinding Background}" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="100" Cursor="Hand">
-                        <Path x:Name="ContentPresenter" Fill="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Fill" Margin="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <Border x:Name="t" Background="{TemplateBinding BorderBrush}" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="100" Cursor="Hand">
+                        <Path x:Name="ContentPresenter" Fill="{TemplateBinding Background}" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Fill" Margin="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Border>
                     
                     <ControlTemplate.Triggers>
@@ -583,7 +591,59 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
 
+    <Style x:Key="ToggleButton" TargetType="{x:Type ToggleButton}">
+        <Style.BasedOn>
+            <Style TargetType="{x:Type ButtonBase}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Opacity" Value="0.7" />
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle RenderOptions.EdgeMode="Aliased" Margin="{TemplateBinding params:General.DefaultPadding}" Stroke="Black" StrokeThickness="{TemplateBinding params:General.DefaultThicknessValue}" StrokeDashArray="2 1"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}" TextElement.Foreground="{TemplateBinding Foreground}" TextElement.FontWeight="{TemplateBinding FontWeight}" TextElement.FontStyle="{TemplateBinding FontStyle}" TextElement.FontStretch="{TemplateBinding FontStretch}" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.FontFamily="{TemplateBinding FontFamily}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" TextOptions.TextRenderingMode="{TemplateBinding TextOptions.TextRenderingMode}" TextOptions.TextFormattingMode="{TemplateBinding TextOptions.TextFormattingMode}">
+                                <ContentPresenter Opacity="{TemplateBinding Opacity}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Opacity" Value="0.7"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Opacity" Value="0.5"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Style.BasedOn>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Opacity" Value="1"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 
 </ResourceDictionary>

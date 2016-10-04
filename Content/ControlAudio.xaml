@@ -6,17 +6,18 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:metro="http://schemas.codeplex.com/elysium"
              xmlns:local="clr-namespace:TinyClient"
-             
+             Loaded="UserControl_Loaded_1"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
 
     <Grid>
+        
         <ListBox x:Name="PlaylistView"                 
                  MouseDoubleClick="PlaylistView_MouseDoubleClick"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"  VirtualizingStackPanel.IsVirtualizing="True"  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged" HorizontalContentAlignment="Stretch" SelectedIndex="{Binding Path=selectedSong, Mode=OneWay}"
-                 SelectionMode="Extended" Background="{x:Null}" ItemTemplate="{StaticResource AudioDataTemplate}" ItemsSource="{Binding Path=MusicList}">
+                 ScrollViewer.ScrollChanged="PlaylistView_ScrollChanged" HorizontalContentAlignment="Stretch"
+                 SelectionMode="Extended" Background="{x:Null}" ItemTemplate="{StaticResource AudioDataTemplate}">
         </ListBox>
     </Grid>
 </UserControl>
