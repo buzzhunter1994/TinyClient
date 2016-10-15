@@ -11,14 +11,18 @@ partial class ControlBookmarkPeople : IContent
 
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
-        UserList = await Bookmark.Get();
-        await Task.Factory.StartNew(() =>
+        try
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            UserList = await Bookmark.Get();
+            await Task.Factory.StartNew(() =>
             {
-                PeopleView.ItemsSource = UserList;
-            }));
-        });
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    PeopleView.ItemsSource = UserList;
+                }));
+            });
+        }
+        catch { }
     }
     public void OnNavigatedFrom(NavigationEventArgs e) { }
     public void OnNavigatedTo(NavigationEventArgs e) { }

@@ -32,14 +32,14 @@
                               Visibility="Hidden">
                     <TextBlock x:Name="TextBlock1" Foreground="White"
                                Tag="True"
-                               TextWrapping="Wrap" Text="{Binding Message}"
+                               TextWrapping="Wrap" Text="{Binding title}"
                                />
                 </ScrollViewer>
                 <TextBlock x:Name="PreviewTextBlock1"
                            Grid.Column="1"
                            MaxHeight="100"
                            Margin="4,5,28,3"
-                           Text="{Binding Message}"
+                           Text="{Binding text}"
                            Background="Transparent"
                            Foreground="Black"
                            Opacity="0.75"

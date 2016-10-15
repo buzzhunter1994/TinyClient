@@ -17,10 +17,11 @@ namespace TinyClient.Api
 {
     class Common
     {
-        public static PlayerWindow MusicPlayer;
+        //public static PlayerWindow MusicPlayer;
+        public static ControlAudio MusicPlayer;
         public static MainWindow TinyMainWindow = new MainWindow();
         public static GrowlNotifiactions GrowlNotifiactions1 = new GrowlNotifiactions();
-        public static ListBox PlayListV;
+        //public static ListBox PlayListV;
         public static int[] PhotoSizes = { 0, 75, 130, 604, 807, 1280, 2560 };
         public static async Task<JToken> SendRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang = "")
         {

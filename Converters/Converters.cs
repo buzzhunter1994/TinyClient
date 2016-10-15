@@ -25,28 +25,69 @@ namespace TinyClient
             return Binding.DoNothing;
         }
     }
+
     [ValueConversion(typeof(int), typeof(string))]
     public class FriendlyTimeDescription : IValueConverter
     {
+        public static int plural (int a) {
+            if (a % 10 == 1 && a % 100 != 11) {
+                return 0;
+            } else if (a % 10 >= 2 && a % 10 <= 4 && (a % 100 < 10 || a % 100 >= 20)) {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(System.Convert.ToDouble(value));
-            TimeSpan span = DateTime.UtcNow - time;
-            /*if (span.Hours > 0)
-                return ">1";
-            else */
+            DateTime time = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(System.Convert.ToDouble(value)),TimeZoneInfo.Local);
+            TimeSpan span = DateTime.Now - time;
+
+            if (span.Days < 1)
                 return Describe(span);
+            else
+                return time.ToLongDateString() + " в " + time.ToShortTimeString();
         }
         static readonly string suffix = " назад";
         public static string Describe(TimeSpan span)
         {
-            //TimeSpan span = DateTime.Now - dt;
+            string named = "";
+            if (span.Hours > 24)
+            {
+                return "вчера";
+            }
             if (span.Hours > 0)
-                return String.Format("{0} {1} {2}",
-                span.Hours, span.Hours == 1 ? "час" : "часов", suffix);
+            {
+                switch (plural(span.Hours)) 
+                {
+                    case 0:
+                        named = "час";
+                        break;
+                    case 1:
+                        named = "часа";
+                        break;
+                    case 2:
+                        named = "часов";
+                        break;
+                }
+                return String.Format("{0} {1} {2}", span.Hours, named, suffix);
+            }
             if (span.Minutes > 0)
-                return String.Format("{0} {1} {2}",
-                span.Minutes, span.Minutes == 1 ? "минута" : "минут", suffix);
+            {
+                switch (plural(span.Minutes))
+                {
+                    case 0:
+                        named = "минуту";
+                        break;
+                    case 1:
+                        named = "минуты";
+                        break;
+                    case 2:
+                        named = "минут";
+                        break;
+                }
+                return String.Format("{0} {1} {2}", span.Minutes, named, suffix);
+            }
             if (span.Seconds > 5)
                 return String.Format("{0} секунд {1}", span.Seconds, suffix);
             if (span.Seconds <= 5)

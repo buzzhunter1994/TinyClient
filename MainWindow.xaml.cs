@@ -71,9 +71,9 @@ namespace TinyClient
             contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { menuItem1 });
             m_notifyIcon.Visible = true;
             m_notifyIcon.Text = "TinyClient";
-          /*  m_notifyIcon.BalloonTipTitle = "TinyClient";
+            m_notifyIcon.BalloonTipTitle = "TinyClient";
             m_notifyIcon.BalloonTipIcon = ToolTipIcon.None;
-            m_notifyIcon.BalloonTipText = "Все еще запущен в фоновом режиме";*/
+            m_notifyIcon.BalloonTipText = "Все еще запущен в фоновом режиме";
             m_notifyIcon.Icon = Properties.Resources.icon16;
             m_notifyIcon.Click += notifyIconClick;
             m_notifyIcon.ContextMenu = contextMenu;
@@ -84,7 +84,7 @@ namespace TinyClient
             if (WindowState == WindowState.Minimized)
             {
                 this.Hide();
-                //if (m_notifyIcon != null) m_notifyIcon.ShowBalloonTip(2000);
+                if (m_notifyIcon != null) m_notifyIcon.ShowBalloonTip(2000);
                 ShowInTaskbar = false;
             }
             else
@@ -139,8 +139,8 @@ namespace TinyClient
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (Common.MusicPlayer != null)
-                Common.MusicPlayer.Dispose();
+            if (m_notifyIcon != null)
+                m_notifyIcon.Dispose();
             if (Common.GrowlNotifiactions1 != null)
                 Common.GrowlNotifiactions1.Close();
         }
@@ -156,25 +156,20 @@ namespace TinyClient
                 Common.MusicPlayer.Volume = (float)e.NewValue;
         }
 
-        public ObservableCollection<Types.audio> tempPlaylist = new ObservableCollection<Types.audio>();
         private void ShuffleToggle_Click(object sender, RoutedEventArgs e)
         {
             if (Common.MusicPlayer != null)
             {
-                if (((ToggleButton)sender).IsChecked == true)
-                {
-                    tempPlaylist = Common.MusicPlayer.Playlist;
-                    Common.MusicPlayer.Playlist = Common.MusicPlayer.Playlist.Shuffle();
-                }
-                else
-                {
-                    Common.MusicPlayer.Playlist = tempPlaylist;
-                }
-
+                Common.MusicPlayer.Playlist = Common.MusicPlayer.Playlist.Shuffle();
             }
         }
 
         private void Volume_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
+        private void RepeatToggle_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();
         }

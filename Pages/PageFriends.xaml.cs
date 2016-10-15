@@ -11,14 +11,18 @@ partial class PageFriends : IContent
 
     public async void OnFragmentNavigation(FragmentNavigationEventArgs e)
     {
-        FriendsList = await Friends.Get();
-        await Task.Factory.StartNew(() =>
+        try
         {
-            Dispatcher.BeginInvoke(new Action(() =>
+            FriendsList = await Friends.Get();
+            await Task.Factory.StartNew(() =>
             {
-                FriendsView.ItemsSource = FriendsList;
-            }));
-        });
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    FriendsView.ItemsSource = FriendsList;
+                }));
+            });
+        }
+        catch { }
     }
     public void OnNavigatedFrom(NavigationEventArgs e) { }
     public void OnNavigatedTo(NavigationEventArgs e) { }

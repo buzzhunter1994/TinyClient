@@ -11,15 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TinyClient.Api;
+using System.Linq;
 using Un4seen.Bass;
 
 namespace TinyClient
 {
     public class PlayerWindow : IDisposable, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public int Channel;
 
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null)
@@ -224,9 +225,17 @@ namespace TinyClient
         {
             if (locked) return;
             locked = true;
-            ((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = false;
+           /* var selectedTeams = Playlist.Where(t=>t.State);
+            foreach (var s in selectedTeams)
+            {
+
+            }*/
+            Common.MusicPlayer.Playlist[CurrentIndex].State = false;
+            //((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = false;
             CurrentIndex = CurrentIndexView;
-            ((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = true;
+
+            Common.MusicPlayer.Playlist[CurrentIndex].State = true;
+            //((Types.audio)Common.PlayListV.Items[CurrentIndex]).State = true;
             if (CurrentIndex > 0 && CurrentIndex < Playlist.Count)
                 Song = Playlist[CurrentIndex];
             timer.Stop();
@@ -316,10 +325,7 @@ namespace TinyClient
         }
         #endregion
 
-        public void TimelineChange(double value)
-        {
-            Position = (long)value;
-        }
+
     }
 
 }
