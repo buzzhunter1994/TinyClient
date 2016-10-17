@@ -14,13 +14,14 @@ partial class PageFriends : IContent
         try
         {
             FriendsList = await Friends.Get();
-            await Task.Factory.StartNew(() =>
+            FriendsView.ItemsSource = FriendsList;
+            /*await Task.Factory.StartNew(() =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    FriendsView.ItemsSource = FriendsList;
+                    
                 }));
-            });
+            });*/
         }
         catch { }
     }

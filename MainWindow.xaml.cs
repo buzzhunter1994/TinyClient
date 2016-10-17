@@ -112,29 +112,38 @@ namespace TinyClient
                 WindowState = WindowState.Minimized;
             }*/
         }
+
         private void AudioLoad(object sender, RoutedEventArgs e)
         {
-            MainFrame.Source = new Uri("Pages/PageAudio.xaml#page=playlist", UriKind.Relative);
+            Properties.Settings.Default.lastSection = "Pages/PageAudio.xaml#page=playlist";
+            Properties.Settings.Default.Save();
+            MainFrame.Source = new Uri(Properties.Settings.Default.lastSection, UriKind.Relative);
         }
 
         private void FriendsLoad(object sender, RoutedEventArgs e)
         {
-            MainFrame.Source = new Uri("Pages/PageFriends.xaml#page=friends", UriKind.Relative);
+            Properties.Settings.Default.lastSection = "Pages/PageFriends.xaml#page=friends";
+            Properties.Settings.Default.Save();
+            MainFrame.Source = new Uri(Properties.Settings.Default.lastSection, UriKind.Relative);
         }
 
         private void BookmarksLoad(object sender, RoutedEventArgs e)
         {
-            MainFrame.Source = new Uri("Pages/PageBookmarks.xaml#page=photos", UriKind.Relative);
+            Properties.Settings.Default.lastSection = "Pages/PageBookmarks.xaml#page=photos";
+            Properties.Settings.Default.Save();
+            MainFrame.Source = new Uri(Properties.Settings.Default.lastSection, UriKind.Relative);
         }
 
         private void SettingsLoad(object sender, RoutedEventArgs e)
         {
-            MainFrame.Source = new Uri("Pages/PageSettings.xaml", UriKind.Relative);
+            Properties.Settings.Default.lastSection = "Pages/PageSettings.xaml";
+            Properties.Settings.Default.Save();
+            MainFrame.Source = new Uri(Properties.Settings.Default.lastSection, UriKind.Relative);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Common.GrowlNotifiactions1.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
+            Common.GrowlNotifiactions1.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

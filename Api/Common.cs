@@ -21,12 +21,43 @@ namespace TinyClient.Api
         public static ControlAudio MusicPlayer;
         public static MainWindow TinyMainWindow = new MainWindow();
         public static GrowlNotifiactions GrowlNotifiactions1 = new GrowlNotifiactions();
+        public static string ApiVersion = "5.58";
+
         //public static ListBox PlayListV;
         public static int[] PhotoSizes = { 0, 75, 130, 604, 807, 1280, 2560 };
-        public static async Task<JToken> SendRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string ApiVersion = "5.37", string Lang = "")
+        public static async Task<bool> isValidToken() { 
+            WebClient webClient1 = new WebClient();
+            webClient1.Encoding = Encoding.UTF8;
+            webClient1.Headers.Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded");
+
+            string temp;
+            try
+            {
+                temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/account.getProfileInfo?v=5.58&access_token=", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
+
+                JObject a = JObject.Parse(temp);
+
+                if (a["error"] != null)
+                {
+                    //MessageBox.Show(a["error"].ToString(), "TinyClient - VKAPI", MessageBoxButton.OK);
+                    return false;
+                }
+                else
+                {
+                    temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/stats.trackVisitor?v=5.58&access_token=", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public static async Task<JToken> SendRequest(string method, string parameters = "", bool getRaw = false, string customToken = "", string Lang = "")
         {
             string temp;
-            string AccessToken = Properties.Settings.Default.AccessToken;
 
         Request:
             WebClient webClient1 = new WebClient();
@@ -35,7 +66,7 @@ namespace TinyClient.Api
 
             try
             {
-                temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/" + method, String.Format("{0}&lang={1}&v={2}&access_token={3}", parameters, Lang, ApiVersion, customToken != "" ? customToken : AccessToken)).ConfigureAwait(false);
+                temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/" + method, String.Format("{0}&lang={1}&v={2}&access_token={3}", parameters, Lang, ApiVersion, customToken != "" ? customToken : Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

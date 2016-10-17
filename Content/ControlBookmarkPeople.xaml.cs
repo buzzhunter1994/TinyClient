@@ -14,13 +14,14 @@ partial class ControlBookmarkPeople : IContent
         try
         {
             UserList = await Bookmark.Get();
-            await Task.Factory.StartNew(() =>
+            PeopleView.ItemsSource = UserList;
+           /* await Task.Factory.StartNew(() =>
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    PeopleView.ItemsSource = UserList;
+                    
                 }));
-            });
+            });*/
         }
         catch { }
     }

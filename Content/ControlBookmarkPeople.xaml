@@ -5,12 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:metro="http://schemas.codeplex.com/elysium"
-             xmlns:local="clr-namespace:TinyClient"
-             
+             xmlns:local="clr-namespace:TinyClient"             
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-
     <Grid>
         <ScrollViewer Background="{x:Null}">
             <ItemsControl x:Name="PeopleView" ItemsPanel="{DynamicResource UsersItemsPanel}" ItemTemplate="{StaticResource BookmarkPeopleDataTemplate}"/>

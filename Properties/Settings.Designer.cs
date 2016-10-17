@@ -133,8 +133,7 @@ namespace TinyClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5b6667cc982a3f75a84a086f0aa6be3b8a8f6d98e47f44e64640e6ada90dc991c3ea0c5ea0295dfe6" +
-            "d67a")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AccessToken {
             get {
                 return ((string)(this["AccessToken"]));
@@ -153,6 +152,18 @@ namespace TinyClient.Properties {
             }
             set {
                 this["repeat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pages/PageAudio.xaml#page=playlist")]
+        public string lastSection {
+            get {
+                return ((string)(this["lastSection"]));
+            }
+            set {
+                this["lastSection"] = value;
             }
         }
     }

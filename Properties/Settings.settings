@@ -30,10 +30,13 @@
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="AccessToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)">5b6667cc982a3f75a84a086f0aa6be3b8a8f6d98e47f44e64640e6ada90dc991c3ea0c5ea0295dfe6d67a</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="repeat" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="lastSection" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Pages/PageAudio.xaml#page=playlist</Value>
     </Setting>
   </Settings>
 </SettingsFile>

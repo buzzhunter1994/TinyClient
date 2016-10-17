@@ -138,11 +138,15 @@ public partial class ControlAudio : IContent, INotifyPropertyChanged
         switch (MyFragment["page"])
         {
             case "playlist":
-                if (Playlist.Count != 0)
+                if (Playlist != null)
                 {
-                    MusicList = Playlist;
-                    PlaylistView.SelectedIndex = CurrentIndex;
-                    PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
+                    if (Playlist.Count != 0)
+                    {
+                        MusicList = Playlist;
+                        PlaylistView.SelectedIndex = CurrentIndex;
+                        PlaylistView.ScrollIntoView(PlaylistView.SelectedItem);
+                    }
+
                 }
                 else
                 {

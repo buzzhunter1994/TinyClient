@@ -30,7 +30,7 @@ namespace TinyClient.CustomExtensions
 
             try
             {
-                nvc = HttpUtility.ParseQueryString(str);
+                nvc = HttpUtility.ParseQueryString(str.TrimStart('#'));
                 return nvc[name];
             }
             catch
