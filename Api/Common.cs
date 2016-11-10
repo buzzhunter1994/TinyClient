@@ -5,11 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using TinyClient.UserControls;
 using WPFGrowlNotification;
 
@@ -17,6 +20,15 @@ namespace TinyClient.Api
 {
     class Common
     {
+        public static class Wav
+        {
+            [DllImport("winmm.dll", SetLastError = true)]
+            static extern bool PlaySound(string pszSound, UIntPtr hmod, uint fdwSound);
+            public static void Play(string strFileName)
+            {
+                PlaySound(strFileName, UIntPtr.Zero, (uint)(0x00020000 | 0x0001));
+            }
+        }
         //public static PlayerWindow MusicPlayer;
         public static ControlAudio MusicPlayer;
         public static MainWindow TinyMainWindow = new MainWindow();
@@ -29,6 +41,147 @@ namespace TinyClient.Api
             SystemParameters.WorkArea.Left + TopOffset };
         public static string ApiVersion = "5.58";
 
+        FileInfo fi = new FileInfo("msg.wav");
+        FileInfo fi_out = new FileInfo("out.wav");
+        public class photoResponse
+        {
+            public string name { get; set; }
+            public string photo { get; set; }
+            public int sex { get; set; }
+        }
+        public class userPhoto
+        {
+            public List<photoResponse> response { get; set; }
+        }
+
+        public static Types.LongPollServer LongPollInfo;
+        public static DispatcherTimer _mTimer;
+        public static WebClient _mWebClient = new WebClient { Encoding = Encoding.UTF8 };
+        Types.LongPoolServerUpdates s = null;
+        string urlContents = String.Empty;
+        string temp = String.Empty;
+        Task<string> getStringTask = null;
+        userPhoto ph = null;
+        public static Task<Types.LongPollServer> GetLongPollServer()
+        {
+            return Common.getResponse<Types.LongPollServer>("messages.getLongPollServer", new string[,] {{ "need_pts", "1" }});
+        }
+        public async Task LongPool(Types.LongPollServer serv)
+        {
+            System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+            try
+            {
+                getStringTask = client.GetStringAsync("http://" + serv.server + "?act=a_check&key=" + serv.key + "&ts=" + serv.ts + "&wait=25&mode=2");
+                urlContents = await getStringTask;
+                s = await JsonConvert.DeserializeObjectAsync<Types.LongPoolServerUpdates>(urlContents);
+                if (s.updates.Count > 0)
+                {
+                    foreach (var f in s.updates)
+                    {
+
+                        switch (f[0].ToString())
+                        {
+                            case "4":
+                                if (f[2].ToString() == "49" || f[2].ToString() == "17" || f[2].ToString() == "16" || f[2].ToString() == "48" || f[2].ToString() == "32" || f[2].ToString() == "33")
+                                {
+                                    try
+                                    {
+                                       // ph = await vkUser.Get(f[3].ToString(), Properties.Settings.Default.token);
+                                        Wav.Play(fi.FullName);
+                                        Common.GrowlNotifiactions.AddNotification(new Notification
+                                        {
+                                            Title = "Новое сообщение",
+                                            ImageUrl = ph.response[0].photo,
+                                            Message = f[6].ToString().Replace("<br>", "\n"),
+                                            //User = ph.response[0].name
+                                        });
+                                        ph = null;
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                                break;
+                            case "9":
+
+                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token); //Обрезка -({id})
+                                switch (ph.response[0].sex)
+                                {
+                                    case 1: temp = "вышла"; break;
+                                    case 2: temp = "вышел"; break;
+                                    case 0: temp = "вышло"; break;
+                                }
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                    ImageUrl = ph.response[0].photo,
+                                    Message = temp + " из сети",
+                                   // User = ph.response[0].name
+                                });
+                                temp = null;
+                                ph = null;
+                                break;
+                            case "8":
+                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token);
+                                switch (ph.response[0].sex)
+                                {
+                                    case 1: temp = "появилась"; break;
+                                    case 2: temp = "появился"; break;
+                                    case 0: temp = "появилось"; break;
+                                }
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                    ImageUrl = ph.response[0].photo,
+                                    Message = temp + " в сети",
+                                  //  User = ph.response[0].name
+                                });
+                                temp = null;
+                                ph = null;
+                                break;
+                            case "61":
+                               // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                    ImageUrl = ph.response[0].photo,
+                                    Message = "сейчас набирает сообщение",
+                                   // User = ph.response[0].name
+                                });
+                                ph = null;
+                                break;
+                            case "62":
+                               // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                    ImageUrl = ph.response[0].photo,
+                                    Message = "сейчас набирает сообщение",
+                               //     User = ph.response[0].name
+                                });
+                                ph = null;
+                                break;
+                        }
+                    }
+                    serv.ts = s.ts;
+                    s = null;
+                    await LongPool(serv);
+                }
+                else
+                {
+                    serv.ts = s.ts;
+                    s = null;
+                    await LongPool(serv);
+                }
+            }
+            finally
+            {
+                ph = null;
+                urlContents = null;
+                s = null;
+            }
+        }
         //public static ListBox PlayListV;
         public static int[] PhotoSizes = { 0, 75, 130, 604, 807, 1280, 2560 };
         public static Dock[][] AttachmentDock = {
@@ -99,7 +252,7 @@ namespace TinyClient.Api
             string temp;
             try
             {
-                temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/account.getProfileInfo?v=5.58&access_token=", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
+                temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/account.getProfileInfo", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
 
                 JObject a = JObject.Parse(temp);
 
@@ -109,7 +262,7 @@ namespace TinyClient.Api
                 }
                 else
                 {
-                    temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/stats.trackVisitor?v=5.58&access_token=", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
+                    temp = await webClient1.UploadStringTaskAsync("https://api.vk.com/method/stats.trackVisitor", String.Format("&v={0}&access_token={1}", ApiVersion, Properties.Settings.Default.AccessToken)).ConfigureAwait(false);
                     return true;
                 }
             }
@@ -262,7 +415,7 @@ namespace TinyClient.Api
               Return a("response")
           End If
       End Function*/
-        public static async Task<T> getResponse<T>(string method, string[,] args)
+        public static async Task<T> getResponse<T>(string method, string[,] args = null)
         {
             string p = "";
             string q = "";

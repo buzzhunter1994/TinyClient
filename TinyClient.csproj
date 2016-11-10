@@ -258,6 +258,9 @@
     <Content Include="bass.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="msg.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="icon16.ico" />
     <Resource Include="icon.ico" />
   </ItemGroup>

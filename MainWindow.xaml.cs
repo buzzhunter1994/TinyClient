@@ -11,6 +11,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Windows.Threading;
+using System.Net;
 
 namespace TinyClient
 {
@@ -143,9 +145,62 @@ namespace TinyClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (Common._mTimer == null)
+            {
+                Common._mTimer = new DispatcherTimer();
+                Common._mTimer.Interval = new TimeSpan(0, 0, 22);
+                m_timer_Tick(null, null);
+                Common._mTimer.Tick += m_timer_Tick;
+                Common._mTimer.Start();
+                Common._mWebClient.DownloadStringCompleted += _mWebClient_DownloadStringCompleted;
+            }
             //Common.GrowlNotifiactions.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
         }
+        private static readonly string _connectRawString = "http://{0}?act=a_check&key={1}&ts={2}&wait=25&mode=66";
+        private static string _connectString;
+        private async void m_timer_Tick(object sender, EventArgs e)
+        {
+            Common.LongPollInfo = await Common.GetLongPollServer();
+            if (Common.LongPollInfo == null)
+            {
+                Common.LongPollInfo = await Common.GetLongPollServer();
+            }
+            
+            if (Common.LongPollInfo != null)
+            {
+                _connectString = string.Format(_connectRawString, Common.LongPollInfo.server, Common.LongPollInfo.key, Common.LongPollInfo.ts);
+                TimeSpan diffResult = _lastResponseTime - DateTime.Now;
+                if (diffResult.Seconds > 60)
+                {
+                    Common._mWebClient.CancelAsync();
+                }
+                ForceDownloadStringAsync();
+            }
+        }
 
+        private static System.DateTime _lastResponseTime;
+        public void _mWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null && !e.Cancelled)
+            {
+                _lastResponseTime = DateTime.Now;
+                Console.WriteLine(e.Result.ToString().Trim());
+                m_timer_Tick(null, null);
+            }
+            else
+            {
+                //TrayIconManager.ChangeNetworkStatus(true, e.Error != null ? e.Error.Message : ");
+            }
+        }
+
+        private void ForceDownloadStringAsync()
+        {
+            if (!Common._mWebClient.IsBusy)
+            {
+                Common._mWebClient.DownloadStringAsync(new Uri(_connectString));
+            }
+        }
+        
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (m_notifyIcon != null)
