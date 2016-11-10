@@ -83,13 +83,13 @@ namespace TinyClient
         {
             if (WindowState == WindowState.Minimized)
             {
-                this.Hide();
-                if (m_notifyIcon != null) m_notifyIcon.ShowBalloonTip(2000);
-                ShowInTaskbar = false;
+                //this.Hide();
+                //if (m_notifyIcon != null) m_notifyIcon.ShowBalloonTip(2000);
+                //ShowInTaskbar = false;
             }
             else
             {
-                ShowInTaskbar = true;
+                //ShowInTaskbar = true;
             }
         }
         private void menuItem1_Click(object Sender, EventArgs e)
@@ -143,15 +143,15 @@ namespace TinyClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Common.GrowlNotifiactions1.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
+            Common.GrowlNotifiactions.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (m_notifyIcon != null)
                 m_notifyIcon.Dispose();
-            if (Common.GrowlNotifiactions1 != null)
-                Common.GrowlNotifiactions1.Close();
+            if (Common.GrowlNotifiactions != null)
+                Common.GrowlNotifiactions.Close();
         }
 
         private void Timeline_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

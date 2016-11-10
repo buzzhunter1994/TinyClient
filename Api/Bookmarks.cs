@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TinyClient.Api
 {
-    class Bookmark
+    class Bookmarks
     {
-        public static async Task<ObservableCollection<Types.profile>> Get(string offset = "", string count = "50")
+        public static async Task<ObservableCollection<Types.profile>> getUsers(string offset = "", string count = "50")
         {
             List<Types.user> uList = await Common.getResponse<List<Types.user>>("fave.getUsers@items", new string[,] { { "offset", offset }, { "count", count } });
             string user_ids = "";
@@ -15,6 +15,10 @@ namespace TinyClient.Api
                 user_ids += user.id + ",";
             }
             return await Common.getResponse<ObservableCollection<Types.profile>>("users.get", new string[,] { { "user_ids", user_ids }, { "fields", "photo_100,online" } });
+        }
+        public static async Task<ObservableCollection<Types.Post>> getPosts(string offset = "", string count = "50")
+        {
+            return await Common.getResponse<ObservableCollection<Types.Post>>("fave.getPosts@items", new string[,] { { "offset", offset }, { "count", count } });
         }
      /*   public static async Task<ObservableCollection<Types.audio>> GetPopular(string genre_id = "", bool foreing = false, string offset = "")
         {

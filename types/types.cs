@@ -832,6 +832,102 @@ namespace Types
 		public List<profile> profiles { get; set; }
 		public @group[] groups { get; set; }
 	}
+
+    public class SetDockAttachments : NotifyPropertyChanged
+    {
+
+        private List<attachment> _attachments;
+
+        List<attachment> attachments
+        {
+            get
+            {
+                return _attachments;
+            }
+            set {
+            if ((!(value == null) && (value.Count > 0))) {
+                int attachment_count = 0;
+                int n = 0;
+                int audio_count = 0;
+                foreach (var i in value) {
+                    if (((i.type != "audio") 
+                                && ((i.type != "link") 
+                                && (i.type != "poll")))) {
+                        attachment_count++;
+                    }
+                    else {
+                        audio_count++;
+                    }
+                    
+                }
+                
+                if ((attachment_count == 0)) {
+                    goto label1;
+                }
+                
+                if ((attachment_count == 1)) {
+                    if ((value[0].type == "photo")) {
+                        int w = value[0].photo.width;
+                        int h = value[0].photo.height;
+                        double ratio;
+                        if (((w < 400) && (h < 300))) {
+                            value[0].Width = w;
+                            value[0].Height = h;
+                        }
+                        else {
+                            if ((w > h)) {
+                                ratio = (400 / w);
+                            }
+                            else {
+                                ratio = (300 / h);
+                            }
+                            
+                            value[0].Width = (ratio * w);
+                            value[0].Height = (ratio * h);
+                        }
+                        
+                    }
+                    else if ((value[0].type == "sticker")) {
+                        value[0].Width = 128;
+                        value[0].Height = 128;
+                    }
+                    else if ((value[0].type == "video")) {
+                        value[0].Width = 400;
+                        value[0].Height = 300;
+                    }
+                    else if ((value[0].type == "doc")) {
+                        value[0].Width = 400;
+                        value[0].Height = 50;
+                    }
+                    else if ((value[0].type == "wall")) {
+                        value[0].Width = 400;
+                        value[0].Height = 50;
+                    }
+                    
+                }
+                else {
+                    int b = attachment_count;
+                    foreach (var i in value) {
+                        i.Dock = Common.AttachmentDock[b - 1][n];
+                        i.Width = Common.AttachmentWidthAndHeight[b - 1][n * 2];
+                        i.Height = Common.AttachmentWidthAndHeight[b - 1][n * 2 + 1];
+                        n++;
+                        if ((n >= b)) {
+                            break;
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        label1:
+            _attachments = value;
+        }
+        }
+    }
+    /*
     public class SetDockAttachments : NotifyPropertyChanged
     {
 
@@ -841,5 +937,5 @@ namespace Types
             get { return _attachments; }
             set { _attachments = value; }
         }
-    }
+    }*/
 }

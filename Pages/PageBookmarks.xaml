@@ -20,7 +20,7 @@
         <StackPanel Grid.Column="1">
             <Button Content="Photos" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPhotos.xaml"/>
             <Button Content="Videos" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkVideos.xaml"/>
-            <Button Content="Posts" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPosts.xaml"/>
+            <Button Content="Posts" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPosts.xaml#page=posts"/>
             <Button Content="People" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkPeople.xaml#page=people"/>
             <Button Content="Products" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkProducts.xaml"/>
             <Button Content="Links" Click="SelectType" Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}" Tag="/Content/ControlBookmarkLinks.xaml"/>

@@ -117,7 +117,7 @@
     <Compile Include="Api\Notification.cs" />
     <Compile Include="Api\Profile.cs" />
     <Compile Include="Api\User.cs" />
-    <Compile Include="Api\Bookmark.cs" />
+    <Compile Include="Api\Bookmarks.cs" />
     <Compile Include="Api\Audio.cs" />
     <Compile Include="Api\Command.cs" />
     <Compile Include="Api\Common.cs" />
@@ -130,11 +130,16 @@
     <Compile Include="Content\ControlBookmarkPeople.xaml.cs">
       <DependentUpon>ControlBookmarkPeople.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Content\ControlBookmarkPosts.xaml.cs">
+      <DependentUpon>ControlBookmarkPosts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\Converters.cs" />
+    <Compile Include="CustomExtensions\AniScrollViewer.cs" />
     <Compile Include="CustomExtensions\GrowlNotifiactions.xaml.cs">
       <DependentUpon>GrowlNotifiactions.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomExtensions\Extensions.cs" />
+    <Compile Include="DataTemplateSelectors\DataTemplateSelectors.cs" />
     <Compile Include="Pages\PageBookmarks.xaml.cs">
       <DependentUpon>PageBookmarks.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Content\ControlAudio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Content\ControlBookmarkPosts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

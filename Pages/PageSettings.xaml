@@ -51,7 +51,7 @@
             <!-- <ItemsControl x:Name="FriendsView" ItemsPanel="{DynamicResource FriendsItemsPanel}" ItemTemplate="{StaticResource FriendDataTemplate}"/>-->
         </ScrollViewer>
         <ListBox Grid.Column="1" Background="{x:Null}">
-            <ListBoxItem Content="111"/>
+            <ListBoxItem Content="Appearance"/>
         </ListBox>
     </Grid>
 </UserControl>

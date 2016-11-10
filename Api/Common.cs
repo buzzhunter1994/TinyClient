@@ -20,11 +20,77 @@ namespace TinyClient.Api
         //public static PlayerWindow MusicPlayer;
         public static ControlAudio MusicPlayer;
         public static MainWindow TinyMainWindow = new MainWindow();
-        public static GrowlNotifiactions GrowlNotifiactions1 = new GrowlNotifiactions();
+        public static double TopOffset = 5;
+        public static double LeftOffset = 305;
+        //public static GrowlNotifiactions GrowlNotifiactions1 = new GrowlNotifiactions();
+        public static GrowlNotifiactions GrowlNotifiactions = new GrowlNotifiactions { Top = 0,
+            Left = true ? 
+            SystemParameters.WorkArea.Left + SystemParameters.WorkArea.Width - LeftOffset : 
+            SystemParameters.WorkArea.Left + TopOffset };
         public static string ApiVersion = "5.58";
 
         //public static ListBox PlayListV;
         public static int[] PhotoSizes = { 0, 75, 130, 604, 807, 1280, 2560 };
+        public static Dock[][] AttachmentDock = {
+            new Dock[]{ Dock.Left },
+            new Dock[]{ Dock.Left, Dock.Right },
+            new Dock[]{ Dock.Left, Dock.Top, Dock.Bottom },
+            new Dock[]{ Dock.Left, Dock.Top, Dock.Top, Dock.Top },
+            new Dock[]{ Dock.Left, Dock.Top, Dock.Top, Dock.Top, Dock.Top },
+            new Dock[]{ Dock.Top, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left },
+            new Dock[]{ Dock.Top, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left },
+            new Dock[]{ Dock.Top, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left },
+            new Dock[]{ Dock.Top, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left },
+            new Dock[]{ Dock.Top, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left, Dock.Left }
+                                                };
+        public static int[][] AttachmentWidthAndHeight = {
+            new int[]{ 400, 300 },
+            new int[]{ 200, 300, 200, 300 },
+            new int[]{ 200, 300, 200, 150, 200, 150 },
+            new int[]{ 200, 300, 200, 100, 200, 100, 200, 100 },
+            new int[]{ 300, 300, 100, 74, 100, 74, 100, 74, 100, 74 },
+            new int[]{ 400, 200, 79, 99, 79, 99, 79, 99, 79, 99, 79, 99 },
+            new int[]{ 400, 233, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65 },
+            new int[]{ 400, 242, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56 },
+            new int[]{ 400, 250, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48 },
+            new int[]{ 400, 255, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43 }
+                                                         };
+
+        public static string AttachmentToString(string type)
+        {
+            string t = "";
+            switch (type)
+            {
+                case "sticker":
+                    t = "Стикер";
+                    break;
+                case "photo":
+                    t = "Фото";
+                    break;
+                case "video":
+                    t = "Видео";
+                    break;
+                case "audio":
+                    t = "Аудиозапись";
+                    break;
+                case "doc":
+                    t = "Документ";
+                    break;
+                case "wall":
+                    t = "Запись на стене";
+                    break;
+                case "wall_reply":
+                    t = "Комментарий к записи";
+                    break;
+                case "link":
+                    t = "Ссылка";
+                    break;
+                default:
+                    t = "Неизвестно";
+                    break;
+            }
+            return t;
+        }
         public static async Task<bool> isValidToken() { 
             WebClient webClient1 = new WebClient();
             webClient1.Encoding = Encoding.UTF8;
@@ -39,7 +105,6 @@ namespace TinyClient.Api
 
                 if (a["error"] != null)
                 {
-                    //MessageBox.Show(a["error"].ToString(), "TinyClient - VKAPI", MessageBoxButton.OK);
                     return false;
                 }
                 else
@@ -73,15 +138,13 @@ namespace TinyClient.Api
                 return null;
             }
 
-            JObject a = JObject.Parse(temp);
-
-            //JObject a = await Task.Factory.StartNew(() => JObject.Parse(temp));
-
+            JObject a = JObject.Parse(temp);    
+        
             if (getRaw)
                 return a;
             if (a["error"] != null)
             {
-                MessageBox.Show(a["error"].ToString(), "TinyClient - VKAPI", MessageBoxButton.OK);
+                MessageBox.Show(a["error"].ToString(), "TinyClient", MessageBoxButton.OK);
                 return null;
             }
             else
@@ -268,15 +331,15 @@ namespace TinyClient.Api
              */
             foreach (Notification i in a)
             {
-                i.Index = GrowlNotifiactions1.IndexCounter;
-                GrowlNotifiactions1.IndexCounter++;
-                if ((GrowlNotifiactions1.IndexCounter == int.MaxValue))
+                i.Index = GrowlNotifiactions.IndexCounter;
+                GrowlNotifiactions.IndexCounter++;
+                if ((GrowlNotifiactions.IndexCounter == int.MaxValue))
                 {
-                    GrowlNotifiactions1.IndexCounter = 0;
+                    GrowlNotifiactions.IndexCounter = 0;
                 }
 
                 i.date = d.ToString("HH:mm:ss dd.MM.yy");
-                GrowlNotifiactions1.AddNotification(i);
+                GrowlNotifiactions.AddNotification(i);
                 bool isShow = true; //(bool.Parse(My.Settings.PropertyValues(("Notification" + i.type)).PropertyValue) || isIgnoreSetting);
                 UserControl content = null;
                 if (isShow)
@@ -352,7 +415,7 @@ namespace TinyClient.Api
                     if (content != null && isShow)
                     {
                         content.DataContext = i;
-                        GrowlNotifiactions1.AddNotification(new Notification { Content = content, type = i.type });
+                        GrowlNotifiactions.AddNotification(new Notification { Content = content, type = i.type });
                     }
                 }
             }

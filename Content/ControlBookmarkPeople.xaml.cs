@@ -13,7 +13,7 @@ partial class ControlBookmarkPeople : IContent
     {
         try
         {
-            UserList = await Bookmark.Get();
+            UserList = await Bookmarks.getUsers();
             PeopleView.ItemsSource = UserList;
            /* await Task.Factory.StartNew(() =>
             {

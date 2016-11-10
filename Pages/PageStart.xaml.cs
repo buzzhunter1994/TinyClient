@@ -12,9 +12,9 @@ partial class PageStart : IContent
     public async void Control_Loaded(object sender, RoutedEventArgs e)
     {
         //WBrowser.Navigated += WBrowser_LoadCompleted;
+        await Task.Delay(1000);
         bool check = await Common.isValidToken();
         
-        await Task.Delay(1000);
         if (check) 
         {
             Common.TinyMainWindow.MainFrame.Source = new Uri(TinyClient.Properties.Settings.Default.lastSection, UriKind.Relative);

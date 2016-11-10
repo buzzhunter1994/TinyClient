@@ -133,7 +133,7 @@ public partial class ControlAudio : IContent, INotifyPropertyChanged
         tracks = 0;
         Common.TinyMainWindow.IsBusy = true;
 
-        await Task.Delay(1000);
+        await Task.Delay(500);
 
         switch (MyFragment["page"])
         {
@@ -344,10 +344,8 @@ public partial class ControlAudio : IContent, INotifyPropertyChanged
         locked = true;
         if (Song != null)
             Song.State = false;
-        //Playlist[CurrentIndex].State = false;
         CurrentIndex = CurrentIndexView;
-        Playlist[CurrentIndex].State = true;
-        if (CurrentIndex > 0 && CurrentIndex < Playlist.Count)
+        if (CurrentIndex >= 0 && CurrentIndex < Playlist.Count)
             Song = Playlist[CurrentIndex];
         timer.Stop();
         Common.TinyMainWindow.IsBusy = true;
@@ -359,17 +357,17 @@ public partial class ControlAudio : IContent, INotifyPropertyChanged
                     return Bass.BASS_StreamCreateURL(Song.url, 0, BASSFlag.BASS_DEFAULT, null, IntPtr.Zero);
                 });
         Bass.BASS_StreamFree(Channel);
+        Channel = Channel1;
+        Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(TinyClient.Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
+        Bass.BASS_ChannelPlay(Channel, true);
 
+        timer.Start();
+        Common.TinyMainWindow.IsBusy = false;
         Common.TinyMainWindow.Timeline.Value = 0;
         Common.TinyMainWindow.Timeline.SelectionEnd = 0;
         Common.TinyMainWindow.PlayerGrid.DataContext = this;
         Common.TinyMainWindow.mainGrid.RowDefinitions[1].Height = new GridLength(55);
-        Channel = Channel1;
-        Bass.BASS_ChannelSetAttribute(Channel, BASSAttribute.BASS_ATTRIB_VOL, (float)(TinyClient.Properties.Settings.Default.volume / Common.TinyMainWindow.Volume.Maximum));
-        Bass.BASS_ChannelPlay(Channel, true);
-        timer.Start();
-        Common.TinyMainWindow.IsBusy = false;
-
+        Playlist[CurrentIndex].State = true;
         locked = false;
     }
 
