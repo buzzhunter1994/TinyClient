@@ -21,6 +21,7 @@ partial class PageStart : IContent
         }
         else 
         {
+            //WBrowser.Navigate("https://oauth.vk.com/authorize?client_id=3895061&scope=998431&display=mobile&redirect_uri=https://oauth.vk.com/blank.html&response_type=token");
             WBrowser.Navigate("https://oauth.vk.com/authorize?client_id=3895061&scope=998431&display=mobile&revoke=1&redirect_uri=https://oauth.vk.com/blank.html&response_type=token");
             WFH.Visibility = Visibility.Visible;
         }
