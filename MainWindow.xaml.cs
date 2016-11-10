@@ -143,7 +143,7 @@ namespace TinyClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Common.GrowlNotifiactions.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
+            //Common.GrowlNotifiactions.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
