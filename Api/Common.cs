@@ -33,7 +33,7 @@ namespace TinyClient.Api
         public static ControlAudio MusicPlayer;
         public static MainWindow TinyMainWindow = new MainWindow();
         public static double TopOffset = 5;
-        public static double LeftOffset = 305;
+        public static double LeftOffset = 300;
         //public static GrowlNotifiactions GrowlNotifiactions1 = new GrowlNotifiactions();
         public static GrowlNotifiactions GrowlNotifiactions = new GrowlNotifiactions { Top = 0,
             Left = true ? 
@@ -41,8 +41,9 @@ namespace TinyClient.Api
             SystemParameters.WorkArea.Left + TopOffset };
         public static string ApiVersion = "5.58";
 
-        FileInfo fi = new FileInfo("msg.wav");
-        FileInfo fi_out = new FileInfo("out.wav");
+        public FileInfo fi = new FileInfo("msg.wav");
+        public FileInfo fi_out = new FileInfo("out.wav");
+
         public class photoResponse
         {
             public string name { get; set; }
@@ -61,7 +62,8 @@ namespace TinyClient.Api
         string urlContents = String.Empty;
         string temp = String.Empty;
         Task<string> getStringTask = null;
-        userPhoto ph = null;
+        //userPhoto ph = null;
+        Types.profile ph = null;
         public static Task<Types.LongPollServer> GetLongPollServer()
         {
             return Common.getResponse<Types.LongPollServer>("messages.getLongPollServer", new string[,] {{ "need_pts", "1" }});
@@ -91,7 +93,7 @@ namespace TinyClient.Api
                                         Common.GrowlNotifiactions.AddNotification(new Notification
                                         {
                                             Title = "Новое сообщение",
-                                            ImageUrl = ph.response[0].photo,
+                                            //ImageUrl = ph.response[0].photo,
                                             Message = f[6].ToString().Replace("<br>", "\n"),
                                             //User = ph.response[0].name
                                         });
@@ -103,65 +105,7 @@ namespace TinyClient.Api
                                     }
                                 }
                                 break;
-                            case "9":
-
-                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token); //Обрезка -({id})
-                                switch (ph.response[0].sex)
-                                {
-                                    case 1: temp = "вышла"; break;
-                                    case 2: temp = "вышел"; break;
-                                    case 0: temp = "вышло"; break;
-                                }
-                                Common.GrowlNotifiactions.AddNotification(new Notification
-                                {
-                                    Title = "Уведомление",
-                                    ImageUrl = ph.response[0].photo,
-                                    Message = temp + " из сети",
-                                   // User = ph.response[0].name
-                                });
-                                temp = null;
-                                ph = null;
-                                break;
-                            case "8":
-                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token);
-                                switch (ph.response[0].sex)
-                                {
-                                    case 1: temp = "появилась"; break;
-                                    case 2: temp = "появился"; break;
-                                    case 0: temp = "появилось"; break;
-                                }
-                                Common.GrowlNotifiactions.AddNotification(new Notification
-                                {
-                                    Title = "Уведомление",
-                                    ImageUrl = ph.response[0].photo,
-                                    Message = temp + " в сети",
-                                  //  User = ph.response[0].name
-                                });
-                                temp = null;
-                                ph = null;
-                                break;
-                            case "61":
-                               // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
-                                Common.GrowlNotifiactions.AddNotification(new Notification
-                                {
-                                    Title = "Уведомление",
-                                    ImageUrl = ph.response[0].photo,
-                                    Message = "сейчас набирает сообщение",
-                                   // User = ph.response[0].name
-                                });
-                                ph = null;
-                                break;
-                            case "62":
-                               // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
-                                Common.GrowlNotifiactions.AddNotification(new Notification
-                                {
-                                    Title = "Уведомление",
-                                    ImageUrl = ph.response[0].photo,
-                                    Message = "сейчас набирает сообщение",
-                               //     User = ph.response[0].name
-                                });
-                                ph = null;
-                                break;
+                           
                         }
                     }
                     serv.ts = s.ts;

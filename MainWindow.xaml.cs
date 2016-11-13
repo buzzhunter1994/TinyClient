@@ -13,6 +13,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Net;
+using Newtonsoft.Json;
+using System.IO;
+using System.Collections.Generic;
 
 namespace TinyClient
 {
@@ -177,14 +180,113 @@ namespace TinyClient
                 ForceDownloadStringAsync();
             }
         }
-
+        List<Types.profile> ph = null;
+        
+        string temp = String.Empty;
+        public FileInfo fi = new FileInfo("msg.wav");
+        public FileInfo fi_out = new FileInfo("out.wav");
         private static System.DateTime _lastResponseTime;
-        public void _mWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        public async void _mWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             if (e.Error == null && !e.Cancelled)
             {
                 _lastResponseTime = DateTime.Now;
                 Console.WriteLine(e.Result.ToString().Trim());
+                //await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Types.LongPoolServerUpdates>(e.Result.ToString().Trim()));
+                //Types.LongPoolServerUpdates s = await JsonConvert.DeserializeObjectAsync<Types.LongPoolServerUpdates>(e.Result.ToString().Trim());
+                Types.LongPoolServerUpdates s = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Types.LongPoolServerUpdates>(e.Result.ToString().Trim())); ;
+                if (s.updates.Count > 0)
+                {
+                    foreach (var f in s.updates)
+                    {
+
+                        switch (f[0].ToString())
+                        {
+                            case "4":
+                                if (f[2].ToString() == "49" || f[2].ToString() == "17" || f[2].ToString() == "16" || f[2].ToString() == "48" || f[2].ToString() == "32" || f[2].ToString() == "33")
+                                {
+                                    try
+                                    {
+                                        // ph = await vkUser.Get(f[3].ToString(), Properties.Settings.Default.token);
+                                        ph = await Profile.GetInfo(f[3].ToString());
+                                        TinyClient.Api.Common.Wav.Play(fi.FullName);
+                                        Common.GrowlNotifiactions.AddNotification(new Notification
+                                        {
+                                            Title = "Новое сообщение",
+                                            ImageUrl = ph[0].photo_50,
+                                            Message = f[6].ToString().Replace("<br>", "\n"),
+                                            //User = ph.response[0].name
+                                        });
+                                        ph = null;
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                                break;
+                           /* case "9":
+
+                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token); //Обрезка -({id})
+                                switch (ph.response[0].sex)
+                                {
+                                    case 1: temp = "вышла"; break;
+                                    case 2: temp = "вышел"; break;
+                                    case 0: temp = "вышло"; break;
+                                }
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                //    ImageUrl = ph.response[0].photo,
+                                    Message = temp + " из сети",
+                                    // User = ph.response[0].name
+                                });
+                                temp = null;
+                                ph = null;
+                                break;*/
+                           /* case "8":
+                                //ph = await vkUser.Get(f[1].ToString().Substring(1), Properties.Settings.Default.token);
+                                switch (ph.response[0].sex)
+                                {
+                                    case 1: temp = "появилась"; break;
+                                    case 2: temp = "появился"; break;
+                                    case 0: temp = "появилось"; break;
+                                }
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                  //  ImageUrl = ph.response[0].photo,
+                                    Message = temp + " в сети",
+                                    //  User = ph.response[0].name
+                                });
+                                temp = null;
+                                ph = null;
+                                break;*/
+                         /*   case "61":
+                                // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                //    ImageUrl = ph.response[0].photo,
+                                    Message = "сейчас набирает сообщение",
+                                    // User = ph.response[0].name
+                                });
+                                ph = null;
+                                break;
+                            case "62":
+                                // ph = await vkUser.Get(f[1].ToString(), Properties.Settings.Default.token);
+                                Common.GrowlNotifiactions.AddNotification(new Notification
+                                {
+                                    Title = "Уведомление",
+                                  //  ImageUrl = ph.response[0].photo,
+                                    Message = "сейчас набирает сообщение",
+                                    //     User = ph.response[0].name
+                                });
+                                ph = null;
+                                break;*/
+                        }
+                    }
+                }
                 m_timer_Tick(null, null);
             }
             else

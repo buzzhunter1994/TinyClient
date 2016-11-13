@@ -7,7 +7,7 @@ namespace WPFGrowlNotification
 {
     public partial class GrowlNotifiactions
     {
-        private const byte MAX_NOTIFICATIONS = 8;
+        private const byte MAX_NOTIFICATIONS = 5;
         private int count;
         public int IndexCounter;
         public Notifications Notifications = new Notifications();
