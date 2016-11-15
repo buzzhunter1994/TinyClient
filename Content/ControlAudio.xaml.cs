@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -28,7 +29,7 @@ public partial class ControlAudio : IContent, INotifyPropertyChanged
     private DispatcherTimer timer = new DispatcherTimer();
     private BASSActive isActiveChannel;
     public event PropertyChangedEventHandler PropertyChanged;
-
+    public CancellationTokenSource TokenSource = new CancellationTokenSource();
     private ObservableCollection<Types.audio> _playlist;
     public ObservableCollection<Types.audio> Playlist
     {

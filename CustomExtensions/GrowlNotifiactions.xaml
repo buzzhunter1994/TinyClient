@@ -10,26 +10,35 @@
             <DoubleAnimation From="60" To="0" Storyboard.TargetProperty="Height" Duration="0:0:.5"/>
         </Storyboard>
         <DataTemplate x:Key="MessageTemplate" DataType="Model:Notification">
-            <Grid x:Name="NotificationWindow" Tag="{Binding Path=Id}" Background="Transparent" SizeChanged="NotificationWindowSizeChanged">
-                <Border Name="border" Background="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" BorderThickness="0" CornerRadius="5" Margin="5">
+            <Grid x:Name="NotificationWindow" Tag="{Binding Path=Id}" Background="Transparent" SizeChanged="NotificationWindowSizeChanged" Height="60" Margin="10,5">
+                <Border Name="border" Background="{Binding Source={x:Static properties:Settings.Default}, Path=accentColor, Mode=Default}" BorderThickness="0" CornerRadius="5" Margin="0">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" Opacity="0.5"/>
                     </Border.Effect>
                     <Grid Height="60" Width="280" Margin="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="20"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="60"></ColumnDefinition>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.RowSpan="2" Source="{Binding Path=ImageUrl}" Margin="0,4,4,4" Width="Auto"></Image>
+                        <Border Name="Mask"
+                        Background="White"
+                        BorderThickness="0"
+                        CornerRadius="4" Margin="0" Height="50" Grid.RowSpan="2" Width="50" />
+                        <StackPanel Grid.RowSpan="2" Width="50" Height="50">
+                            <Image  Source="{Binding Path=ImageUrl}"/>
+                            <StackPanel.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=Mask}" />
+                            </StackPanel.OpacityMask>
+                        </StackPanel>
                         <TextBlock Grid.Column="1" Text="{Binding Path=Title}"  TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Tahoma" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"  Margin="10,3,21,3" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
-                        <Button x:Name="CloseButton" Grid.Column="1" Width="16" Height="Auto" HorizontalAlignment="Right" Margin="2" Style="{StaticResource CloseButton}" />
+                                   FontFamily="Tahoma" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"  Margin="1,3,21,3" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Height="14" />
+                        <Button x:Name="CloseButton" Grid.Column="1" Width="16" Height="Auto" HorizontalAlignment="Right" Margin="0,2,2,2" Style="{StaticResource CloseButton}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Message}"  TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display" Foreground="White" 
-                                   FontFamily="Tahoma" VerticalAlignment="Top"  Margin="10,10,10,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                   FontFamily="Tahoma" VerticalAlignment="Top"  Margin="1,0,10,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Height="14"/>
                     </Grid>
                 </Border>
             </Grid>

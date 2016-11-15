@@ -47,18 +47,18 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Border x:Name="Border" CornerRadius="3" BorderThickness="0" ClipToBounds="False" Background="{StaticResource CloseNormal}" BorderBrush="{StaticResource NormalBorderBrush}">
-                            <Border.Effect>
-                                <DropShadowEffect ShadowDepth="0" Opacity=".4" BlurRadius="5" Color="Black"/>
-                            </Border.Effect>
-                            <Grid>
-                                <Border IsHitTestVisible="False" Margin="2" >
-                                    <Border.Effect>
-                                        <DropShadowEffect Direction="90" ShadowDepth="1" BlurRadius="1"/>
-                                    </Border.Effect>
-                                </Border>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
-                            </Grid>
+                        <Border x:Name="Border" CornerRadius="0" BorderThickness="0" ClipToBounds="False" Background="{StaticResource CloseNormal}" BorderBrush="{StaticResource NormalBorderBrush}">
+                            <Viewbox Stretch="Fill" RenderTransformOrigin="0.5,0.5">
+                                <Viewbox.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-135"/>
+                                        <TranslateTransform Y="4"/>
+                                    </TransformGroup>
+                                </Viewbox.RenderTransform>
+                                <Path Data="M28 18h-7v-7h-3v7h-7v3h7v7h3v-7h7z" Height="Auto" Width="Auto" Fill="White"/>
+                            </Viewbox>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>

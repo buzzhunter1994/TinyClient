@@ -151,11 +151,11 @@ namespace TinyClient
             if (Common._mTimer == null)
             {
                 Common._mTimer = new DispatcherTimer();
-                Common._mTimer.Interval = new TimeSpan(0, 0, 22);
-                m_timer_Tick(null, null);
+                Common._mTimer.Interval = new TimeSpan(0, 0, 25);
                 Common._mTimer.Tick += m_timer_Tick;
                 Common._mTimer.Start();
                 Common._mWebClient.DownloadStringCompleted += _mWebClient_DownloadStringCompleted;
+                m_timer_Tick(null, null);
             }
             //Common.GrowlNotifiactions.AddNotification(new Notification { Content = new NotificationMessage { DataContext = new Types.Notifycation { title = "MicroVK", text = "Invisible_enabled" } } });
         }
@@ -163,21 +163,22 @@ namespace TinyClient
         private static string _connectString;
         private async void m_timer_Tick(object sender, EventArgs e)
         {
-            Common.LongPollInfo = await Common.GetLongPollServer();
             if (Common.LongPollInfo == null)
             {
                 Common.LongPollInfo = await Common.GetLongPollServer();
+                ForceDownloadStringAsync(Common.LongPollInfo.ts);
             }
-            
             if (Common.LongPollInfo != null)
             {
+                ForceDownloadStringAsync(Common.LongPollInfo.ts);
                 _connectString = string.Format(_connectRawString, Common.LongPollInfo.server, Common.LongPollInfo.key, Common.LongPollInfo.ts);
                 TimeSpan diffResult = _lastResponseTime - DateTime.Now;
-                if (diffResult.Seconds > 60)
+                if (diffResult.Seconds > 40)
                 {
+                    Common.LongPollInfo = await Common.GetLongPollServer();
                     Common._mWebClient.CancelAsync();
+                    ForceDownloadStringAsync(Common.LongPollInfo.ts);
                 }
-                ForceDownloadStringAsync();
             }
         }
         List<Types.profile> ph = null;
@@ -286,8 +287,9 @@ namespace TinyClient
                                 break;*/
                         }
                     }
+                    ForceDownloadStringAsync(s.ts);
                 }
-                m_timer_Tick(null, null);
+                //m_timer_Tick(null, null);
             }
             else
             {
@@ -295,10 +297,11 @@ namespace TinyClient
             }
         }
 
-        private void ForceDownloadStringAsync()
+        private void ForceDownloadStringAsync(string ts)
         {
             if (!Common._mWebClient.IsBusy)
             {
+                _connectString = string.Format(_connectRawString, Common.LongPollInfo.server, Common.LongPollInfo.key, ts);
                 Common._mWebClient.DownloadStringAsync(new Uri(_connectString));
             }
         }
